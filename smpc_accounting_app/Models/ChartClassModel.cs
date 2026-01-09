@@ -7,21 +7,23 @@ using System.Threading.Tasks;
 
 namespace smpc_accounting_app.Models
 {
-    class ChartClass
+    class ChartClassModel
     {
+        public int id { get; set; }
 
-        [Column("id")]
-        public int Id { get; set; }
-
-
-        [Column("code")]
         public string code { get; set; }
 
-
-        [Column("name")]
         public string name { get; set; }
 
-        [Column("type")]
+        public string type { get; set; }
+    }
+
+    class ChartOfAccountsViewModel
+    {
+        public int id { get; set; }
+
+        public string name { get; set; }
+
         public string type { get; set; }
     }
 }

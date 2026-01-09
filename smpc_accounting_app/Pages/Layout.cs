@@ -8,12 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using smpc_accounting_app.Pages.Components;
+using smpc_accounting_app.Shared;
+using smpc_accounting_app.Models;
 
 namespace smpc_accounting_app
 {
     public partial class Layout : Form
     {
         private int tabCount = 0;
+        GeneralService<CompanySetupModel> serviceSetup;
         public Layout()
         {
             InitializeComponent();
@@ -42,11 +46,12 @@ namespace smpc_accounting_app
                 throw;
             }
         }
+
         private void ShowForm(string tabTitle, Control control)
         {
             try
             {
-                tabCount++; 
+                tabCount++;
 
                 TabPage newTab = new TabPage(tabTitle); 
 
@@ -76,11 +81,6 @@ namespace smpc_accounting_app
 
                 throw;
             }  
-        }
-
-        private void Sidebar_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
         }
 
         private void tabContainer_DrawItem(object sender, DrawItemEventArgs e)
@@ -143,6 +143,25 @@ namespace smpc_accounting_app
                 }
             }
             return;
+        }
+
+        private async void Layout_Load(object sender, EventArgs e)
+        {
+            Login login = new Login();
+            if (DialogResult.OK == login.ShowDialog())
+            {
+                lbl_name.Text = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
+                lbl_position.Text = CacheData.CurrentUser.position_id;
+                lbl_department.Text = CacheData.CurrentUser.department;
+                this.Enabled = true;
+
+                serviceSetup = new GeneralService<CompanySetupModel>(ApiEndPoints.COMPANY_SETUP);
+                CacheData.CompanySetup = await serviceSetup.GetAsModel();
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
     }
 }

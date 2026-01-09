@@ -34,6 +34,7 @@ namespace smpc_accounting_app.Services
             //========================================================================
             // TRANSACTIONS   
             {"Journal Voucher", new JournalVoucher() },
+            {"Journal Entry", new JournalEntry() },
             {"Credit Memo", new CreditMemo() },
             {"Debit Memo", new DebitMemo() },
              

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using smpc_accounting_app.Models;
 
 namespace smpc_accounting_app.Shared
 {
@@ -17,6 +18,7 @@ namespace smpc_accounting_app.Shared
 
 
         public static DataTable PaymentTerms { get; set; } = new DataTable();
-
+        public static CurrentUserModel CurrentUser { get; set; } = null;
+        public static CompanySetupModel CompanySetup { get; set; } = null;
     }
 }

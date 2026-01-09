@@ -10,7 +10,7 @@ namespace smpc_accounting_app.Models
     class TaxSetupList
     {
         [Column("tax")]
-        public List<TaxSetup> Tax { get; set; }
+        public List<TaxSetupModel> Tax { get; set; }
 
         [Column("tax_details")]
         public List<TaxDetails> Tax_Details { get; set; }

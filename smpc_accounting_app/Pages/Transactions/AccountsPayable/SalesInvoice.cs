@@ -63,7 +63,7 @@ namespace smpc_accounting_app.Pages
                 records = response.data;
                 return records;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 throw;
             }

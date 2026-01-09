@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using smpc_accounting_app.Services;
 
 namespace smpc_accounting_app.Pages.Setup.Tax
 {
@@ -20,723 +21,557 @@ namespace smpc_accounting_app.Pages.Setup.Tax
     {
         public static DataTable ChartOfAccountPurchasing { get; set; } = new DataTable();
         public static DataTable ChartOfAccountSales { get; set; } = new DataTable();
-        DataTable taxDetails;
-        DataTable tax;
-        DataTable taxView;
         TaxSetupList setupList = new TaxSetupList();
-
-
         readonly ChartOfAccountsService chartOfAccountService = new ChartOfAccountsService();
+
         readonly TaxSetupService taxSetupService = new TaxSetupService();
-        TaxSetupList records;
-        int selectedRecords;
-        string dateFormat = "yyyy-MM-dd";
+        GeneralService<ChartOfAccountsViewModel> serviceSetup;
+        private bool _isNewMode = false;
+        private bool _isEditMode = false;
+        private TaxList _taxdata;
+        private DataTable _taxTable;
+        private DataTable _coaTable;
+        private string placeHolderText = "Tax Code Search...";
 
         public InputVatPage()
         {
             InitializeComponent();
-           
-        }
-        private void InputVatPage_Load(object sender, EventArgs e)
-        {
-            FetchChartOfAccountSales();
-            FetchChartOfAccountPurchasing();
-            TaxRecords();
-           
+
+            Helpers.Placeholder.SetPlaceholder(txt_search, placeHolderText);
+            Helpers.AllowOnlyNumbers(txt_code);
         }
 
-        private async Task<TaxSetupList> FetchTaxRecords()
+        private void SetEditableColumns(bool isEdit)
         {
-            var response = await ApiService<ApiResponseModel<TaxSetupList>>.Get(ApiEndPoints.TAX_SETUP);
-            records = response.data;
-            return records;
-        }
+            var editableColumns = new[] { "valid_from", "valid_to", "tax_rate" };
 
-      
-        private async Task<List<TaxSetup>> FetchTaxRecordsss()
-        {
-            var response1 = await ApiService<ApiResponseModel<TaxSetupList>>.Get(ApiEndPoints.TAX_SETUP);
-            var view = response1.data;
-            return response1.data.Tax;
-        }
-        private async void TaxRecords()
-        {
-            var taxRecords = await FetchTaxRecords();
-            var view = await FetchTaxRecordsss();
-            if (taxRecords == null  || taxRecords.Tax.Count == 0)
+            foreach (var colName in editableColumns)
             {
-                MessageBox.Show("No tax setup available !", "SMPC SOFTWARE", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-          
-            BindRecordsToDataTable(taxRecords);
-            BindTaxRecords(true);
-           
-            
-        }
-
-        private void BindRecordsToDataTable(TaxSetupList records)
-        {
-
-            tax = JsonHelper.ToDataTable(records.Tax);
-            taxDetails = JsonHelper.ToDataTable(records.Tax_Details);
-            taxView = JsonHelper.ToDataTable(records.Tax_View);
-        }
-        private void BindTaxRecords(bool isBind = false)
-        {
-            if (isBind)
-            {
-                BindDataToPanel();
-                BindDataToDataGrid();
-                //cmb_coa_sales.SelectedValue = records.Tax[this.selectedRecords].coa_sales_id;
-                //cmb_coa_sales.SelectedItem = records.Tax[this.selectedRecords].coa_sales_id;
-                //cmb_coa_purchase.SelectedValue = records.Tax[this.selectedRecords].coa_purchase_id;
-                //cmb_coa_purchase.SelectedItem = records.Tax[this.selectedRecords].coa_purchase_id;
+                if (dgv_tax_details.Columns.Contains(colName))
+                    dgv_tax_details.Columns[colName].ReadOnly = !isEdit;
             }
         }
-        private void BindDataToPanel()
+
+        private void SetEditMode(bool enable, bool isNewMode = false)
         {
-            Panel[] panels = { pnl_content };
-            if (tax != null)
-            {
-                Helpers.BindControls(panels, tax, selectedRecords);
+            SetEditableColumns(enable);
+            _isNewMode = isNewMode;
+            _isEditMode = !isNewMode && enable;
+            dgv_tax_details.AllowUserToAddRows = enable;
 
-            }
-        }
-        private void BindDataToDataGrid()
-        {
-            DataView dataViewValidityDetails = new DataView(taxDetails);
-            DataTable filteredRecord = new DataTable();
-            if (dataViewValidityDetails.Count != 0)
-            {
-                dataViewValidityDetails.RowFilter = "tax_code_id = '" + tax.Rows[this.selectedRecords]["id"].ToString() + "'";
-                DataTable filterTaxDetails = dataViewValidityDetails.ToTable();
-                
-                if (filterTaxDetails.Rows.Count > 0)
-                {
-                    if (!filterTaxDetails.Columns.Contains("valid_status"))
-                    {
-                        filterTaxDetails.Columns.Add("valid_status", typeof(string));
-                    }
-                     filteredRecord =  ValidateTaxDetailStatus(filterTaxDetails);           
-                }           
-                dataBindingTaxDetails.DataSource = filteredRecord;
-            }
+            // buttons
+            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete" };
 
-            foreach (DataColumn column in taxView.Columns)
-            {
-                column.ColumnName = column.ColumnName.ToLower();
-            }
-            dataBindingTaxList.DataSource = taxView;
-        }
-   
-        private string GetDateStatus(string currentRow, string prevRow)
-        {
-            DateTime currentDate = DateTime.Parse(currentRow);
-            DateTime prevDates = DateTime.Parse(prevRow);
-            if (currentDate > prevDates)
-            {
-                return "FUTURE";
-            }
-            else if (currentDate < prevDates)
-            {
-                return "ACTIVE";
+            Helpers.SetButtonVisibility(
+                toolStrip1,
+                visibleButtons: enable ? editButtons : navButtons,
+                hiddenButtons: enable ? navButtons : editButtons
+            );
 
-            }
-            return "INACTIVE";
-        } 
-
-        private DataTable ValidateTaxDetailStatus(DataTable records)
-        {
-            for (int i = 0; i < records.Rows.Count; i++)
-            {
-                var currentRow = records.Rows[i];
-                var currentValidFrom = currentRow["valid_from"].ToString();
-                currentRow["valid_status"] = "ACTIVE";
-
-                if (i > 0)
-                {
-                    var prevRow = records.Rows[i - 1];
-                    var prevValidTo = prevRow["valid_to"].ToString();
-
-                    var status = GetDateStatus(currentValidFrom, prevValidTo);
-                    currentRow["valid_status"] = status;
-                }
-            } 
-            return records;
-        }
-        private bool TaxHeaderValidation(out string messages)
-        {
-           messages = string.Empty;
-           var records = Helpers.GetControlsValues(pnl_content);
-           var errors = new List<string>();
-          
-            if (string.IsNullOrEmpty(records["code"]) || string.IsNullOrEmpty(records["tax_desc"]))
-            {
-               errors.Add("Tax code and Tax Description is required");
-            }
-            if (records["coa_sales_id"] == 0 && records["coa_purchase_id"] == 0)
-            {
-                errors.Add("Linking at least one tax account is required");
-            }
-            messages = string.Join("\n", errors);
-
-            return errors.Count == 0;
-        }
-        private async Task<DataTable> FetchChartOfAccountClassification(string chartClass)
-        {
-            var responseData = await chartOfAccountService.GetChartOfAccountsClassfication(chartClass);
-            return  responseData == null ? null : JsonHelper.ToDataTable(responseData);
-        }
-        private async void FetchChartOfAccountSales()
-        {
-            var records = await FetchChartOfAccountClassification("CL");
-            if (records == null)
-            {
-                return;
-            }
-
-            ChartOfAccountSales = records;
-
-            DataRow newRow = ChartOfAccountSales.NewRow();
-            newRow["id"] = 0;
-            newRow["name"] = "-- Select --";
-
-            ChartOfAccountSales.Rows.InsertAt(newRow, 0);
-            cmb_coa_sales.DataSource = ChartOfAccountSales;
-            cmb_coa_sales.DisplayMember = "name";
-            cmb_coa_sales.ValueMember = "id";
-        }
-        private async void FetchChartOfAccountPurchasing()
-        {
-            var records = await FetchChartOfAccountClassification("CA");
-            if (records == null)
-            {
-                return;
-            }
-            ChartOfAccountPurchasing = records;
-
-            DataRow newRow = ChartOfAccountPurchasing.NewRow();
-            newRow["id"] = 0;
-            newRow["name"] = "-- Select --";
-
-            ChartOfAccountPurchasing.Rows.InsertAt(newRow, 0);
-            cmb_coa_purchase.DataSource = ChartOfAccountPurchasing;
-            cmb_coa_purchase.DisplayMember = "name";
-            cmb_coa_purchase.ValueMember = "id";
-        }
-
-        private void ResetData()
-        {
-            Helpers.ResetControls(pnl_content);
-            DataTable cloneTaxDetails = null;
-
-            if (taxDetails != null)
-            {
-                cloneTaxDetails = taxDetails.Clone(); // Clone structure
-            }
-            else
-            {
-                cloneTaxDetails = new DataTable();
-                cloneTaxDetails.Columns.Add("valid_status", typeof(string));
-            }
-
-            DataRow newRow = cloneTaxDetails.NewRow();
-            newRow["valid_status"] = "ACTIVE";
-            cloneTaxDetails.Rows.Add(newRow);
-
-            dataBindingTaxDetails.DataSource = cloneTaxDetails;
-            dgv_tax_details.DataSource = dataBindingTaxDetails; // Ensure rebind
-            dgv_tax_details.Refresh(); // Redraw
-
-         
-        }
-        private void ValidityPeriodStatus()
-        {
-            //var combobox = (DataGridViewComboBoxColumn)dgv_tax_details.Columns["valid_status"];
-
-            //combobox.DataSource = ENUM_TAX_CODE.STATUS_LIST();
-            //combobox.DisplayMember = "title";
-            //combobox.ValueMember = "value";
-        }
-        private void BtnToggle(bool isEditable = false)
-        {
-            pnl_content.Enabled = isEditable;
-            btn_save.Visible = isEditable;
-            btn_cancel.Visible = isEditable;
-            btn_new.Visible = !isEditable;
-            btn_edit.Visible = !isEditable;
-            btn_delete.Visible = !isEditable;
-            btn_prev.Visible = !isEditable;
-            btn_next.Visible = !isEditable;
-        }
-    
-        private List<TaxDetails> SaveValidityDetails(bool isUpdate)
-        {
-            var taxDetailsRecords = Helpers.ConvertDataGridViewToDataTable(dgv_tax_details);
-            List<TaxDetails> taxDetailList = new List<TaxDetails>();
-
-            TaxDetails taxDetails = null;
-            int id = 0;
-            int tax_code_id = 0;
-            string valid_from;
-            string valid_to;
-            string valid_status;
-            decimal tax_rate = 0m;
-            foreach(DataRow row in taxDetailsRecords.Rows)
-            {
-
-                if (isUpdate)
-                {
-
-                    if (row.IsNull("id") || string.IsNullOrWhiteSpace(row["tax_code_id"].ToString())) { 
-                        id = 0;
-                        tax_code_id = 0;
-                    }
-                    else
-                    {
-                        id = int.Parse(row["id"].ToString());
-                        tax_code_id = int.Parse(row["tax_code_id"].ToString());
-                    }
-                  
-                }
-
-                valid_from   = row["valid_from"].ToString();
-                valid_to     = row["valid_to"].ToString();
-                valid_status = "";
-                if (!decimal.TryParse(row["tax_rate"]?.ToString(), out tax_rate))
-                {
-                    tax_rate = 0;
-                }
-                taxDetails = new TaxDetails(id,tax_code_id,valid_from,valid_to,valid_status,tax_rate);
-                taxDetailList.Add(taxDetails);
-            }
-
-            return taxDetailList;
-        }
-
-        private async void btn_save_Click(object sender, EventArgs e)
-        {
-            ApiResponseModel response = new ApiResponseModel();
-            string message;
-            try
-            {
-                string taxHeaderMessage = "";
-                var data = Helpers.GetControlsValues(pnl_content);
-                string[] taxFieldToInt = { "coa_sales_id", "coa_purchase_id", };
-
-                bool isIntFieldsValid = Helpers.ConvertFieldPropertiesType<int>(data, taxFieldToInt);
-                bool isCreditable = data.TryGetValue("input_tax_creditable", out var value) && value?.ToString() == "1";
-                bool isTaxRecordValid = TaxHeaderValidation( out taxHeaderMessage);
-                data["input_tax_creditable"] = isCreditable;
-                
-                if (!isIntFieldsValid) {
-                   return; 
-                }
-                
-                if (!isTaxRecordValid) {
-                    Helpers.ShowDialogMessage("error", taxHeaderMessage);
-                    return;
-                }
-
-
-                if (txt_id.Text.Equals("")) {
-                    var taxDetails = SaveValidityDetails(false);
-                    data.Add("tax_details", taxDetails);
-                    data.Remove("id");
-
-                    response = await taxSetupService.Insert(data);
-                    message = response.Success ? "Insert Data Succesfully" : "Fail to add chart of accounts \n" + response.message;
-                }
-
-
-                else {
-
-                    var taxDetails = SaveValidityDetails(true);
-                    data.Add("tax_details", taxDetails);
-                    var datanew = data;
-                    data["id"] = int.Parse(data["id"]);
-
-                    response = await taxSetupService.Update(data);
-                    message = response.Success ? "Update Data Succefully" : "Fail to update chart of accounts \n" + response.message;
-                }
-
-                if (!response.Success) {
-                    Helpers.ShowDialogMessage("error", message);
-                    return;
-                }
-
-                ResetData();
-                BtnToggle(false);
-
-                TaxRecords();
-
-            } catch(Exception ex)
-            {
-                MessageBox.Show("Failed in Saving Data \n", ex.Message);
-                throw;
-            }
-          
+            pnl_content.Enabled = enable;
         }
 
         private void btn_new_Click(object sender, EventArgs e)
         {
-            BtnToggle(true);
-            ResetData();
-        }
+            SetEditMode(true, isNewMode: true);
+            Helpers.ResetControls(new Panel[] { pnl_content });
 
-        private void btn_cancel_Click(object sender, EventArgs e)
-        {
-            Helpers.ResetControls(pnl_content);
-            BtnToggle(false);
-
-            if(records != null)
-            {
-                BindTaxRecords(true);
-            }
-           
+            //Clear only the rows, keep columns
+            dgv_tax_details.DataSource = null;
+            dgv_tax_details.Rows.Clear();
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
         {
-            BtnToggle(true);
+            SetEditMode(true);
         }
 
-        private void dgv_tax_details_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void btn_cancel_Click(object sender, EventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            SetEditMode(false);
+            LoadSelectedTaxSetup();
+        }
 
-               string col = dgv_tax_details.Columns[e.ColumnIndex].Name;
-
-            // Only trigger if editing valid_from or valid_to
-            if (col == "valid_from" || col == "valid_to")
+        private async void btn_delete_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txt_id.Text))
             {
-                ValidateChainedDates();
-                AutoFillActiveValidTo();
-                AutoFillPrevValidToWhenCurrentValidFromEntered();
+                Helpers.ShowDialogMessage("error", "Please select a Tax Setup to delete.");
+                return;
             }
 
-            //string futureValue = dgv_tax_details.Rows[e.RowIndex].Cells["valid_from"].Value.ToString();
+            var confirm = MessageBox.Show($"Are you sure you want to delete this Tax Setup {txt_id.Text}?",
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-            //var _previousCellValueValidTo = dgv_tax_details.Rows[0].Cells["valid_to"].Value.ToString();
-            //var _previousCellValueValidFrom = dgv_tax_details.Rows[0].Cells["valid_from"].Value.ToString();
+            if (confirm != DialogResult.Yes) return;
 
-
-            //if (_previousCellValueValidTo != "" && _previousCellValueValidFrom != "")
-            //{
-            //    dgv_tax_details.Rows[0].Cells["status"].Value = "ACTIVE";
-
-
-            //    for (int i = 1; i < dgv_tax_details.Rows.Count; i++)
-            //    {
-
-            //        var prevRow = dgv_tax_details.Rows[i - 1];
-            //        var currentRow = dgv_tax_details.Rows[i];
-            //        var prevRowValidFrom = prevRow.Cells["valid_from"].Value.ToString();
-            //        var prevRowValidTo = prevRow.Cells["valid_to"].Value.ToString();
-
-            ////        var currentValidFrom = currentRow.Cells["valid_from"].Value.ToString();
-
-            //        if (prevRowValidTo == "" && prevRowValidFrom != "")
-            //            {
-            //                DateTime date = DateTime.Parse(futureValue).AddDays(-1);
-            //                dgv_tax_details.Rows[0].Cells["valid_to"].Value = date.ToString("MM/dd/yy");
-            //                dgv_tax_details.Rows[0].Cells["status"].Value = "ACTIVE";
-
-            //            }
-
-
-
-
-
-
-            //    }
-
-            //}
-
-            //if (e.RowIndex >= 1)
-            //{
-            //    if (_previousCellValueValidTo == "" && _previousCellValueValidFrom != "")
-            //    {
-            //        DateTime date = DateTime.Parse(futureValue).AddDays(-1);
-            //        dgv_tax_details.Rows[0].Cells["valid_to"].Value = date.ToString("MM/dd/yy");
-            //        dgv_tax_details.Rows[0].Cells["status"].Value = "ACTIVE";
-
-            //    }
-            //    else if (_previousCellValueValidFrom != "")
-            //    {
-            //        DateTime futureDate = DateTime.Parse(futureValue);
-            //        DateTime prevDate = DateTime.Parse(_previousCellValueValidTo);
-            //        if (futureDate <= prevDate)
-            //        {
-            //            MessageBox.Show("Invalid future date");
-            //            dgv_tax_details.Rows[e.RowIndex].Cells["valid_from"].Value = "";
-            //            return;
-            //        }
-            //        else
-            //        {
-            //            dgv_tax_details.Rows[e.RowIndex].Cells["status"].Value = "FUTURE";
-            //            dgv_tax_details.Rows[0].Cells["status"].Value = "ACTIVE";
-            //        }
-            //    }
-
-            //    else
-            //    {
-            //        MessageBox.Show("Valid From is required");
-            //        dgv_tax_details.Rows[e.RowIndex].Cells["valid_from"].Value = "";
-            //        return;
-            //    }
-            //}
-
-
-            if (e.ColumnIndex == 2)
+            try
             {
-                var cell = dgv_tax_details.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                decimal result;
+                Helpers.Loading.ShowLoading(dgv_tax_details, "Deleting data...");
+                Helpers.Loading.ShowLoading(dgv_tax_code_list, "Deleting data...");
 
-                if (cell.Value != null && !decimal.TryParse(cell.Value.ToString(), out result))
+                var taxModel = new TaxSetupModel
                 {
-                    MessageBox.Show($"Invalid decimal value in row {e.RowIndex + 1}. Please enter a valid number.");
-                    // Reset to previous value or default
-                    cell.Value = 0;
-                    // Set error text for the specific row
-                    dgv_tax_details.Rows[e.RowIndex].ErrorText = "Invalid decimal value";
-                }
-                else
+                    id = int.Parse(txt_id.Text),
+                };
+
+                var taxPayload = new TaxSetupPayload
                 {
-                    dgv_tax_details.Rows[e.RowIndex].ErrorText = string.Empty;
-                }
+                    tax_setup = taxModel
+                };
+
+                await taxSetupService.DeleteTaxRecord(taxPayload);
+
+                Helpers.ShowDialogMessage("success", "Tax Setup deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to delete: {ex.Message}");
+            }
+            finally
+            {
+                await LoadTaxSetups();
+
+                Helpers.Loading.HideLoading(dgv_tax_details);
+                Helpers.Loading.HideLoading(dgv_tax_code_list);
             }
         }
 
-        private void ValidateChainedDates()
+        private async void btn_save_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < dgv_tax_details.Rows.Count; i++)
-            {
-                var row = dgv_tax_details.Rows[i];
+            dgv_tax_details.EndEdit();
 
-                // Get user inputs
-                string validFromStr = row.Cells["valid_from"].Value?.ToString();
-                string validToStr = row.Cells["valid_to"].Value?.ToString();
-
-           
-
-                if (!DateTime.TryParse(validFromStr, out DateTime validFrom) ||
-                    !DateTime.TryParse(validToStr, out DateTime validTo))
-                {
-                    // Skip rows with incomplete date entries
-                    continue;
-                }
-
-                // Rule 1: valid_to must be after valid_from
-                if (validTo <= validFrom)
-                {
-                    MessageBox.Show($"Row {i + 1}: 'VALID TO' must be after 'VALID FROM'.");
-                    row.Cells["valid_to"].Value = "";
-                    continue;
-                }
-
-                // Rule 2: From 2nd row onwards, valid_from must be after previous valid_to
-                if (i > 0)
-                {
-                    var prevRow = dgv_tax_details.Rows[i - 1];
-                    string prevValidToStr = prevRow.Cells["valid_to"].Value?.ToString();
-
-                    if (!DateTime.TryParse(prevValidToStr, out DateTime prevValidTo))
-                    {
-                        MessageBox.Show($"Row {i + 1}: Previous row's 'VALID TO' is invalid or missing.");
-                        continue;
-                    }
-
-                    if (validFrom <= prevValidTo)
-                    {
-                        MessageBox.Show($"Row {i + 1}: 'VALID FROM' must be after previous 'VALID TO' ({prevValidTo:yyyy-MM-dd}).");
-                        row.Cells["valid_from"].Value = "";
-                        continue;
-                    }
-
-                    // Set FUTURE status for valid future record
-                    row.Cells["valid_status"].Value = "FUTURE";
-                }
-                else
-                {
-                    // First row is always ACTIVE
-                    row.Cells["valid_status"].Value = "ACTIVE";
-                }
-            }
-        }
-
-        private void AutoFillActiveValidTo()
-        {
-            DateTime? firstFutureValidFrom = null;
-
-            // Step 1: Find the first FUTURE row with a valid valid_from
-            foreach (DataGridViewRow row in dgv_tax_details.Rows)
-            {
-                string status = row.Cells["valid_status"].Value?.ToString();
-                if (status == "FUTURE")
-                {
-                    string futureFromStr = row.Cells["valid_from"].Value?.ToString();
-                    if (DateTime.TryParse(futureFromStr, out DateTime futureFrom))
-                    {
-                        firstFutureValidFrom = futureFrom;
-                        break; // Use the first future row only
-                    }
-                }
-            }
-
-            // If there's no future record yet, skip
-            if (firstFutureValidFrom == null)
+            if (!await ValidateTaxSetupAsync())
                 return;
 
-            // Step 2: Fill the missing valid_to of the ACTIVE row (if any)
-            foreach (DataGridViewRow row in dgv_tax_details.Rows)
-            {
-                string status = row.Cells["valid_status"].Value?.ToString();
-                string validToStr = row.Cells["valid_to"].Value?.ToString();
+            var taxSetupParent = Helpers.BuildModelFromPanels<TaxSetupModel>(new Panel[] { pnl_content });
+            taxSetupParent.input_tax_creditable = chk_input_tax_creditable.Checked;
 
-                if (status == "ACTIVE" && string.IsNullOrWhiteSpace(validToStr))
+            taxSetupParent.coa_sales_id = cmb_coa_sales.SelectedIndex != -1? Convert.ToInt32(cmb_coa_sales.SelectedValue): 0;
+
+            taxSetupParent.coa_purchase_id = cmb_coa_purchase.SelectedIndex != -1? Convert.ToInt32(cmb_coa_purchase.SelectedValue): 0;
+
+            var taxSetupDetails = Helpers.DatagridviewMapper.BuildModelsFromData<TaxDetailsModel>(dgv_tax_details);
+
+            if (ValidateDateFields(taxSetupDetails, out string overlapError))
+            {
+                Helpers.ShowDialogMessage("error", overlapError);
+                return;
+            }
+
+            taxSetupDetails = taxSetupDetails
+                .OrderBy(d =>
+                    DateTime.ParseExact(
+                        d.valid_from,
+                        "MM/dd/yyyy",
+                        CultureInfo.InvariantCulture))
+                .ToList();
+
+            for (int i = 0; i < taxSetupDetails.Count - 1; i++)
+            {
+                var current = taxSetupDetails[i];
+                var next = taxSetupDetails[i + 1];
+
+                if (string.IsNullOrWhiteSpace(current.valid_to))
                 {
-                    row.Cells["valid_to"].Value = firstFutureValidFrom.Value.AddDays(-1).ToString(dateFormat);
-                    break; // Only the first active row with blank valid_to is handled
+                    current.valid_to = next.valid_from;
                 }
+            }
+
+            // Wrap everything into ReceivingReportPayload
+            var taxPayload = new TaxSetupPayload
+            {
+                tax_setup = taxSetupParent,
+                tax_setup_details = taxSetupDetails
+            };
+
+            try
+            {
+                Helpers.Loading.ShowLoading(dgv_tax_details, "Saving data...");
+                Helpers.Loading.ShowLoading(dgv_tax_code_list, "Saving data...");
+
+                if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
+                {
+                    var result = await taxSetupService.CreateTaxRecord(taxPayload);
+                    Helpers.ShowDialogMessage("success", "Tax Setup created successfully.");
+                }
+                else
+                {
+                    var result = await taxSetupService.UpdateTaxRecord(taxPayload);
+                    Helpers.ShowDialogMessage("success", "Tax Setup updated successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to save: {ex.Message}");
+            }
+            finally
+            {
+                SetEditMode(false);
+                await LoadTaxSetups();
+
+                Helpers.Loading.HideLoading(dgv_tax_details);
+                Helpers.Loading.HideLoading(dgv_tax_code_list);
             }
         }
 
-        private bool isValidDateFormat(string input)
+        private async Task<bool> ValidateTaxSetupAsync()
         {
-            DateTime parsedDate;
-            bool isValid = false;
-
-            isValid = DateTime.TryParseExact(input,dateFormat,CultureInfo.InvariantCulture,DateTimeStyles.None,out parsedDate );
-            return isValid;
-        }
-        private void AutoFillPrevValidToWhenCurrentValidFromEntered()
-        {
-            for (int i = 1; i < dgv_tax_details.Rows.Count; i++) // Start from 2nd row
+            // 1. Validate required controls in the panel
+            if (Helpers.ValidateControlsValues(pnl_content))
             {
-                var currentRow = dgv_tax_details.Rows[i];
-                var prevRow = dgv_tax_details.Rows[i - 1];
+                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                return false;
+            }
 
-                // Get valid_from of current row
-                string currValidFromStr = currentRow.Cells["valid_from"].Value?.ToString();
-                string prevValidToStr = prevRow.Cells["valid_to"].Value?.ToString();
+            // 2. Validate that tax details are not empty
+            var taxSetupDetails = Helpers.DatagridviewMapper.BuildModelsFromData<TaxDetailsModel>(dgv_tax_details);
+            if (taxSetupDetails == null || taxSetupDetails.Count == 0)
+            {
+                Helpers.ShowDialogMessage("error", "Validity Period cannot be empty.");
+                return false;
+            }
 
-                if (DateTime.TryParse(currValidFromStr, out DateTime currValidFrom) &&
-                    string.IsNullOrWhiteSpace(prevValidToStr))
+            // 3. Validate required DataGridView columns
+            string[] columnsToValidate = { "item_description", "req_qty" };
+            if (await Helpers.ValidateDataGridViewCells(dgv_tax_details, columnsToValidate))
+                return false;
+
+            // 4. Validate that at least one COA is selected
+            bool hasSales = cmb_coa_sales.SelectedIndex != -1 && !string.IsNullOrWhiteSpace(cmb_coa_sales.Text);
+            bool hasPurchase = cmb_coa_purchase.SelectedIndex != -1 && !string.IsNullOrWhiteSpace(cmb_coa_purchase.Text);
+
+            if (!hasSales && !hasPurchase)
+            {
+                Helpers.ShowDialogMessage("error", "Please select at least one Chart of Accounts: Sales or Purchase.");
+                return false;
+            }
+
+            // 5. Validate unique Tax Code (NEW MODE ONLY)
+            if (_isNewMode)
+            {
+                string enteredCode = txt_code.Text.Trim();
+
+                if (_taxTable != null &&
+                    _taxTable.AsEnumerable().Any(r =>
+                        r.Field<string>("code")?.Equals(
+                            enteredCode,
+                            StringComparison.OrdinalIgnoreCase) == true))
                 {
-                    // Set valid_to of previous row = current valid_from - 1 day
-                    prevRow.Cells["valid_to"].Value = currValidFrom.AddDays(-1).ToString(dateFormat);
+                    Helpers.ShowDialogMessage(
+                        "error",
+                        $"Tax Code '{enteredCode}' is already in use."
+                    );
+                    txt_code.Focus();
+                    return false;
                 }
             }
-        }
-        private void pnl_content_Paint(object sender, PaintEventArgs e)
-        {
 
+            return true;
         }
 
-        private void panel_tax_code_list_Paint(object sender, PaintEventArgs e)
+        private bool ValidateDateFields(List<TaxDetailsModel> details, out string errorMessage)
         {
+            errorMessage = string.Empty;
 
+            if (details == null || details.Count == 0)
+            {
+                errorMessage = "Tax details cannot be empty.";
+                return true;
+            }
+
+            const string dateFormat = "MM/dd/yyyy";
+            var ranges = new List<(DateTime From, DateTime? To)>(); // To can be null
+
+            foreach (var d in details)
+            {
+                if (!DateTime.TryParseExact(
+                    d.valid_from,
+                    dateFormat,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime from))
+                {
+                    errorMessage = "Invalid Valid From date format.";
+                    return true;
+                }
+
+                DateTime? to = null;
+                if (!string.IsNullOrWhiteSpace(d.valid_to))
+                {
+                    if (!DateTime.TryParseExact(
+                        d.valid_to,
+                        dateFormat,
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out DateTime parsedTo))
+                    {
+                        errorMessage = "Invalid Valid To date format.";
+                        return true;
+                    }
+
+                    // Check if valid_to < valid_from
+                    if (parsedTo < from)
+                    {
+                        errorMessage =
+                            $"Invalid date range detected:\n\n" +
+                            $"Valid From: {from:MM/dd/yyyy}\n" +
+                            $"Valid To: {parsedTo:MM/dd/yyyy}\n\n" +
+                            $"Valid To date cannot be earlier than Valid From date.";
+                        return true;
+                    }
+
+                    to = parsedTo;
+                }
+
+                ranges.Add((from, to));
+            }
+
+            // Sort by Valid From
+            ranges = ranges.OrderBy(r => r.From).ToList();
+
+            // Overlap check
+            for (int i = 1; i < ranges.Count; i++)
+            {
+                var previous = ranges[i - 1];
+                var current = ranges[i];
+
+                // If previous To is null (open-ended), any subsequent From overlaps
+                if (previous.To.HasValue && current.From <= previous.To.Value)
+                {
+                    errorMessage =
+                        $"Overlapping tax period detected:\n\n" +
+                        $"Previous: {previous.From:MM/dd/yyyy} - {(previous.To.HasValue ? previous.To.Value.ToString("MM/dd/yyyy") : "Open")}\n" +
+                        $"Current: {current.From:MM/dd/yyyy} - {(current.To.HasValue ? current.To.Value.ToString("MM/dd/yyyy") : "Open")}";
+
+                    return true;
+                }
+            }
+
+            return false; // All date fields valid
+        }
+
+        private async void InputVatPage_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                Helpers.Loading.ShowLoading(dgv_tax_code_list, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_tax_details, "Fetching data...");
+                await LoadTaxSetups();
+                await FetchChartOfAccountClass();
+                LoadSelectedTaxSetup();
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(dgv_tax_code_list);
+                Helpers.Loading.HideLoading(dgv_tax_details);
+            }
+        }
+
+        private async Task LoadTaxSetups()
+        {
+            _taxdata = await taxSetupService.GetAsModel();
+
+            _taxTable = Helpers.ToDataTable(_taxdata.tax_setup_view);
+
+            if (_taxTable != null)
+            {
+                dgv_tax_code_list.AutoGenerateColumns = false;
+
+                dgv_tax_code_list.DataSource = _taxTable;
+            }
+            else
+            {
+                dgv_tax_code_list.DataSource = null;
+            }
+        }
+
+        private async Task FetchChartOfAccountClass()
+        {
+            serviceSetup = new GeneralService<ChartOfAccountsViewModel>(ApiEndPoints.CHART_OF_ACCOUNT_VIEW);
+            _coaTable = await serviceSetup.GetAsDatatable();
+
+            if (_coaTable == null || _coaTable.Rows.Count == 0)
+                return;
+
+            // PURCHASE (EXPENSE + ASSET)
+            var purchaseFilter = _coaTable.AsEnumerable()
+                .Where(r =>
+                    r.Field<string>("type") == "EXPENSE" ||
+                    r.Field<string>("type") == "ASSET"
+                );
+
+            DataTable purchaseTable = purchaseFilter.Any()
+                ? purchaseFilter.CopyToDataTable()
+                : _coaTable.Clone();
+
+            cmb_coa_purchase.DataSource = purchaseTable;
+            cmb_coa_purchase.ValueMember = "id";
+            cmb_coa_purchase.DisplayMember = "name";
+            cmb_coa_purchase.SelectedIndex = -1;
+            cmb_coa_purchase.Text = "";
+
+            // SALES (LIABILITY + EQUITY + REVENUE)
+            var salesFilter = _coaTable.AsEnumerable()
+                .Where(r =>
+                    r.Field<string>("type") == "LIABILITY" ||
+                    r.Field<string>("type") == "EQUITY" ||
+                    r.Field<string>("type") == "REVENUE"
+                );
+
+            DataTable salesTable = salesFilter.Any()
+                ? salesFilter.CopyToDataTable()
+                : _coaTable.Clone();
+
+            cmb_coa_sales.DataSource = salesTable;
+            cmb_coa_sales.ValueMember = "id";
+            cmb_coa_sales.DisplayMember = "name";
+            cmb_coa_sales.SelectedIndex = -1;
+            cmb_coa_sales.Text = "";
+        }
+
+        private void LoadSelectedTaxSetup()
+        {
+            if (dgv_tax_code_list.SelectedRows.Count == 0)
+                return;
+
+            if (_taxdata == null || _taxdata.tax_setup == null)
+                return;
+
+            if (!dgv_tax_code_list.Columns.Contains("view_id"))
+                return;
+
+            var selectedRow = dgv_tax_code_list.SelectedRows[0];
+
+            int viewId = Convert.ToInt32(selectedRow.Cells["view_id"].Value);
+
+            var selectedTaxSetup = _taxdata.tax_setup
+                .FirstOrDefault(x => x.id == viewId);
+
+            if (selectedTaxSetup == null)
+                return;
+
+            var taxSetupTable = Helpers.ToDataTable(
+                new List<TaxSetupModel> { selectedTaxSetup }
+            );
+
+            string coaPurchId = taxSetupTable.Rows[0]["coa_purchase_id"]?.ToString();
+            string coaSalesId = taxSetupTable.Rows[0]["coa_sales_id"]?.ToString();
+
+            if (int.TryParse(coaPurchId, out int coaPurchidValue))
+                cmb_coa_purchase.SelectedValue = coaPurchidValue;
+            else
+                cmb_coa_purchase.SelectedIndex = -1;
+
+            if (int.TryParse(coaSalesId, out int coaSalesidValue))
+                cmb_coa_sales.SelectedValue = coaSalesidValue;
+            else
+                cmb_coa_sales.SelectedIndex = -1;
+
+            dgv_tax_details.AutoGenerateColumns = false;
+
+            //Bind child details
+            if (_taxdata?.tax_setup_details != null)
+            {
+                var detailsForCurrent = new BindingList<TaxDetailsModel>(_taxdata.tax_setup_details.Where(d => d.tax_code_id == viewId).ToList());
+
+                dgv_tax_details.DataSource = detailsForCurrent;
+            }
+            else
+            {
+                dgv_tax_details.DataSource = null;
+            }
+
+            Panel[] pnlList = { pnl_content };
+            Helpers.BindControls(pnlList, taxSetupTable, 0);
+        }
+
+        private void dgv_tax_code_list_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore header and invalid clicks
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            LoadSelectedTaxSetup();
+        }
+
+        private void dgv_tax_code_list_SelectionChanged(object sender, EventArgs e)
+        {
+            LoadSelectedTaxSetup();
+        }
+
+        private void dgv_tax_details_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            Helpers.HandleNumericColumns(dgv_tax_details, e, new[] { "tax_rate", "valid_from", "valid_to" }, '/' );
         }
 
         private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            dataBindingTaxList.Filter = $"code LIKE '{txt_search.Text}%' OR tax_desc LIKE '%{txt_search.Text}%'";
+            if (_taxTable == null || _taxTable.Rows.Count == 0)
+                return;
 
+            string searchText = txt_search.Text.Trim();
 
-        }
-
-        private void dgv_tax_code_list_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void btn_next_Click(object sender, EventArgs e)
-        {
-            if (this.tax.Rows.Count - 1 > this.selectedRecords)
+            if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
             {
-                this.selectedRecords++;
-                BindTaxRecords(true);
-
+                dgv_tax_code_list.DataSource = _taxTable;
             }
             else
             {
-                MessageBox.Show("No record found", "SMPC SOFTWARE", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var searchedData = Helpers.FilterDataTable(_taxTable, searchText, "code", "tax_desc", "input_tax_account", "output_tax_account", "tax_rate", "effective_period");
+                dgv_tax_code_list.DataSource = searchedData;
             }
         }
 
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void cmb_coa_sales_KeyDown(object sender, KeyEventArgs e)
         {
-
-        }
-
-        private void btn_prev_Click(object sender, EventArgs e)
-        {
-            if (this.selectedRecords > 0)
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
             {
-                this.selectedRecords--;
-                BindTaxRecords(true);
+                cmb_coa_sales.SelectedIndex = -1;
+                cmb_coa_sales.Text = "";
+                e.Handled = true;
+
+                UpdateCoaComboState();
             }
-            else
+        }
+
+        private void cmb_coa_purchase_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
             {
-                MessageBox.Show("No record found", "SMPC SOFTWARE", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                cmb_coa_purchase.SelectedIndex = -1;
+                cmb_coa_purchase.Text = "";
+                e.Handled = true;
+
+                UpdateCoaComboState();
             }
         }
 
-        private void dgv_tax_details_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void UpdateCoaComboState()
         {
+            bool hasSales = cmb_coa_sales.SelectedIndex != -1 && !string.IsNullOrWhiteSpace(cmb_coa_sales.Text);
+            bool hasPurchase = cmb_coa_purchase.SelectedIndex != -1 && !string.IsNullOrWhiteSpace(cmb_coa_purchase.Text);
 
+            // If sales is selected, disable purchase
+            cmb_coa_purchase.Enabled = !hasSales;
 
+            // If purchase is selected, disable sales
+            cmb_coa_sales.Enabled = !hasPurchase;
         }
 
-        private void dgv_tax_details_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        private void cmb_coa_sales_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
-
-
+            UpdateCoaComboState();
         }
 
-        private void dgv_tax_details_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        private void cmb_coa_purchase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                // Column name or index you want to validate
-                var columnName = dgv_tax_details.Columns[e.ColumnIndex].Name;
-
-                // Only validate specific column
-                if (columnName == "valid_from" || columnName == "valid_to")
-                {
-                    string input = e.FormattedValue?.ToString()?.Trim();
-
-                    // Allow blank input if needed
-                    if (string.IsNullOrEmpty(input))
-                        return;
-
-                    // Try to parse with strict format
-                    if (!DateTime.TryParseExact(input, dateFormat,
-                        System.Globalization.CultureInfo.InvariantCulture,
-                        System.Globalization.DateTimeStyles.None, out _))
-                    {
-                        MessageBox.Show("Invalid date. Please use yyyy-MM-dd.",
-                                        "Date Format Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        e.Cancel = true; // Cancel editing
-                        dgv_tax_details.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ""; // Reset cell
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
-         
-        }
-
-        private void btn_delete_Click(object sender, EventArgs e)
-        {
-
+            UpdateCoaComboState();
         }
     }
-
 }

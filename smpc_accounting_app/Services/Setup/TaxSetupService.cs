@@ -9,9 +9,48 @@ using System.Threading.Tasks;
 
 namespace smpc_accounting_app.Services.Setup
 {
-    class TaxSetupService : ServiceBase<TaxSetup>
+    class TaxSetupService : ServiceBase<TaxList>
     {
         public TaxSetupService() : base(ApiEndPoints.TAX_SETUP) {}
+
+        // CREATE
+        public async Task<object> CreateTaxRecord(TaxSetupPayload payload)
+        {
+            var response = await ApiService<ApiResponseModel<object>>.Post(ApiEndPoints.TAX_SETUP, new Dictionary<string, dynamic>
+                {
+                    { "tax_setup", payload.tax_setup },
+                    { "tax_setup_details", payload.tax_setup_details }
+                }
+            );
+
+            return response.data;
+        }
+
+        // UPDATE
+        public async Task<object> UpdateTaxRecord(TaxSetupPayload payload)
+        {
+            var response = await ApiService<ApiResponseModel<object>>.Put(ApiEndPoints.TAX_SETUP, new Dictionary<string, dynamic>
+                {
+                    { "tax_setup", payload.tax_setup },
+                    { "tax_setup_details", payload.tax_setup_details }
+                }
+            );
+
+            return response.data;
+        }
+
+        // DELETE
+        public async Task<object> DeleteTaxRecord(TaxSetupPayload payload)
+        {
+            var response = await ApiService<ApiResponseModel<object>>.Delete(ApiEndPoints.TAX_SETUP, new Dictionary<string, dynamic>
+                {
+                    { "tax_setup", payload.tax_setup },
+                    { "tax_setup_details", payload.tax_setup_details }
+                }
+            );
+
+            return response.data;
+        }
     }
 
     class TaxClassificationService : ServiceBase<TaxClassification>

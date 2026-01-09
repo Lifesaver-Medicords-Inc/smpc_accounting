@@ -9,241 +9,385 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using smpc_accounting_app.Models;
 
 namespace smpc_accounting_app.Pages.Setup.Financial
 {
     public partial class ChartClassPage : UserControl
     {
         readonly ChartClassService chartClassServices = new ChartClassService();
+        private bool _isNewMode = false;
+        private bool _isEditMode = false;
+        private DataTable _cldata;
+        private string placeHolderText = "Chart Class Search...";
+
         public ChartClassPage()
         {
-            try
-            {
+            InitializeComponent();
 
-                InitializeComponent();
+            Helpers.AllowOnlyNumbers(txt_code, '-');
+            Helpers.Placeholder.SetPlaceholder(txt_search, placeHolderText);
+        }
 
-                bindingSource.DataSource = chartClassServices.GetAsDatatable();
+        private void SetEditMode(bool enable, bool isNewMode = false)
+        {
+            _isNewMode = isNewMode;
+            _isEditMode = !isNewMode && enable;
 
-            }
-            catch (Exception)
-            { 
-                throw; 
-            }
+            // buttons
+            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete" };
+
+            Helpers.SetButtonVisibility(
+                toolStrip1,
+                visibleButtons: enable ? editButtons : navButtons,
+                hiddenButtons: enable ? navButtons : editButtons
+            );
+
+            pnl_content.Enabled = enable;
         }
 
         private void btn_new_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Toggle(true);
-                Helpers.ResetControls(pnl_content);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            SetEditMode(true, isNewMode: true);
+            Helpers.ResetControls(new Panel[] { pnl_content });
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Toggle(false);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            SetEditMode(false);
+            LoadSelectedChartClass();
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Toggle(true);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        private void Toggle(bool isEditable = false)
-        {
-            try
-            {
-                pnl_content.Enabled = isEditable;
-                btn_save.Visible = isEditable;
-                btn_cancel.Visible = isEditable;
-
-                btn_new.Visible = !isEditable;
-                btn_edit.Visible = !isEditable;
-                btn_delete.Visible = !isEditable;
-                btn_print.Visible = !isEditable;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            SetEditMode(true);
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            try
+            dgv_list.EndEdit();
+
+            // Validate required controls in selected panel
+            bool hasError = Helpers.ValidateControlsValues(pnl_content);
+
+            if (hasError)
             {
-                var data = Helpers.GetControlsValues(pnl_content);
+                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                return;
+            }
 
-                if (bindingSource.DataSource is DataTable chartClasses)
+            if (txt_code.Text.Contains("--"))
+            {
+                Helpers.ShowDialogMessage("error", "Code cannot contain consecutive dashes (--).");
+                return;
+            }
+
+            // Must be at least 6 characters
+            if (txt_code.Text.Length < 6)
+            {
+                Helpers.ShowDialogMessage("error", "Code must be at least 6 characters long.");
+                return;
+            }
+
+            // Validate code prefix based on selected type
+            if (cmb_type.SelectedItem != null)
+            {
+                string selectedType = cmb_type.SelectedItem.ToString().ToUpper();
+                string expectedPrefix = "";
+
+                switch (selectedType)
                 {
-                    var list = chartClasses.Copy();
-
-                    //TEMPORARY CODE CONTAINER 
-
-                    Boolean isEmpty = data.TryGetValue("code", out dynamic _code);
-
-                    if (!isEmpty) return;
-
-                    var isCodeExist = list.AsEnumerable().Where(datas => "'" + datas.Field<string>("code").ToString() + "'" == _code).ToList();
-
-                    if (isCodeExist.Count > 0 && String.IsNullOrEmpty(txt_id.Text))
-                    {
-
-                        Helpers.ShowDialogMessage("error", "Code is already exist!");
-
-                        return;
-
-                    }
+                    case "ASSET":
+                        expectedPrefix = "10000";
+                        break;
+                    case "LIABILITY":
+                        expectedPrefix = "20000";
+                        break;
+                    case "EQUITY":
+                        expectedPrefix = "30000";
+                        break;
+                    case "REVENUE":
+                        expectedPrefix = "40000";
+                        break;
+                    case "EXPENSE":
+                        expectedPrefix = "50000";
+                        break;
                 }
 
-                if (String.IsNullOrEmpty(txt_id.Text))
+                if (!string.IsNullOrEmpty(expectedPrefix) && !txt_code.Text.StartsWith(expectedPrefix))
                 {
-                    data.Remove("id");
-                    await chartClassServices.Insert(data);
+                    Helpers.ShowDialogMessage("error", $"Code must start with '{expectedPrefix}' for {selectedType} type.");
+                    return;
+                }
+            }
+
+            int? currentId = null;
+
+            if (!_isNewMode && int.TryParse(txt_id.Text, out int idValue))
+            {
+                currentId = idValue;
+            }
+
+            if (IsDuplicateCode(txt_code.Text.Trim(), currentId))
+            {
+                Helpers.ShowDialogMessage(
+                    "error",
+                    $"Code '{txt_code.Text}' already exists. Please use a unique Chart of Account code."
+                );
+                return;
+            }
+
+            var chartClassPayload = Helpers.BuildModelFromPanels<ChartClassModel>(new Panel[] { pnl_content });
+
+            try
+            {
+                Helpers.Loading.ShowLoading(dgv_list, "Saving data...");
+
+                if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
+                {
+                    var result = await chartClassServices.Insert(chartClassPayload);
+                    Helpers.ShowDialogMessage("success", "Chart Class created successfully.");
                 }
                 else
                 {
-                    data["id"] = int.Parse(data["id"]);
-                    await chartClassServices.Update(data);
+                    if (string.IsNullOrWhiteSpace(txt_id.Text))
+                    {
+                        Helpers.ShowDialogMessage("error", "No Chart Class selected to update.");
+                        return;
+                    }
+
+                    var result = await chartClassServices.Update(chartClassPayload);
+                    Helpers.ShowDialogMessage("success", "Chart Class updated successfully.");
                 }
-
-                await GetAll();
-                Toggle(false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Helpers.ShowDialogMessage("error", $"Failed to save: {ex.Message}");
+            }
+            finally
+            {
+                SetEditMode(false);
+                await GetChartClass();
 
-                throw;
+                Helpers.Loading.HideLoading(dgv_list);
             }
         }
 
         private async void btn_delete_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txt_id.Text))
+            {
+                Helpers.ShowDialogMessage("error", "Please select a Chart Class to delete.");
+                return;
+            }
+
+            var confirm = MessageBox.Show($"Are you sure you want to delete this Chart Class {txt_id.Text}?",
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes) return;
+
             try
             {
-                var data = Helpers.GetControlsValues(pnl_content);
-                data["id"] = int.Parse(data["id"]);
+                Helpers.Loading.ShowLoading(dgv_list, "Deleting data...");
 
-                await chartClassServices.Delete(data);
+                var clModel = new ChartClassModel
+                {
+                    id = int.Parse(txt_id.Text),
+                };
 
-                bindingSource.DataSource = await chartClassServices.GetAsDatatable();
+                await chartClassServices.Delete(clModel);
+
+                Helpers.ShowDialogMessage("success", "Chart Class deleted successfully.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Helpers.ShowDialogMessage("error", $"Failed to delete: {ex.Message}");
             }
+            finally
+            {
+                await GetChartClass();
+
+                Helpers.Loading.HideLoading(dgv_list);
+            }
+        }
+
+        private bool IsDuplicateCode(string code, int? currentId = null)
+        {
+            if (_cldata == null || _cldata.Rows.Count == 0)
+                return false;
+
+            foreach (DataRow row in _cldata.Rows)
+            {
+                string existingCode = row["code"]?.ToString();
+                int existingId = Convert.ToInt32(row["id"]);
+
+                if (string.Equals(existingCode, code, StringComparison.OrdinalIgnoreCase))
+                {
+                    // New record → any match is invalid
+                    if (currentId == null)
+                        return true;
+
+                    // Edit record → allow same record, block others
+                    if (existingId != currentId.Value)
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         private async void ChartClassPage_Load(object sender, EventArgs e)
         {
-
-            //cmb_type.DataSource = Enum.GetValues(typeof(ChartType)); 
-            //cmb_type.ValueMember = "value";
-            //cmb_type.DisplayMember = "title";
-
             try
             {
-                await GetAll();
+                LoadTypes();
+                Helpers.Loading.ShowLoading(dgv_list, "Fetching data...");
+                await GetChartClass();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
-
+            finally
+            {
+                Helpers.Loading.HideLoading(dgv_list);
+            }
         }
 
-        private async Task GetAll()
+        private void LoadTypes()
         {
-            try
-            {
-                bindingSource.DataSource = await chartClassServices.GetAsDatatable();
-            }
-            catch (Exception)
-            {
+            cmb_type.Items.Clear();
 
-                throw;
+            cmb_type.Items.AddRange(new string[]
+            {
+                "ASSET",
+                "LIABILITY",
+                "EQUITY",
+                "REVENUE",
+                "EXPENSE"
+            });
+
+            cmb_type.SelectedIndex = -1; // default (no selection)
+        }
+
+        private async Task GetChartClass()
+        {
+            _cldata = await chartClassServices.GetAsDatatable();
+
+            if (_cldata != null)
+            {
+                dgv_list.AutoGenerateColumns = false;
+
+                dgv_list.DataSource = _cldata;
+            }
+            else
+            {
+                dgv_list.DataSource = null;
+            }
+        }
+
+        private void LoadSelectedChartClass()
+        {
+            if (dgv_list.SelectedRows.Count == 0)
+                return;
+
+            int rowIndex = dgv_list.SelectedRows[0].Index;
+
+            if (_cldata == null || rowIndex < 0 || rowIndex >= _cldata.Rows.Count)
+                return;
+
+            Panel[] pnlList = { pnl_content };
+            DataTable dt = Helpers.ConvertDataGridViewToDataTable(dgv_list);
+
+            // Get type (trim spaces)
+            string type = dt.Rows[rowIndex]["type"]?.ToString()?.Replace(" ", "");
+
+            // Match combo value
+            int index = cmb_type.FindStringExact(type);
+            cmb_type.SelectedIndex = index >= 0 ? index : -1;
+
+            // Bind other controls
+            Helpers.BindControls(pnlList, dt, rowIndex);
+        }
+
+        private void txt_search_TextChanged(object sender, EventArgs e)
+        {
+            if (_cldata == null || _cldata.Rows.Count == 0)
+                return;
+
+            string searchText = txt_search.Text.Trim();
+
+            if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
+            {
+                dgv_list.DataSource = _cldata;
+            }
+            else
+            {
+                var searchedData = Helpers.FilterDataTable(_cldata, searchText, "code", "name", "type");
+                dgv_list.DataSource = searchedData;
             }
         }
 
         private void dgv_list_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                Panel[] pnl = new Panel[1];
-                pnl[0] = pnl_content;
-                DataTable dt = (DataTable)bindingSource.DataSource;
+            // Ignore header and invalid clicks
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
 
-                Helpers.BindControls(pnl, (DataTable)bindingSource.DataSource, e.RowIndex);
-
-                var cmb = dt.Rows[e.RowIndex]["type"].ToString();
-                cmb_type.Text = cmb.Trim();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            //cmb_type.SelectedIndex = e.RowIndex;
-            //cmb_type.SelectedValue = dt.Rows[e.RowIndex]["type"].ToString();
-            //cmb_type.SelectedText = dt.Rows[e.RowIndex]["type"].ToString();
+            LoadSelectedChartClass();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void dgv_list_SelectionChanged(object sender, EventArgs e)
         {
-            try
-            {
-                bindingSource.Filter = $"Name LIKE '{txt_search.Text}%' and Code LIKE '{txt_search.Text}%'";
-            }
-            catch (Exception)
-            {
+            LoadSelectedChartClass();
+        }
 
-                throw;
+        private void cmb_type_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmb_type.SelectedItem == null)
+                return;
+
+            string selected = cmb_type.SelectedItem.ToString().ToUpper();
+
+            switch (selected)
+            {
+                case "ASSET":
+                    txt_code.Text = "10000";
+                    break;
+
+                case "LIABILITY":
+                    txt_code.Text = "20000";
+                    break;
+
+                case "EQUITY":
+                    txt_code.Text = "30000";
+                    break;
+
+                case "REVENUE":
+                    txt_code.Text = "40000";
+                    break;
+
+                case "EXPENSE":
+                    txt_code.Text = "50000";
+                    break;
+
+                default:
+                    txt_code.Text = "";
+                    break;
             }
         }
 
-        private void dgv_list_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void cmb_type_KeyDown(object sender, KeyEventArgs e)
         {
-
-        }
-
-        private void dgv_list_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            try
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
             {
-                Panel[] pnl = new Panel[1];
-                pnl[0] = pnl_content;
-                DataTable dt = (DataTable)bindingSource.DataSource;
+                cmb_type.SelectedIndex = -1;
+                cmb_type.Text = "";
+                e.Handled = true;
+
+                txt_code.Text = "";
             }
-            catch (Exception)
-            {
-
-                throw;
-            } 
         }
     }
 }

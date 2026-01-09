@@ -92,24 +92,33 @@
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\ChartOfAccount.cs" />
     <Compile Include="Models\ChartGroup.cs" />
-    <Compile Include="Models\ChartClass.cs" />
-    <Compile Include="Models\ChartOfAccounts.cs" />
+    <Compile Include="Models\ChartClassModel.cs" />
+    <Compile Include="Models\ChartOfAccountsModel.cs" />
+    <Compile Include="Models\CompanySetupModel.cs" />
     <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\CurrentUserModel.cs" />
     <Compile Include="Models\GeneralLedgerMapper.cs" />
     <Compile Include="Models\GeneralSetup.cs" />
+    <Compile Include="Models\JournalEntryModel.cs" />
     <Compile Include="Models\SalesInvoice.cs" />
     <Compile Include="Models\SaleInvoiceList.cs" />
     <Compile Include="Models\SalesInvoiceDetails.cs" />
     <Compile Include="Models\SalesOrderDR.cs" />
     <Compile Include="Models\SalesOrderList.cs" />
     <Compile Include="Models\Taxation.cs" />
-    <Compile Include="Models\TaxSetup.cs" />
+    <Compile Include="Models\TaxSetupModel.cs" />
     <Compile Include="Models\TaxSetupList.cs" />
     <Compile Include="Pages\Components\GetBpiModal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\Components\GetBpiModal.Designer.cs">
       <DependentUpon>GetBpiModal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Components\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Components\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Components\SearchModal.cs">
       <SubType>Form</SubType>
@@ -201,6 +210,12 @@
     <Compile Include="Pages\Transactions\Journal\DebitMemo.Designer.cs">
       <DependentUpon>DebitMemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Transactions\Journal\JournalEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\Journal\JournalEntry.Designer.cs">
+      <DependentUpon>JournalEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Transactions\Journal\JournalVoucher.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,16 +223,19 @@
       <DependentUpon>JournalVoucher.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Accounting\SalesInvoiceService.cs" />
+    <Compile Include="Services\GeneralService.cs" />
     <Compile Include="Services\GeneralSetupService.cs" />
     <Compile Include="Services\Helpers\ApiService.cs" />
     <Compile Include="Services\Sales\SalesOrderServices.cs" />
     <Compile Include="Services\ServiceBase.cs" />
+    <Compile Include="Services\Setup\AuthServices.cs" />
     <Compile Include="Services\Setup\ChartOfAccountsService.cs" />
     <Compile Include="Services\Setup\GeneralLedgerMapperService.cs" />
     <Compile Include="Services\Setup\ExpandedTaxService.cs" />
     <Compile Include="Services\Setup\CurrencyService.cs" />
     <Compile Include="Services\Setup\BookService.cs" />
     <Compile Include="Services\Setup\TaxSetupService.cs" />
+    <Compile Include="Services\Transactions\JournalEntryService.cs" />
     <Compile Include="Shared\ApiEndPoints.cs" />
     <Compile Include="Shared\CacheData.cs" />
     <Compile Include="Shared\ChartType.cs" />
@@ -288,6 +306,9 @@
     <EmbeddedResource Include="Pages\Components\GetBpiModal.resx">
       <DependentUpon>GetBpiModal.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Components\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Components\SearchModal.resx">
       <DependentUpon>SearchModal.cs</DependentUpon>
     </EmbeddedResource>
@@ -353,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\Journal\DebitMemo.resx">
       <DependentUpon>DebitMemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry.resx">
+      <DependentUpon>JournalEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\Journal\JournalVoucher.resx">
       <DependentUpon>JournalVoucher.cs</DependentUpon>

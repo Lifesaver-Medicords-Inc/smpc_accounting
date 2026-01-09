@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace smpc_accounting_app.Services.Setup
 {
-    class ChartOfAccountsService : ServiceBase<ChartOfAccounts>
+    class ChartOfAccountsService : ServiceBase<ChartOfAccountsModel>
     {
 
         public ChartOfAccountsService() : base(ApiEndPoints.CHART_OF_ACCOUNT_SETUP) { }
 
 
-        public async Task <List<ChartOfAccounts>> GetChartOfAccountsClassfication(string code)
+        public async Task <List<ChartOfAccountsModel>> GetChartOfAccountsClassfication(string code)
         {
-            var response = await ApiService<ApiResponseModel<List<ChartOfAccounts>>>.Get(ApiEndPoints.CHART_OF_ACCOUNT_CLASSIFCATION_SETUP + code);
+            var response = await ApiService<ApiResponseModel<List<ChartOfAccountsModel>>>.Get(ApiEndPoints.CHART_OF_ACCOUNT_CLASSIFCATION_SETUP + code);
 
             return response.data;
         }

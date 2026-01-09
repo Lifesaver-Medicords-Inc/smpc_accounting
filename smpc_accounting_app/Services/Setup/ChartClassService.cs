@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace smpc_accounting_app.Services.Setup
 {   
-    class ChartClassService : ServiceBase<ChartClass>
+    class ChartClassService : ServiceBase<ChartClassModel>
     {
         public ChartClassService() : base(ApiEndPoints.CHART_CLASS_SETUP) { }
     }
