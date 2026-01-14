@@ -19,6 +19,41 @@ namespace smpc_accounting_app.Services.Helpers
 {
     public static class Helpers
     {
+        public static TextBox CreateSearchBox(string placeholderText, EventHandler onTextChanged)
+        {
+            TextBox txtSearch = new TextBox
+            {
+                Name = "txt_search",
+                Dock = DockStyle.Top,
+                ForeColor = Color.Gray,
+                Text = placeholderText
+            };
+
+            // Event handlers
+            txtSearch.Enter += (s, e) =>
+            {
+                if (txtSearch.Text == placeholderText)
+                {
+                    txtSearch.Text = "";
+                    txtSearch.ForeColor = Color.Black;
+                }
+            };
+
+            txtSearch.Leave += (s, e) =>
+            {
+                if (string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    txtSearch.Text = placeholderText;
+                    txtSearch.ForeColor = Color.Gray;
+                }
+            };
+
+            if (onTextChanged != null)
+                txtSearch.TextChanged += onTextChanged;
+
+            return txtSearch;
+        }
+
         public static void SetChildControlsEnabled(Control[] parents, bool enable, string[] excludeNames)
         {
             foreach (Control parent in parents)

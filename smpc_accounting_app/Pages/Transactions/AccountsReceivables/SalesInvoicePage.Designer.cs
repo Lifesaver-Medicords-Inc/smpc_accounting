@@ -1,7 +1,7 @@
 ﻿
-namespace smpc_accounting_app.Pages
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
 {
-    partial class SalesInvoice
+    partial class SalesInvoicePage
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,8 +30,8 @@ namespace smpc_accounting_app.Pages
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesInvoice));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesInvoicePage));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();
             this.btn_search = new System.Windows.Forms.ToolStripButton();
@@ -39,11 +39,11 @@ namespace smpc_accounting_app.Pages
             this.btn_next = new System.Windows.Forms.ToolStripButton();
             this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
-            this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.txt_doc_no = new System.Windows.Forms.TextBox();
             this.pnl_header = new System.Windows.Forms.Panel();
+            this.txt_tax_account_id = new System.Windows.Forms.TextBox();
             this.dtp_posting_date = new System.Windows.Forms.DateTimePicker();
             this.txt_posting_datess = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -136,7 +136,7 @@ namespace smpc_accounting_app.Pages
             this.txt_total_amount_due = new System.Windows.Forms.TextBox();
             this.txt_total_amount_due_label = new System.Windows.Forms.Label();
             this.pnl_footer = new System.Windows.Forms.Panel();
-            this.txt_tax_account_id = new System.Windows.Forms.TextBox();
+            this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.panel6.SuspendLayout();
             this.pnl_header.SuspendLayout();
@@ -154,10 +154,10 @@ namespace smpc_accounting_app.Pages
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btn_new,
             this.btn_search,
-            this.btn_prev,
             this.btn_next,
             this.btn_print,
             this.btn_save,
+            this.btn_prev,
             this.btn_cancel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 47);
             this.toolStrip1.Name = "toolStrip1";
@@ -186,6 +186,7 @@ namespace smpc_accounting_app.Pages
             // 
             // btn_prev
             // 
+            this.btn_prev.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.btn_prev.Image = ((System.Drawing.Image)(resources.GetObject("btn_prev.Image")));
             this.btn_prev.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_prev.Name = "btn_prev";
@@ -195,11 +196,13 @@ namespace smpc_accounting_app.Pages
             // 
             // btn_next
             // 
+            this.btn_next.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.btn_next.Image = ((System.Drawing.Image)(resources.GetObject("btn_next.Image")));
             this.btn_next.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_next.Name = "btn_next";
             this.btn_next.Size = new System.Drawing.Size(52, 22);
             this.btn_next.Text = "Next";
+            this.btn_next.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btn_next.Click += new System.EventHandler(this.btn_next_Click);
             // 
             // btn_print
@@ -219,16 +222,6 @@ namespace smpc_accounting_app.Pages
             this.btn_save.Text = "Save";
             this.btn_save.Visible = false;
             this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
-            // 
-            // btn_cancel
-            // 
-            this.btn_cancel.Image = ((System.Drawing.Image)(resources.GetObject("btn_cancel.Image")));
-            this.btn_cancel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(63, 22);
-            this.btn_cancel.Text = "Cancel";
-            this.btn_cancel.Visible = false;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // panel6
             // 
@@ -307,6 +300,13 @@ namespace smpc_accounting_app.Pages
             this.pnl_header.Name = "pnl_header";
             this.pnl_header.Size = new System.Drawing.Size(1121, 193);
             this.pnl_header.TabIndex = 81;
+            // 
+            // txt_tax_account_id
+            // 
+            this.txt_tax_account_id.Location = new System.Drawing.Point(312, 101);
+            this.txt_tax_account_id.Name = "txt_tax_account_id";
+            this.txt_tax_account_id.Size = new System.Drawing.Size(26, 20);
+            this.txt_tax_account_id.TabIndex = 306;
             // 
             // dtp_posting_date
             // 
@@ -753,8 +753,8 @@ namespace smpc_accounting_app.Pages
             // 
             this.discount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.discount.DataPropertyName = "discount";
-            dataGridViewCellStyle1.NullValue = null;
-            this.discount.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.NullValue = null;
+            this.discount.DefaultCellStyle = dataGridViewCellStyle2;
             this.discount.HeaderText = "DISCOUNT";
             this.discount.Name = "discount";
             this.discount.ReadOnly = true;
@@ -1124,14 +1124,17 @@ namespace smpc_accounting_app.Pages
             this.pnl_footer.TabIndex = 83;
             this.pnl_footer.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_footer_Paint);
             // 
-            // txt_tax_account_id
+            // btn_cancel
             // 
-            this.txt_tax_account_id.Location = new System.Drawing.Point(312, 101);
-            this.txt_tax_account_id.Name = "txt_tax_account_id";
-            this.txt_tax_account_id.Size = new System.Drawing.Size(26, 20);
-            this.txt_tax_account_id.TabIndex = 306;
+            this.btn_cancel.Image = ((System.Drawing.Image)(resources.GetObject("btn_cancel.Image")));
+            this.btn_cancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(63, 22);
+            this.btn_cancel.Text = "Cancel";
+            this.btn_cancel.Visible = false;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // SalesInvoice
+            // SalesInvoicePage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1140,7 +1143,7 @@ namespace smpc_accounting_app.Pages
             this.Controls.Add(this.pnl_header);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.panel6);
-            this.Name = "SalesInvoice";
+            this.Name = "SalesInvoicePage";
             this.Size = new System.Drawing.Size(1121, 1082);
             this.Load += new System.EventHandler(this.SalesInvoice_Load);
             this.toolStrip1.ResumeLayout(false);
@@ -1216,7 +1219,6 @@ namespace smpc_accounting_app.Pages
         private System.Data.DataColumn dataColumn6;
         private System.Data.DataColumn dataColumn7;
         private System.Windows.Forms.ToolStripButton btn_save;
-        private System.Windows.Forms.ToolStripButton btn_cancel;
         private System.Data.DataColumn dataColumn8;
         private System.Data.DataColumn dataColumn9;
         private System.Data.DataColumn dataColumn10;
@@ -1268,5 +1270,6 @@ namespace smpc_accounting_app.Pages
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.DateTimePicker dtp_posting_date;
         private System.Windows.Forms.TextBox txt_tax_account_id;
+        private System.Windows.Forms.ToolStripButton btn_cancel;
     }
 }

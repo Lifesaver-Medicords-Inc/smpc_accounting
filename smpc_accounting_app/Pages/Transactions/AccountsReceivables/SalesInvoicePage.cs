@@ -16,10 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace smpc_accounting_app.Pages
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
 {
    
-    public partial class SalesInvoice : UserControl
+    public partial class SalesInvoicePage : UserControl
     {
         readonly SalesOrderServices salesOrderServices = new SalesOrderServices();
         readonly ChartOfAccountsService chartOfAccountsServices = new ChartOfAccountsService();
@@ -34,7 +34,7 @@ namespace smpc_accounting_app.Pages
         SaleInvoiceList records;
         int salesInvoiceDocNo;
         int selectedRecords = 0;
-        public SalesInvoice()
+        public SalesInvoicePage()
         {
             InitializeComponent();
             dg_sales_invoice.CellPainting += dg_sales_invoice_CellPainting;

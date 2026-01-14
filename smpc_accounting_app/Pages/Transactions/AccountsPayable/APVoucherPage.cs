@@ -10,19 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace smpc_accounting_app.Pages.Transactions
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable
 {
-    public partial class APVoucher : UserControl
+    public partial class APVoucherPage : UserControl
     {
-        public APVoucher()
+        public APVoucherPage()
         {
             InitializeComponent();   
-        }
-
-        private void btn_supplier_Click(object sender, EventArgs e)
-        {
-            GetBpiModal modal = new GetBpiModal().GetModalName("List of Suppliers");
-            modal.ShowDialog();
         }
     }
 }

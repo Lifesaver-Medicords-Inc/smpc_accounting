@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace smpc_accounting_app.Pages.Transactions
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable
 {
-    public partial class PaymentVoucher : UserControl
+    public partial class PaymentVoucherPage : UserControl
     {
-        public PaymentVoucher()
+        public PaymentVoucherPage()
         {
             InitializeComponent();
         }

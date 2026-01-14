@@ -13,10 +13,11 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using System.Globalization;
 using smpc_accounting_app.Shared;
+using smpc_accounting_app.Pages.Transactions.Journal.JournalEntry;
 
 namespace smpc_accounting_app.Pages.Transactions.Journal
 {
-    public partial class JournalEntry : UserControl
+    public partial class JournalEntryPage : UserControl
     {
         JournalEntryService journalEntryService = new JournalEntryService();
         GeneralService<ChartOfAccountsModel> serviceSetup;
@@ -34,7 +35,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private bool _isNewMode = false;
         private bool _isEditMode = false;
 
-        public JournalEntry()
+        public JournalEntryPage()
         {
             InitializeComponent();
 
@@ -62,7 +63,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
             // buttons
             string[] editButtons = { "btn_save", "btn_cancel" };
-            string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev" };
+            string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
@@ -130,6 +131,34 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             {
                 _currentJEIndex = _previousJEIndex;
                 await LoadJournalEntries();
+            }
+        }
+
+        private async void btn_search_Click(object sender, EventArgs e)
+        {
+            if (_journalEntries == null || _journalEntries.Count == 0)
+            {
+                await LoadJournalEntries();
+            }
+
+            using (var searchForm = new JournalEntrySearch())
+            {
+                if (searchForm.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(searchForm.SelectedJEId))
+                {
+                    if (int.TryParse(searchForm.SelectedJEId, out int selectedId))
+                    {
+                        int index = _journalEntries.FindIndex(r => r.id == selectedId);
+                        if (index >= 0)
+                        {
+                            _currentJEIndex = index;
+                            await LoadJournalEntries();
+                        }
+                    }
+                    else
+                    {
+                        Helpers.ShowDialogMessage("error", "Invalid record ID selected.");
+                    }
+                }
             }
         }
 
@@ -327,12 +356,12 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 if (_isNewMode)
                 {
                     var result = await journalEntryService.CreateJERecord(jePayload);
-                    Helpers.ShowDialogMessage("success", "Item Request created successfully.");
+                    Helpers.ShowDialogMessage("success", "Journal Entry created successfully.");
                 }
                 else
                 {
                     var result = await journalEntryService.UpdateJERecord(jePayload);
-                    Helpers.ShowDialogMessage("success", "Item Request updated successfully.");
+                    Helpers.ShowDialogMessage("success", "Journal Entry updated successfully.");
                 }
             }
             catch (Exception ex)

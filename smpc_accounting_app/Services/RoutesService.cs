@@ -4,12 +4,16 @@ using smpc_accounting_app.Pages.Setup.Others;
 using smpc_accounting_app.Pages.Setup.Tax;
 using smpc_accounting_app.Pages.Transactions;
 using smpc_accounting_app.Pages.Transactions.Journal;
+using smpc_accounting_app.Pages.Transactions.Journal.JournalEntry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt;
+using smpc_accounting_app.Pages.Transactions.AccountsReceivables;
 
 namespace smpc_accounting_app.Services
 {
@@ -26,23 +30,28 @@ namespace smpc_accounting_app.Services
             { "Book Setup", new BookPage() },
             { "Currency Setup", new CurrencyPage() },
             { "Expanded Tax Setup", new ExpandedTaxPage() },
-            { "GL Mapper Setup", new GeneralLedgerMapperPage() },
-            { "Invoice Receipt", new InvoiceReceipt() },
+            { "GL Mapper Setup", new GeneralLedgerMapperPage() },        
             {"Chart Account Setup", new ChartOfAccounts() },
+            { "Input Vat Setup", new InputVatPage() },
 
 
             //========================================================================
             // TRANSACTIONS   
             {"Journal Voucher", new JournalVoucher() },
-            {"Journal Entry", new JournalEntry() },
+            {"Journal Entry", new JournalEntryPage() },
             {"Credit Memo", new CreditMemo() },
             {"Debit Memo", new DebitMemo() },
              
             //========================================================================
-            // TRANSACTIONS 
-            //{ "AP Voucher", new APVoucher() },
-            {"Sales Invoice", new SalesInvoice()},
-            { "Input Vat Setup", new InputVatPage() }, 
+            // ACCOUNTS PAYABLES
+            { "Payment Voucher", new PaymentVoucherPage() },
+            { "AP Voucher", new APVoucherPage() },
+            { "Invoice Receipt", new InvoiceReceiptPage() },
+            { "Bulk Invoice Receipt", new BulkInvoiceReceiptPage() },
+
+            //========================================================================
+            // ACCOUNTS RECEIVABLES
+            {"Sales Invoice", new SalesInvoicePage()},
         };
 
         private string _selectedRoute;

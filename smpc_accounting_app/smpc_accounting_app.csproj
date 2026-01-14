@@ -99,6 +99,7 @@
     <Compile Include="Models\CurrentUserModel.cs" />
     <Compile Include="Models\GeneralLedgerMapper.cs" />
     <Compile Include="Models\GeneralSetup.cs" />
+    <Compile Include="Models\InvoiceReceiptModel.cs" />
     <Compile Include="Models\JournalEntryModel.cs" />
     <Compile Include="Models\SalesInvoice.cs" />
     <Compile Include="Models\SaleInvoiceList.cs" />
@@ -198,6 +199,30 @@
     <Compile Include="Pages\Setup\Tax\OutputVatPage.Designer.cs">
       <DependentUpon>OutputVatPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceiptPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceiptPage.Designer.cs">
+      <DependentUpon>BulkInvoiceReceiptPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearch.Designer.cs">
+      <DependentUpon>InvoiceSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchSupplier.Designer.cs">
+      <DependentUpon>InvoiceSearchSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.Designer.cs">
+      <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Transactions\Journal\CreditMemo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -210,11 +235,17 @@
     <Compile Include="Pages\Transactions\Journal\DebitMemo.Designer.cs">
       <DependentUpon>DebitMemo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\Journal\JournalEntry.cs">
+    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\Journal\JournalEntry.Designer.cs">
-      <DependentUpon>JournalEntry.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryPage.Designer.cs">
+      <DependentUpon>JournalEntryPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntrySearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntrySearch.Designer.cs">
+      <DependentUpon>JournalEntrySearch.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\Journal\JournalVoucher.cs">
       <SubType>UserControl</SubType>
@@ -235,6 +266,7 @@
     <Compile Include="Services\Setup\CurrencyService.cs" />
     <Compile Include="Services\Setup\BookService.cs" />
     <Compile Include="Services\Setup\TaxSetupService.cs" />
+    <Compile Include="Services\Transactions\InvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
     <Compile Include="Shared\ApiEndPoints.cs" />
     <Compile Include="Shared\CacheData.cs" />
@@ -257,17 +289,17 @@
     <Compile Include="Pages\Setup\Financial\ChartGroupPage.Designer.cs">
       <DependentUpon>ChartGroupPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucherPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher.Designer.cs">
-      <DependentUpon>APVoucher.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucherPage.Designer.cs">
+      <DependentUpon>APVoucherPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt.Designer.cs">
-      <DependentUpon>InvoiceReceipt.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.Designer.cs">
+      <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\PaymentReceipt.cs">
       <SubType>UserControl</SubType>
@@ -275,17 +307,17 @@
     <Compile Include="Pages\Transactions\AccountsPayable\PaymentReceipt.Designer.cs">
       <DependentUpon>PaymentReceipt.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher.Designer.cs">
-      <DependentUpon>PaymentVoucher.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.Designer.cs">
+      <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\SalesInvoice.cs">
+    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\SalesInvoice.Designer.cs">
-      <DependentUpon>SalesInvoice.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.Designer.cs">
+      <DependentUpon>SalesInvoicePage.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -354,20 +386,29 @@
     <EmbeddedResource Include="Pages\Setup\Tax\OutputVatPage.resx">
       <DependentUpon>OutputVatPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucher.resx">
-      <DependentUpon>APVoucher.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucherPage.resx">
+      <DependentUpon>APVoucherPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt.resx">
-      <DependentUpon>InvoiceReceipt.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceiptPage.resx">
+      <DependentUpon>BulkInvoiceReceiptPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearch.resx">
+      <DependentUpon>InvoiceSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.resx">
+      <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentReceipt.resx">
       <DependentUpon>PaymentReceipt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher.resx">
-      <DependentUpon>PaymentVoucher.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.resx">
+      <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\SalesInvoice.resx">
-      <DependentUpon>SalesInvoice.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.resx">
+      <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.resx">
+      <DependentUpon>SalesInvoicePage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\Journal\CreditMemo.resx">
       <DependentUpon>CreditMemo.cs</DependentUpon>
@@ -375,8 +416,11 @@
     <EmbeddedResource Include="Pages\Transactions\Journal\DebitMemo.resx">
       <DependentUpon>DebitMemo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry.resx">
-      <DependentUpon>JournalEntry.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry\JournalEntryPage.resx">
+      <DependentUpon>JournalEntryPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry\JournalEntrySearch.resx">
+      <DependentUpon>JournalEntrySearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\Journal\JournalVoucher.resx">
       <DependentUpon>JournalVoucher.cs</DependentUpon>
