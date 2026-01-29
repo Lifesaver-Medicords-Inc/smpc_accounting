@@ -7,14 +7,124 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using smpc_accounting_app.Services;
+using smpc_accounting_app.Models;
+using smpc_accounting_app.Services.Helpers;
+using smpc_accounting_app.Shared;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals
 {
     public partial class InvoiceSearchSupplier : Form
     {
+        public DataTable SelectedSupplier { get; private set; } = null;
+        private string placeHolderText = "Supplier Search...";
+        GeneralService<SupplierTradeViewModel> serviceSetup;
+        private DataTable supplierTable;
+
         public InvoiceSearchSupplier()
         {
             InitializeComponent();
+
+            // Center the modal relative to its parent form
+            this.StartPosition = FormStartPosition.CenterParent;
+
+            dgv_suplier_search.AutoGenerateColumns = false;
+            InitializeSearchBox();
+        }
+
+        private void InitializeSearchBox()
+        {
+            txt_search = Helpers.CreateSearchBox(placeHolderText, txt_search_TextChanged);
+            this.Controls.Add(txt_search);
+        }
+
+        private void txt_search_TextChanged(object sender, EventArgs e)
+        {
+            if (supplierTable == null || supplierTable.Rows.Count == 0)
+                return;
+
+            string searchText = txt_search.Text.Trim();
+
+            if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
+            {
+                dgv_suplier_search.DataSource = supplierTable;
+            }
+            else
+            {
+                var searchedData = Helpers.FilterDataTable(supplierTable, searchText, 
+                    "supplier_code", "supplier", "invoice_type", "payment_term", "type");
+                dgv_suplier_search.DataSource = searchedData;
+            }
+        }
+
+        private async void InvoiceSearchSupplier_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                Helpers.Loading.ShowLoading(dgv_suplier_search, "Fetching data...");
+                await LoadSupplier();
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(dgv_suplier_search);
+            }
+        }
+
+        private async Task LoadSupplier()
+        {
+            serviceSetup = new GeneralService<SupplierTradeViewModel>(ApiEndPoints.INVOICE_RECEIPT_SUPPLIER);
+            var data = await serviceSetup.GetAsDatatable();
+
+            supplierTable = data;
+
+            if (supplierTable?.Rows.Count > 0)
+            {
+                dgv_suplier_search.DataSource = supplierTable;
+            }
+            else
+            {
+                dgv_suplier_search.DataSource = null;
+                Helpers.ShowDialogMessage("info", "No supplier found.");
+            }
+        }
+
+        private void dgv_suplier_search_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            var row = dgv_suplier_search.Rows[e.RowIndex];
+
+            // Create a new DataTable
+            DataTable selectedTable = new DataTable();
+
+            // Create columns based on DataGridView columns
+            foreach (DataGridViewColumn col in dgv_suplier_search.Columns)
+            {
+                selectedTable.Columns.Add(col.DataPropertyName ?? col.Name);
+            }
+
+            // Create new row
+            DataRow dataRow = selectedTable.NewRow();
+
+            // Copy values from the selected DataGridView row
+            foreach (DataGridViewColumn col in dgv_suplier_search.Columns)
+            {
+                string columnName = col.DataPropertyName ?? col.Name;
+                dataRow[columnName] = row.Cells[col.Index].Value ?? DBNull.Value;
+            }
+
+            selectedTable.Rows.Add(dataRow);
+
+            // Assign to property
+            SelectedSupplier = selectedTable;
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace smpc_accounting_app.Pages.Setup.Financial
 {
-    partial class ChartOfAccounts
+    partial class ChartOfAccountsPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartOfAccounts));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartOfAccountsPage));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();

@@ -14,11 +14,149 @@ using System.IO;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Globalization;
 
 namespace smpc_accounting_app.Services.Helpers
 {
     public static class Helpers
     {
+        public static class DataGridViewFormatter
+        {
+            public static void DataGridViewDecimalFormat(
+                DataGridView dgv,
+                IEnumerable<string> columnNames)
+            {
+                if (dgv == null) return;
+
+                var cols = columnNames.ToArray();
+
+                // store target columns
+                dgv.Tag = cols;
+
+                dgv.DataBindingComplete -= Dgv_DataBindingComplete;
+                dgv.DataBindingComplete += Dgv_DataBindingComplete;
+
+                dgv.CellValueChanged -= Dgv_CellValueChanged;
+                dgv.CellValueChanged += Dgv_CellValueChanged;
+
+                dgv.CurrentCellDirtyStateChanged -= Dgv_CurrentCellDirtyStateChanged;
+                dgv.CurrentCellDirtyStateChanged += Dgv_CurrentCellDirtyStateChanged;
+            }
+
+            //FORMATS AFTER DATASOURCE BINDING
+            private static void Dgv_DataBindingComplete(
+                object sender,
+                DataGridViewBindingCompleteEventArgs e)
+            {
+                var dgv = sender as DataGridView;
+                if (dgv == null) return;
+
+                var cols = dgv.Tag as string[];
+                if (cols == null) return;
+
+                foreach (string colName in cols)
+                {
+                    if (!dgv.Columns.Contains(colName)) continue;
+
+                    dgv.Columns[colName].DefaultCellStyle.Format = "N2";
+                    dgv.Columns[colName].DefaultCellStyle.Alignment =
+                        DataGridViewContentAlignment.MiddleRight;
+                }
+            }
+
+            //COMMIT EDIT ONLY AFTER USER FINISHES
+            private static void Dgv_CurrentCellDirtyStateChanged(
+                object sender, EventArgs e)
+            {
+                var dgv = sender as DataGridView;
+                if (dgv == null) return;
+
+                if (dgv.IsCurrentCellDirty)
+                {
+                    dgv.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                }
+            }
+
+            //FORMAT VALUE AFTER EDIT (NOT WHILE TYPING)
+            private static void Dgv_CellValueChanged(
+                object sender, DataGridViewCellEventArgs e)
+            {
+                var dgv = sender as DataGridView;
+                if (dgv == null || e.RowIndex < 0 || e.ColumnIndex < 0)
+                    return;
+
+                var cols = dgv.Tag as string[];
+                if (cols == null) return;
+
+                var columnName = dgv.Columns[e.ColumnIndex].Name;
+                if (!cols.Contains(columnName)) return;
+
+                var cell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Value == null) return;
+
+                if (decimal.TryParse(
+                    cell.Value.ToString(),
+                    NumberStyles.Any,
+                    CultureInfo.InvariantCulture,
+                    out decimal value))
+                {
+                    cell.Value = value; // formatting handled by DefaultCellStyle
+                }
+            }
+        }
+
+        public static class TextboxFormatter
+        {
+            public static void TextboxDecimalFormat(IEnumerable<TextBox> textBoxes)
+            {
+                foreach (var txt in textBoxes)
+                {
+                    txt.TextChanged -= TextBox_TextChanged;
+                    txt.TextChanged += TextBox_TextChanged;
+                }
+            }
+
+            private static void TextBox_TextChanged(object sender, EventArgs e)
+            {
+                TextBox txt = sender as TextBox;
+                if (txt == null)
+                    return;
+
+                // If the user is typing (has focus), skip formatting
+                if (txt.Focused)
+                    return;
+
+                if (string.IsNullOrWhiteSpace(txt.Text))
+                    return;
+
+                decimal value;
+                if (decimal.TryParse(txt.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out value))
+                {
+                    txt.TextChanged -= TextBox_TextChanged; // prevent recursion
+                    txt.Text = value.ToString("0.00");
+                    txt.TextChanged += TextBox_TextChanged;
+                }
+            }
+        }
+
+        public static void AddEmbeddedControl(this ListView lv, Control c, int col, int row)
+        {
+            Rectangle r = lv.GetSubItemBounds(row, col);
+            c.Bounds = r;
+            lv.Controls.Add(c);
+        }
+
+        public static Rectangle GetSubItemBounds(this ListView lv, int row, int col)
+        {
+            Rectangle r = lv.Items[row].Bounds;
+            int left = r.Left;
+
+            for (int i = 0; i < col; i++)
+                left += lv.Columns[i].Width;
+
+            return new Rectangle(left, r.Top, lv.Columns[col].Width, r.Height);
+        }
+
         public static TextBox CreateSearchBox(string placeholderText, EventHandler onTextChanged)
         {
             TextBox txtSearch = new TextBox
@@ -225,6 +363,50 @@ namespace smpc_accounting_app.Services.Helpers
                         SendMessage(textBox.Handle, EM_SETCUEBANNER, 0, placeholder);
                     };
                 }
+            }
+        }
+
+        public static class NumericTextBox
+        {
+            public static void HandleNumericTextBox(TextBox textBox, params char[] extraAllowedChars)
+            {
+                if (textBox == null) return;
+
+                // Detach first to avoid duplicate handlers
+                textBox.KeyPress -= NumericTextBox_KeyPress;
+
+                // Store allowed chars in Tag
+                textBox.Tag = extraAllowedChars;
+
+                textBox.KeyPress += NumericTextBox_KeyPress;
+            }
+
+            private static void NumericTextBox_KeyPress(object sender, KeyPressEventArgs e)
+            {
+                var tb = sender as TextBox;
+                if (tb == null) return;
+
+                var extraAllowedChars = tb.Tag as char[];
+
+                // Allow control keys (Backspace, Delete, etc.)
+                if (char.IsControl(e.KeyChar))
+                    return;
+
+                // Allow digits
+                if (char.IsDigit(e.KeyChar))
+                    return;
+
+                // Allow decimal point (only once)
+                if (e.KeyChar == '.' && !tb.Text.Contains('.'))
+                    return;
+
+                // Allow extra characters
+                if (extraAllowedChars != null &&
+                    extraAllowedChars.Contains(e.KeyChar))
+                    return;
+
+                // Block everything else
+                e.Handled = true;
             }
         }
 
@@ -605,6 +787,15 @@ namespace smpc_accounting_app.Services.Helpers
                     // Reset the TextBox's text
                     textBox.Text = "";
                 }
+                else if (control is ComboBox combobox)
+                {
+                    combobox.SelectedIndex = -1;
+                }
+                // Reset DateTimePicker to current date
+                else if (control is DateTimePicker datePicker)
+                {
+                    datePicker.Value = DateTime.Now;   // or DateTime.Today
+                }
             }
         }
 
@@ -909,8 +1100,6 @@ namespace smpc_accounting_app.Services.Helpers
                 {
                     foreach (Control control in pnl.Controls)
                     {
-
-
                         if (control.Name.Contains(col_name.ToString()))
                         {
                             string column_name = col_name.ToString();

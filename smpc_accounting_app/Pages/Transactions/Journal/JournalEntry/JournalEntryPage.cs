@@ -40,6 +40,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             InitializeComponent();
 
             Helpers.Placeholder.SetPlaceholder(txt_search, placeHolderText);
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_journal_entry, new[] { "debit", "credit" });
         }
 
         private void SetEditableColumns(bool isEdit)
@@ -57,6 +58,9 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         {
             _isNewMode = isNewMode;
             _isEditMode = !isNewMode && enable;
+
+            txt_search.Visible = !enable;
+            lbl_search.Visible = !enable;
 
             SetEditableColumns(enable);
             dgv_journal_entry.AllowUserToAddRows = enable;
@@ -342,6 +346,11 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             journalEntryParent.currency = _companySetup.currency_code;
             journalEntryParent.period = _companySetup.start_fiscal_date + " to " + _companySetup.end_fiscal_date;
 
+            if (!ValidatePeriodOverlap(journalEntryParent))
+            {
+                return;
+            }
+
             // Wrap everything into Journal Entry Payload
             var jePayload = new JournalEntryPayload
             {
@@ -438,6 +447,81 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             }
         }
 
+        private bool ValidatePeriodOverlap(JournalEntryModel currentEntry)
+        {
+            if (_journalEntries == null || !_journalEntries.Any())
+                return true;
+
+            // Parse current entry period
+            if (!TryParsePeriod(currentEntry.period, out DateTime currentStart, out DateTime currentEnd))
+            {
+                Helpers.ShowDialogMessage("error", "Invalid period format in current Journal Entry.");
+                return false;
+            }
+
+            foreach (var existing in _journalEntries)
+            {
+                // Skip same record when editing
+                if (!_isNewMode && existing.id == currentEntry.id)
+                    continue;
+
+                if (string.IsNullOrWhiteSpace(existing.period))
+                    continue;
+
+                if (!TryParsePeriod(existing.period, out DateTime existingStart, out DateTime existingEnd))
+                    continue;
+
+                // OVERLAP CHECK
+                bool overlaps =
+                    currentStart <= existingEnd &&
+                    currentEnd >= existingStart;
+
+                if (overlaps)
+                {
+                    Helpers.ShowDialogMessage(
+                        "error",
+                        $"Journal Entry period overlaps with an existing record.\n\n" +
+                        $"Existing Period: {existing.period}"
+                    );
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool TryParsePeriod(string period, out DateTime start, out DateTime end)
+        {
+            start = DateTime.MinValue;
+            end = DateTime.MinValue;
+
+            if (string.IsNullOrWhiteSpace(period))
+                return false;
+
+            var parts = period.Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 2)
+                return false;
+
+            //Should be MM/dd/yyyy format
+            string format = "dd/MM/yyyy h:mm:ss tt";
+
+            return
+                DateTime.TryParseExact(
+                    parts[0].Trim(),
+                    format,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out start
+                ) &&
+                DateTime.TryParseExact(
+                    parts[1].Trim(),
+                    format,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out end
+                );
+        }
+
         private async void JournalEntry_Load(object sender, EventArgs e)
         {
             try
@@ -527,6 +611,8 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                         .ToList()
                 );
 
+                PopulateInsertedDatesFromPostingDates(_currentDetails);
+
                 dgv_journal_entry.DataSource = _currentDetails;
 
                 foreach (DataGridViewRow row in dgv_journal_entry.Rows)
@@ -556,6 +642,46 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             //Enable/disable navigation buttons
             btn_prev.Enabled = _currentJEIndex > 0;
             btn_next.Enabled = _currentJEIndex < _journalEntries.Count - 1;
+        }
+
+        private void PopulateInsertedDatesFromPostingDates(BindingList<JournalEntryDetailsModel> details)
+        {
+            if (details == null || details.Count == 0)
+                return;  
+
+            string previousPostingDate = null;
+
+            for (int i = 0; i < details.Count; i++)
+            {
+                var current = details[i];
+
+                // Skip if posting_date is empty
+                if (string.IsNullOrWhiteSpace(current.posting_date))
+                    continue;
+
+                // FIRST ROW LOGIC
+                if (i == 0)
+                {
+                    if (string.IsNullOrWhiteSpace(current.inserted_date))
+                    {
+                        current.inserted_date = current.posting_date;
+                    }
+
+                    previousPostingDate = current.posting_date;
+                    continue;
+                }
+
+                // NEXT ROWS LOGIC
+                if (!string.Equals(current.posting_date, previousPostingDate))
+                {
+                    if (string.IsNullOrWhiteSpace(current.inserted_date))
+                    {
+                        current.inserted_date = current.posting_date;
+                    }
+
+                    previousPostingDate = current.posting_date;
+                }
+            }
         }
 
         private void dgv_journal_entry_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)

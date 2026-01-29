@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables;
 
 namespace smpc_accounting_app.Services
@@ -24,15 +25,13 @@ namespace smpc_accounting_app.Services
             //========================================================================
             // SETUP   
             { "Chart Class Setup", new ChartClassPage() },
-            { "Chart Group Setup", new ChartGroupPage() },
-            { "Chart Of Account Setup", new ChartOfAccountPage() },
             { "Bank Setup", new BankPage() },
             { "Book Setup", new BookPage() },
             { "Currency Setup", new CurrencyPage() },
             { "Expanded Tax Setup", new ExpandedTaxPage() },
             { "GL Mapper Setup", new GeneralLedgerMapperPage() },        
-            {"Chart Account Setup", new ChartOfAccounts() },
-            { "Input Vat Setup", new InputVatPage() },
+            {"Chart Of Accounts Setup", new ChartOfAccountsPage() },
+            { "Tax Setup", new InputVatPage() },
 
 
             //========================================================================
@@ -52,6 +51,7 @@ namespace smpc_accounting_app.Services
             //========================================================================
             // ACCOUNTS RECEIVABLES
             {"Sales Invoice", new SalesInvoicePage()},
+            {"Payment Receipt", new PaymentReceiptPage()},
         };
 
         private string _selectedRoute;

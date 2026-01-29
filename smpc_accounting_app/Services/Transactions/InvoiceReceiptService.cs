@@ -25,31 +25,5 @@ namespace smpc_accounting_app.Services.Transactions
 
             return response.data;
         }
-
-        // UPDATE
-        public async Task<object> UpdateInvoiceReceiptRecord(InvoiceReceiptPayload payload)
-        {
-            var response = await ApiService<ApiResponseModel<object>>.Put(ApiEndPoints.INVOICE_RECEIPT, new Dictionary<string, dynamic>
-                {
-                    { "invoice_receipt", payload.invoice_receipt },
-                    { "invoice_receipt_details", payload.invoice_receipt_details }
-                }
-            );
-
-            return response.data;
-        }
-
-        // DELETE
-        public async Task<object> DeleteInvoiceReceiptRecord(InvoiceReceiptPayload payload)
-        {
-            var response = await ApiService<ApiResponseModel<object>>.Delete(ApiEndPoints.INVOICE_RECEIPT, new Dictionary<string, dynamic>
-                {
-                    { "invoice_receipt", payload.invoice_receipt },
-                    { "invoice_receipt_details", payload.invoice_receipt_details }
-                }
-            );
-
-            return response.data;
-        }
     }
 }

@@ -9,10 +9,10 @@ namespace smpc_accounting_app.Shared
     public static class ApiEndPoints
     {
 
-        public const string CHART_CLASS_SETUP = "/setup/chart_class";
+        public const string CHART_CLASS_SETUP = "/accounting/chart_class";
         public const string CHART_GROUP_SETUP = "/setup/chart_group";
-        public const string CHART_OF_ACCOUNT_SETUP = "/setup/chart_of_account";
-        public const string CHART_OF_ACCOUNT_VIEW = "/setup/tax/coa";
+        public const string CHART_OF_ACCOUNT_SETUP = "/accounting/chart_of_account";
+        public const string CHART_OF_ACCOUNT_VIEW = "/accounting/tax/coa";
         public const string CHART_OF_ACCOUNT_CLASSIFCATION_SETUP = "/setup/chart_of_account_classification/";
         public const string GENERAL_LEDGER_MAPPER_SETUP = "/setup/general_ledger";
         public const string BANK_SETUP = "/setup/bank";   
@@ -24,7 +24,7 @@ namespace smpc_accounting_app.Shared
         public const string PAYMENT_TERMS_SETUP = "/setup/payment_terms";
 
         //Tax Setup
-        public const string TAX_SETUP = "/setup/tax";
+        public const string TAX_SETUP = "/accounting/tax";
         public const string TAX_CODE_SETUP = "/setup/tax_setup/";
 
         public const string EXPANDED_TAX_SETUP = "/setup/expanded_tax";
@@ -38,5 +38,9 @@ namespace smpc_accounting_app.Shared
         //Transactions
         public const string JOURNAL_ENTRY = "/accounting/journal_entry2";
         public const string INVOICE_RECEIPT = "/accounting/invoice_receipt";
+        public const string BULK_INVOICE_RECEIPT = "/accounting/bulk_invoice_receipt";
+        public const string INVOICE_RECEIPT_TAX = "/accounting/invoice_receipt/tax_view";
+        public const string INVOICE_RECEIPT_SUPPLIER = "/accounting/invoice_receipt/supplier_trade";
+        public const string INVOICE_RECEIPT_PO = "/accounting/invoice_receipt/supplier_po/";
     }
 }

@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
 {
-    public partial class BulkInvoiceReceiptPage : UserControl
+    public partial class PaymentReceiptPage : UserControl
     {
-        public BulkInvoiceReceiptPage()
+        public PaymentReceiptPage()
         {
             InitializeComponent();
         }

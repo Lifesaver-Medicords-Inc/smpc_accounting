@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\BulkInvoiceReceiptModel.cs" />
     <Compile Include="Models\ChartOfAccount.cs" />
     <Compile Include="Models\ChartGroup.cs" />
     <Compile Include="Models\ChartClassModel.cs" />
@@ -101,11 +102,13 @@
     <Compile Include="Models\GeneralSetup.cs" />
     <Compile Include="Models\InvoiceReceiptModel.cs" />
     <Compile Include="Models\JournalEntryModel.cs" />
+    <Compile Include="Models\PurchaseOrderInvoiceModel.cs" />
     <Compile Include="Models\SalesInvoice.cs" />
     <Compile Include="Models\SaleInvoiceList.cs" />
     <Compile Include="Models\SalesInvoiceDetails.cs" />
     <Compile Include="Models\SalesOrderDR.cs" />
     <Compile Include="Models\SalesOrderList.cs" />
+    <Compile Include="Models\SupplierTradeViewModel.cs" />
     <Compile Include="Models\Taxation.cs" />
     <Compile Include="Models\TaxSetupModel.cs" />
     <Compile Include="Models\TaxSetupList.cs" />
@@ -139,23 +142,17 @@
     <Compile Include="Pages\Setup\CompanySetupPage.Designer.cs">
       <DependentUpon>CompanySetupPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Setup\Financial\ChartOfAccounts.cs">
+    <Compile Include="Pages\Setup\Financial\ChartOfAccountsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Setup\Financial\ChartOfAccounts.Designer.cs">
-      <DependentUpon>ChartOfAccounts.cs</DependentUpon>
+    <Compile Include="Pages\Setup\Financial\ChartOfAccountsPage.Designer.cs">
+      <DependentUpon>ChartOfAccountsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setup\Financial\GeneralLedgerMapperPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Pages\Setup\Financial\GeneralLedgerMapperPage.Designer.cs">
       <DependentUpon>GeneralLedgerMapperPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Setup\Financial\ChartOfAccountPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Setup\Financial\ChartOfAccountPage.Designer.cs">
-      <DependentUpon>ChartOfAccountPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setup\Others\BankPage.cs">
       <SubType>UserControl</SubType>
@@ -199,17 +196,29 @@
     <Compile Include="Pages\Setup\Tax\OutputVatPage.Designer.cs">
       <DependentUpon>OutputVatPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceiptPage.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceReceiptPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceiptPage.Designer.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceReceiptPage.Designer.cs">
       <DependentUpon>BulkInvoiceReceiptPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceSearch.Designer.cs">
+      <DependentUpon>BulkInvoiceSearch.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearch.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearch.Designer.cs">
       <DependentUpon>InvoiceSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchPO.Designer.cs">
+      <DependentUpon>InvoiceSearchPO.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchSupplier.cs">
       <SubType>Form</SubType>
@@ -222,6 +231,12 @@
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.Designer.cs">
       <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsReceivables\PaymentReceiptPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsReceivables\PaymentReceiptPage.Designer.cs">
+      <DependentUpon>PaymentReceiptPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\Journal\CreditMemo.cs">
       <SubType>UserControl</SubType>
@@ -266,6 +281,7 @@
     <Compile Include="Services\Setup\CurrencyService.cs" />
     <Compile Include="Services\Setup\BookService.cs" />
     <Compile Include="Services\Setup\TaxSetupService.cs" />
+    <Compile Include="Services\Transactions\BulkInvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\InvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
     <Compile Include="Shared\ApiEndPoints.cs" />
@@ -356,14 +372,11 @@
     <EmbeddedResource Include="Pages\Setup\Financial\ChartGroupPage.resx">
       <DependentUpon>ChartGroupPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Setup\Financial\ChartOfAccounts.resx">
-      <DependentUpon>ChartOfAccounts.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Setup\Financial\ChartOfAccountsPage.resx">
+      <DependentUpon>ChartOfAccountsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Setup\Financial\GeneralLedgerMapperPage.resx">
       <DependentUpon>GeneralLedgerMapperPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Setup\Financial\ChartOfAccountPage.resx">
-      <DependentUpon>ChartOfAccountPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Setup\Others\BankPage.resx">
       <DependentUpon>BankPage.cs</DependentUpon>
@@ -389,11 +402,20 @@
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucherPage.resx">
       <DependentUpon>APVoucherPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceiptPage.resx">
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceReceiptPage.resx">
       <DependentUpon>BulkInvoiceReceiptPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceSearch.resx">
+      <DependentUpon>BulkInvoiceSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearch.resx">
       <DependentUpon>InvoiceSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchPO.resx">
+      <DependentUpon>InvoiceSearchPO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchSupplier.resx">
+      <DependentUpon>InvoiceSearchSupplier.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.resx">
       <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
@@ -406,6 +428,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.resx">
       <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\PaymentReceiptPage.resx">
+      <DependentUpon>PaymentReceiptPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.resx">
       <DependentUpon>SalesInvoicePage.cs</DependentUpon>

@@ -52,33 +52,21 @@ namespace smpc_accounting_app
             treeNode9,
             treeNode10,
             treeNode11});
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Tax Reports");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Reports");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Book Setup");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Bank Setup");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Currency Setup");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Chart Of Account Setup");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("GL Mapper Setup");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Chart Class Setup");
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Chart Account Setup");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Expanded Tax Setup");
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Final Tax Setup");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Input Vat Setup");
-            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Output Vat Setup");
-            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Tax Setup", new System.Windows.Forms.TreeNode[] {
-            treeNode22,
-            treeNode23,
-            treeNode24,
-            treeNode25});
-            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Book Setup");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Bank Setup");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Currency Setup");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Chart Of Accounts Setup");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("GL Mapper Setup");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Chart Class Setup");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Tax Setup");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
+            treeNode13,
+            treeNode14,
             treeNode15,
             treeNode16,
             treeNode17,
             treeNode18,
-            treeNode19,
-            treeNode20,
-            treeNode21,
-            treeNode26});
+            treeNode19});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Layout));
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -268,7 +256,7 @@ namespace smpc_accounting_app
             this.Sidebar.Name = "Sidebar";
             treeNode1.Name = "Sales Invoice";
             treeNode1.Text = "Sales Invoice";
-            treeNode2.Name = "Node12";
+            treeNode2.Name = "Payment Receipt";
             treeNode2.Text = "Payment Receipt";
             treeNode3.Name = "parent_2";
             treeNode3.Text = "Account Receivables";
@@ -290,41 +278,25 @@ namespace smpc_accounting_app
             treeNode11.Text = "Journal Entry";
             treeNode12.Name = "parent_1";
             treeNode12.Text = "Transactions";
-            treeNode13.Name = "parent_4";
-            treeNode13.Text = "Tax Reports";
-            treeNode14.Name = "parent_5";
-            treeNode14.Text = "Reports";
-            treeNode15.Name = "Book Setup";
-            treeNode15.Text = "Book Setup";
-            treeNode16.Name = "Bank Setup";
-            treeNode16.Text = "Bank Setup";
-            treeNode17.Name = "Currency Setup";
-            treeNode17.Text = "Currency Setup";
-            treeNode18.Name = "Chart Of Account Setup";
-            treeNode18.Text = "Chart Of Account Setup";
-            treeNode19.Name = "GL Mapper Setup";
-            treeNode19.Text = "GL Mapper Setup";
-            treeNode20.Name = "Chart Class Setup";
-            treeNode20.Text = "Chart Class Setup";
-            treeNode21.Name = "Chart Account Setup";
-            treeNode21.Text = "Chart Account Setup";
-            treeNode22.Name = "Expanded Tax Setup";
-            treeNode22.Text = "Expanded Tax Setup";
-            treeNode23.Name = "Final Tax Setup";
-            treeNode23.Text = "Final Tax Setup";
-            treeNode24.Name = "Input Vat Setup";
-            treeNode24.Text = "Input Vat Setup";
-            treeNode25.Name = "Output Vat Setup";
-            treeNode25.Text = "Output Vat Setup";
-            treeNode26.Name = "parent_6";
-            treeNode26.Text = "Tax Setup";
-            treeNode27.Name = "parent_6";
-            treeNode27.Text = "System Configuration";
+            treeNode13.Name = "Book Setup";
+            treeNode13.Text = "Book Setup";
+            treeNode14.Name = "Bank Setup";
+            treeNode14.Text = "Bank Setup";
+            treeNode15.Name = "Currency Setup";
+            treeNode15.Text = "Currency Setup";
+            treeNode16.Name = "Chart Of Accounts Setup";
+            treeNode16.Text = "Chart Of Accounts Setup";
+            treeNode17.Name = "GL Mapper Setup";
+            treeNode17.Text = "GL Mapper Setup";
+            treeNode18.Name = "Chart Class Setup";
+            treeNode18.Text = "Chart Class Setup";
+            treeNode19.Name = "Tax Setup";
+            treeNode19.Text = "Tax Setup";
+            treeNode20.Name = "parent_6";
+            treeNode20.Text = "System Configuration";
             this.Sidebar.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode12,
-            treeNode13,
-            treeNode14,
-            treeNode27});
+            treeNode20});
             this.Sidebar.Size = new System.Drawing.Size(230, 428);
             this.Sidebar.TabIndex = 0;
             this.Sidebar.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.Sidebar_NodeMouseClick);

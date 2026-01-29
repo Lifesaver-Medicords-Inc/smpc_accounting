@@ -83,13 +83,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 return;
             }
 
-            // Must be at least 6 characters
-            if (txt_code.Text.Length < 6)
-            {
-                Helpers.ShowDialogMessage("error", "Code must be at least 6 characters long.");
-                return;
-            }
-
             // Validate code prefix based on selected type
             if (cmb_type.SelectedItem != null)
             {

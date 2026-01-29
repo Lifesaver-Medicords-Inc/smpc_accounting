@@ -15,7 +15,7 @@ using smpc_accounting_app.Models;
 
 namespace smpc_accounting_app.Pages.Setup.Financial
 {
-    public partial class ChartOfAccounts : UserControl
+    public partial class ChartOfAccountsPage : UserControl
     {
 
         ChartOfAccountsService chartOfAccountService = new ChartOfAccountsService();
@@ -26,7 +26,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private DataTable _coadata;
         private string placeHolderText = "Chart of Account Search...";
 
-        public ChartOfAccounts()
+        public ChartOfAccountsPage()
         {
             InitializeComponent();
 
@@ -394,6 +394,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
             // Bind the rest of the controls
             Helpers.BindControls(pnlList, dt, rowIndex);
+
+            txt_code.Text = dt.Rows[rowIndex]["code"]?.ToString();
         }
 
         private void dgv_chart_of_account_CellClick(object sender, DataGridViewCellEventArgs e)
