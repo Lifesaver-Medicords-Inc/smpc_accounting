@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\APVoucherModel.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\BulkInvoiceReceiptModel.cs" />
@@ -196,6 +197,18 @@
     <Compile Include="Pages\Setup\Tax\OutputVatPage.Designer.cs">
       <DependentUpon>OutputVatPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherInvoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherInvoice.Designer.cs">
+      <DependentUpon>APVoucherInvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherSearch.Designer.cs">
+      <DependentUpon>APVoucherSearch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceReceiptPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -281,6 +294,7 @@
     <Compile Include="Services\Setup\CurrencyService.cs" />
     <Compile Include="Services\Setup\BookService.cs" />
     <Compile Include="Services\Setup\TaxSetupService.cs" />
+    <Compile Include="Services\Transactions\APVoucherService.cs" />
     <Compile Include="Services\Transactions\BulkInvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\InvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
@@ -305,10 +319,10 @@
     <Compile Include="Pages\Setup\Financial\ChartGroupPage.Designer.cs">
       <DependentUpon>ChartGroupPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\APVoucherPage.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\APVoucherPage.Designer.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherPage.Designer.cs">
       <DependentUpon>APVoucherPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.cs">
@@ -399,8 +413,14 @@
     <EmbeddedResource Include="Pages\Setup\Tax\OutputVatPage.resx">
       <DependentUpon>OutputVatPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucherPage.resx">
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherInvoice.resx">
+      <DependentUpon>APVoucherInvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherPage.resx">
       <DependentUpon>APVoucherPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherSearch.resx">
+      <DependentUpon>APVoucherSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\BulkInvoiceReceipt\BulkInvoiceReceiptPage.resx">
       <DependentUpon>BulkInvoiceReceiptPage.cs</DependentUpon>

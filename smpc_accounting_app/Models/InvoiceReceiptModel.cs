@@ -21,7 +21,7 @@ namespace smpc_accounting_app.Models
         public string invoice_type { get; set; }
         public float net_amount { get; set; }
         public float twas_amount { get; set; }
-        public string ap_voucher { get; set; }
+        public bool? ap_voucher { get; set; }
         public string type { get; set; }
         public string remarks { get; set; }
         public string currency { get; set; }
@@ -42,6 +42,15 @@ namespace smpc_accounting_app.Models
         public float discount { get; set; }
         public float line_amount { get; set; }
         public int purchase_order_details_id { get; set; }
+    }
+
+    public class InvoiceViewModel
+    {
+        public int invoice_receipt_id { get; set; }
+        public string receipt_no { get; set; }
+        public string ir_doc_date { get; set; }
+        public float line_amount { get; set; }
+        public string receipt_type { get; set; }
     }
 
     public class InvoiceReceiptList

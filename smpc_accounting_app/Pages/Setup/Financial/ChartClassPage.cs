@@ -162,6 +162,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             {
                 SetEditMode(false);
                 await GetChartClass();
+                LoadSelectedChartClass();
 
                 Helpers.Loading.HideLoading(dgv_list);
             }

@@ -74,7 +74,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             );
 
             Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier_code",
-                "txt_payment_term", "txt_currency","txt_supplier_name", "txt_invoice_type", "txt_type", "txt_ap_voucher",
+                "txt_payment_term", "txt_currency","txt_supplier", "txt_invoice_type", "txt_type", "txt_ap_voucher",
                 "txt_twas_amount", "txt_net_amount", "dtp_doc_date" });
         }
 
@@ -198,6 +198,25 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 return;
             }
 
+            // Assign created_by and posting reference info for each detail
+            foreach (DataGridViewRow rows in dgv_main.Rows)
+            {
+                if (rows.IsNewRow) continue;
+
+                var detail = bulkInvoiceReceiptDetails[rows.Index];
+
+                // Get account_code_id and posting_ref from the ComboBox column
+                var accountCodeCell = rows.Cells["cmb_account_code"];
+                if (accountCodeCell.Value != null)
+                {
+                    int accountCodeId = 0;
+                    if (int.TryParse(accountCodeCell.Value.ToString(), out accountCodeId))
+                    {
+                        detail.account_id = accountCodeId;
+                    }
+                }
+            }
+
             // Wrap everything into Bulk Invoice Receipt Payload
             var birPayload = new BulkInvoiceReceiptPayload
             {
@@ -234,6 +253,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             {
                 _currentBIRIndex = _previousBIRIndex;
                 await LoadBulkInvoiceReceipts();
+            }
+            else
+            {
+                Helpers.ResetControls(pnl_main);
+                dgv_main.Rows.Clear();
             }
         }
 
@@ -357,6 +381,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
             var current = _bulkInvoiceReceipts[_currentBIRIndex];
 
+            // set txt_ap_voucher based on boolean value
+            txt_ap_voucher.Text = (current.ap_voucher ?? false) ? "Yes" : "No";
+
             // FORCE COMBOBOX BINDING REFRESH
             cmb_tax_code.BindingContext[cmb_tax_code.DataSource]?.EndCurrentEdit();
             cmb_tax_code.Refresh();
@@ -385,6 +412,25 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 );
 
                 dgv_main.DataSource = _currentDetails;
+
+                foreach (DataGridViewRow row in dgv_main.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    var detail = _currentDetails[row.Index];
+                    if (detail.account_id > 0)
+                    {
+                        var postingRefColumn = dgv_main.Columns["cmb_account_code"] as DataGridViewComboBoxColumn;
+                        if (postingRefColumn != null)
+                        {
+                            var matched = _coadata.FirstOrDefault(c => c.id == detail.account_id);
+                            if (matched != null)
+                            {
+                                row.Cells["cmb_account_code"].Value = matched.id;
+                            }
+                        }
+                    }
+                }
             }
             else
             {
@@ -493,6 +539,50 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                         row.Cells["account_code"].Value = coa.code;
                     }
                 }
+            }
+
+            if (_isNewMode)
+            {
+                // Update net amount
+                UpdateNetAmount();
+            }
+        }
+
+        private void UpdateNetAmount()
+        {
+            float totalLineAmount = 0f;
+            float otherCharges = 0f;
+
+            // Sum all line_amounts from dgv_main
+            foreach (DataGridViewRow dgRow in dgv_main.Rows)
+            {
+                if (dgRow.IsNewRow) continue;
+
+                if (dgRow.Cells["line_amount"]?.Value != null &&
+                    float.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out float lineAmount))
+                {
+                    totalLineAmount += lineAmount;
+                }
+            }
+
+            // Parse Other Charges (default to 0 if empty or invalid)
+            if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
+            {
+                float.TryParse(txt_other_charges.Text, out otherCharges);
+            }
+
+            // Compute Net Amount
+            float netAmount = totalLineAmount - otherCharges;
+
+            // Prevent negative net amount
+            txt_net_amount.Text = Math.Max(netAmount, 0).ToString("0.00");
+        }
+
+        private void txt_other_charges_TextChanged(object sender, EventArgs e)
+        {
+            if (_isNewMode)
+            {
+                UpdateNetAmount();
             }
         }
     }

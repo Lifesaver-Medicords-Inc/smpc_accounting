@@ -30,7 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkInvoiceReceiptPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -44,6 +44,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_ap_voucher = new System.Windows.Forms.Button();
             this.pnl_main = new System.Windows.Forms.Panel();
+            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
             this.txt_other_charges = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.cmb_tax_code = new System.Windows.Forms.ComboBox();
@@ -54,8 +55,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.txt_id = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.btn_supplier = new System.Windows.Forms.Button();
-            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
-            this.dtop_invoice_due = new System.Windows.Forms.DateTimePicker();
+            this.dtp_invoice_due = new System.Windows.Forms.DateTimePicker();
             this.txt_remarks = new System.Windows.Forms.TextBox();
             this.txt_type = new System.Windows.Forms.TextBox();
             this.txt_ap_voucher = new System.Windows.Forms.TextBox();
@@ -223,6 +223,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // pnl_main
             // 
+            this.pnl_main.Controls.Add(this.dtp_doc_date);
             this.pnl_main.Controls.Add(this.txt_other_charges);
             this.pnl_main.Controls.Add(this.label20);
             this.pnl_main.Controls.Add(this.cmb_tax_code);
@@ -233,8 +234,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.pnl_main.Controls.Add(this.txt_id);
             this.pnl_main.Controls.Add(this.label23);
             this.pnl_main.Controls.Add(this.btn_supplier);
-            this.pnl_main.Controls.Add(this.dtp_doc_date);
-            this.pnl_main.Controls.Add(this.dtop_invoice_due);
+            this.pnl_main.Controls.Add(this.dtp_invoice_due);
             this.pnl_main.Controls.Add(this.txt_remarks);
             this.pnl_main.Controls.Add(this.txt_type);
             this.pnl_main.Controls.Add(this.txt_ap_voucher);
@@ -268,6 +268,16 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.pnl_main.Size = new System.Drawing.Size(1400, 242);
             this.pnl_main.TabIndex = 76;
             // 
+            // dtp_doc_date
+            // 
+            this.dtp_doc_date.Enabled = false;
+            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_doc_date.Location = new System.Drawing.Point(995, 39);
+            this.dtp_doc_date.Name = "dtp_doc_date";
+            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
+            this.dtp_doc_date.TabIndex = 305;
+            this.dtp_doc_date.Tag = "REQUIRED";
+            // 
             // txt_other_charges
             // 
             this.txt_other_charges.Enabled = false;
@@ -276,6 +286,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.txt_other_charges.Size = new System.Drawing.Size(289, 20);
             this.txt_other_charges.TabIndex = 304;
             this.txt_other_charges.Tag = "";
+            this.txt_other_charges.TextChanged += new System.EventHandler(this.txt_other_charges_TextChanged);
             // 
             // label20
             // 
@@ -373,25 +384,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.btn_supplier.UseVisualStyleBackColor = true;
             this.btn_supplier.Click += new System.EventHandler(this.btn_supplier_Click);
             // 
-            // dtp_doc_date
+            // dtp_invoice_due
             // 
-            this.dtp_doc_date.Enabled = false;
-            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_doc_date.Location = new System.Drawing.Point(995, 39);
-            this.dtp_doc_date.Name = "dtp_doc_date";
-            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
-            this.dtp_doc_date.TabIndex = 291;
-            this.dtp_doc_date.Tag = "REQUIRED";
-            // 
-            // dtop_invoice_due
-            // 
-            this.dtop_invoice_due.Enabled = false;
-            this.dtop_invoice_due.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtop_invoice_due.Location = new System.Drawing.Point(136, 141);
-            this.dtop_invoice_due.Name = "dtop_invoice_due";
-            this.dtop_invoice_due.Size = new System.Drawing.Size(289, 20);
-            this.dtop_invoice_due.TabIndex = 290;
-            this.dtop_invoice_due.Tag = "REQUIRED";
+            this.dtp_invoice_due.Enabled = false;
+            this.dtp_invoice_due.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_invoice_due.Location = new System.Drawing.Point(136, 141);
+            this.dtp_invoice_due.Name = "dtp_invoice_due";
+            this.dtp_invoice_due.Size = new System.Drawing.Size(289, 20);
+            this.dtp_invoice_due.TabIndex = 290;
+            this.dtp_invoice_due.Tag = "REQUIRED";
             // 
             // txt_remarks
             // 
@@ -642,14 +643,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -696,7 +697,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // cmb_account_code
             // 
             this.cmb_account_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.cmb_account_code.DataPropertyName = "account_code";
             this.cmb_account_code.HeaderText = "ACCOUNT CODE";
             this.cmb_account_code.Name = "cmb_account_code";
             this.cmb_account_code.ReadOnly = true;
@@ -770,8 +770,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private System.Windows.Forms.TextBox txt_id;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button btn_supplier;
-        private System.Windows.Forms.DateTimePicker dtp_doc_date;
-        private System.Windows.Forms.DateTimePicker dtop_invoice_due;
+        private System.Windows.Forms.DateTimePicker dtp_invoice_due;
         private System.Windows.Forms.TextBox txt_remarks;
         private System.Windows.Forms.TextBox txt_type;
         private System.Windows.Forms.TextBox txt_ap_voucher;
@@ -800,6 +799,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.DataGridView dgv_main;
+        private System.Windows.Forms.DateTimePicker dtp_doc_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn payment_charge_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn charge_description;

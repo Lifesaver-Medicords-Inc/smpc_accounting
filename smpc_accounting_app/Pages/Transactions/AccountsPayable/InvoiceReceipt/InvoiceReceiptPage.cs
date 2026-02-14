@@ -73,7 +73,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             );
 
             Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier_code", 
-                "txt_payment_term", "txt_currency","txt_supplier_name", "txt_invoice_type", "txt_type", "txt_ap_voucher",
+                "txt_payment_term", "txt_currency","txt_supplier", "txt_invoice_type", "txt_type", "txt_ap_voucher",
                 "txt_twas_amount", "txt_net_amount", "dtp_doc_date" });
         }
 
@@ -360,6 +360,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             dgv_main.AutoGenerateColumns = false;
 
             var current = _invoiceReceipts[_currentIRIndex];
+
+            // set txt_ap_voucher based on boolean value
+            txt_ap_voucher.Text = (current.ap_voucher ?? false) ? "Yes" : "No";
 
             // FORCE COMBOBOX BINDING REFRESH
             cmb_tax_code.BindingContext[cmb_tax_code.DataSource]?.EndCurrentEdit();

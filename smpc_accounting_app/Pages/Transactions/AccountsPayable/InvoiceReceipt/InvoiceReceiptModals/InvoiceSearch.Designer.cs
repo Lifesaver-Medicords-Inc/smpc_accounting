@@ -40,7 +40,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.invoice_due = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.twas_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.net_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ir_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,7 +66,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.invoice_due,
             this.doc_no,
             this.doc_date,
-            this.twas_amount});
+            this.net_amount});
             this.dgv_ir_search.Location = new System.Drawing.Point(-1, 31);
             this.dgv_ir_search.Name = "dgv_ir_search";
             this.dgv_ir_search.Size = new System.Drawing.Size(802, 389);
@@ -133,6 +133,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             // doc_no
             // 
+            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_no.DataPropertyName = "doc_no";
             this.doc_no.HeaderText = "DOC NO";
             this.doc_no.Name = "doc_no";
@@ -140,17 +141,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             // doc_date
             // 
+            this.doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_date.DataPropertyName = "doc_date";
             this.doc_date.HeaderText = "DOC DATE";
             this.doc_date.Name = "doc_date";
             this.doc_date.ReadOnly = true;
             // 
-            // twas_amount
+            // net_amount
             // 
-            this.twas_amount.DataPropertyName = "twas_amount";
-            this.twas_amount.HeaderText = "TWAS AMOUNT";
-            this.twas_amount.Name = "twas_amount";
-            this.twas_amount.ReadOnly = true;
+            this.net_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.net_amount.DataPropertyName = "net_amount";
+            this.net_amount.HeaderText = "NET AMOUNT";
+            this.net_amount.Name = "net_amount";
+            this.net_amount.ReadOnly = true;
             // 
             // InvoiceSearch
             // 
@@ -180,6 +183,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         private System.Windows.Forms.DataGridViewTextBoxColumn invoice_due;
         private System.Windows.Forms.DataGridViewTextBoxColumn doc_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn doc_date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn twas_amount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn net_amount;
     }
 }

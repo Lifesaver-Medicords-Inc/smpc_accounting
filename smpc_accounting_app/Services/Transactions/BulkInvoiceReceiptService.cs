@@ -18,8 +18,8 @@ namespace smpc_accounting_app.Services.Transactions
         {
             var response = await ApiService<ApiResponseModel<object>>.Post(ApiEndPoints.BULK_INVOICE_RECEIPT, new Dictionary<string, dynamic>
                 {
-                    { "invoice_receipt", payload.bulk_invoice_receipt },
-                    { "invoice_receipt_details", payload.bulk_invoice_receipt_details }
+                    { "bulk_invoice_receipt", payload.bulk_invoice_receipt },
+                    { "bulk_invoice_receipt_details", payload.bulk_invoice_receipt_details }
                 }
             );
 

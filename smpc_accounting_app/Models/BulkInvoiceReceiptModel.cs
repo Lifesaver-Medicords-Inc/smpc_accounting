@@ -24,7 +24,7 @@ namespace smpc_accounting_app.Models
         public float other_charges { get; set; }
         public float net_amount { get; set; }
         public float twas_amount { get; set; }
-        public string ap_voucher { get; set; }
+        public bool? ap_voucher { get; set; }
         public string type { get; set; }
         public string remarks { get; set; }
         public string prepared_by { get; set; }

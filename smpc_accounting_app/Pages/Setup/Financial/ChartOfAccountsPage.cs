@@ -261,6 +261,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             {
                 SetEditMode(false);
                 await FetchChartOfAccount();
+                LoadSelectedChartOfAccount();
 
                 Helpers.Loading.HideLoading(dgv_chart_of_account);
             }
