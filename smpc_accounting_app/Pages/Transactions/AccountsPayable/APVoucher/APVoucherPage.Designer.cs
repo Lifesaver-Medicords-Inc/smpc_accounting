@@ -44,12 +44,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_payment_voucher = new System.Windows.Forms.Button();
             this.dgv_main = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.invoice_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.receipt_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ir_doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.receipt_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnl_main = new System.Windows.Forms.Panel();
             this.txt_transaction_amount = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -70,6 +64,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.invoice_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.receipt_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ir_doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ir_due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.receipt_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel6.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -200,6 +201,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.btn_payment_voucher.TabIndex = 36;
             this.btn_payment_voucher.Text = "PAYMENT VOUCHER";
             this.btn_payment_voucher.UseVisualStyleBackColor = false;
+            this.btn_payment_voucher.Click += new System.EventHandler(this.btn_payment_voucher_Click);
             // 
             // dgv_main
             // 
@@ -220,6 +222,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.invoice_receipt_id,
             this.receipt_no,
             this.ir_doc_date,
+            this.ir_due_date,
             this.line_amount,
             this.receipt_type});
             this.dgv_main.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -230,55 +233,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.dgv_main.TabIndex = 78;
             this.dgv_main.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_main_CellClick);
             this.dgv_main.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_main_CellValueChanged);
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.Visible = false;
-            // 
-            // invoice_receipt_id
-            // 
-            this.invoice_receipt_id.DataPropertyName = "invoice_receipt_id";
-            this.invoice_receipt_id.HeaderText = "INVOICE ID";
-            this.invoice_receipt_id.Name = "invoice_receipt_id";
-            this.invoice_receipt_id.ReadOnly = true;
-            this.invoice_receipt_id.Visible = false;
-            // 
-            // receipt_no
-            // 
-            this.receipt_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.receipt_no.DataPropertyName = "receipt_no";
-            this.receipt_no.HeaderText = "RECEIPT NO.";
-            this.receipt_no.MinimumWidth = 200;
-            this.receipt_no.Name = "receipt_no";
-            this.receipt_no.ReadOnly = true;
-            // 
-            // ir_doc_date
-            // 
-            this.ir_doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ir_doc_date.DataPropertyName = "ir_doc_date";
-            this.ir_doc_date.HeaderText = "DOC DATE";
-            this.ir_doc_date.Name = "ir_doc_date";
-            this.ir_doc_date.ReadOnly = true;
-            // 
-            // line_amount
-            // 
-            this.line_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.line_amount.DataPropertyName = "line_amount";
-            this.line_amount.HeaderText = "AMOUNT";
-            this.line_amount.MinimumWidth = 180;
-            this.line_amount.Name = "line_amount";
-            this.line_amount.ReadOnly = true;
-            // 
-            // receipt_type
-            // 
-            this.receipt_type.DataPropertyName = "receipt_type";
-            this.receipt_type.HeaderText = "RECEIPT TYPE";
-            this.receipt_type.Name = "receipt_type";
-            this.receipt_type.ReadOnly = true;
-            this.receipt_type.Visible = false;
             // 
             // pnl_main
             // 
@@ -488,6 +442,64 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.label11.TabIndex = 302;
             this.label11.Text = "SUPPLIER :";
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // invoice_receipt_id
+            // 
+            this.invoice_receipt_id.DataPropertyName = "invoice_receipt_id";
+            this.invoice_receipt_id.HeaderText = "INVOICE ID";
+            this.invoice_receipt_id.Name = "invoice_receipt_id";
+            this.invoice_receipt_id.ReadOnly = true;
+            this.invoice_receipt_id.Visible = false;
+            // 
+            // receipt_no
+            // 
+            this.receipt_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.receipt_no.DataPropertyName = "receipt_no";
+            this.receipt_no.HeaderText = "RECEIPT NO.";
+            this.receipt_no.MinimumWidth = 200;
+            this.receipt_no.Name = "receipt_no";
+            this.receipt_no.ReadOnly = true;
+            // 
+            // ir_doc_date
+            // 
+            this.ir_doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ir_doc_date.DataPropertyName = "ir_doc_date";
+            this.ir_doc_date.HeaderText = "DOC DATE";
+            this.ir_doc_date.Name = "ir_doc_date";
+            this.ir_doc_date.ReadOnly = true;
+            // 
+            // ir_due_date
+            // 
+            this.ir_due_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ir_due_date.DataPropertyName = "ir_due_date";
+            this.ir_due_date.HeaderText = "DUE DATE";
+            this.ir_due_date.Name = "ir_due_date";
+            this.ir_due_date.ReadOnly = true;
+            this.ir_due_date.Visible = false;
+            // 
+            // line_amount
+            // 
+            this.line_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.line_amount.DataPropertyName = "line_amount";
+            this.line_amount.HeaderText = "AMOUNT";
+            this.line_amount.MinimumWidth = 180;
+            this.line_amount.Name = "line_amount";
+            this.line_amount.ReadOnly = true;
+            // 
+            // receipt_type
+            // 
+            this.receipt_type.DataPropertyName = "receipt_type";
+            this.receipt_type.HeaderText = "RECEIPT TYPE";
+            this.receipt_type.Name = "receipt_type";
+            this.receipt_type.ReadOnly = true;
+            this.receipt_type.Visible = false;
+            // 
             // APVoucherPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -551,6 +563,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private System.Windows.Forms.DataGridViewTextBoxColumn invoice_receipt_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn receipt_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_doc_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ir_due_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn line_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn receipt_type;
     }

@@ -230,136 +230,139 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_journal_entry.EndEdit();
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
-            //Fill missing posting_date values
-            FillMissingPostingDates();
-
-            //Validate required controls in the panel
-            if (Helpers.ValidateControlsValues(pnl_content))
+            try
             {
-                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
-                return;
-            }
+                dgv_journal_entry.EndEdit();
 
-            //Validate Datagridview columns
-            string[] columnsToValidate = { "account_title", "posting_ref" };
-            if (await Helpers.ValidateDataGridViewCells(dgv_journal_entry, columnsToValidate))
-                return;
+                //Fill missing posting_date values
+                FillMissingPostingDates();
 
-            //Validate that journal entry details are not empty
-            var journalEntryDetails = Helpers.DatagridviewMapper.BuildModelsFromData<JournalEntryDetailsModel>(dgv_journal_entry);
-            if (journalEntryDetails == null || journalEntryDetails.Count == 0)
-            {
-                Helpers.ShowDialogMessage("error", "Journal Entry cannot be empty.");
-                return;
-            }
-
-            foreach (DataGridViewRow row in dgv_journal_entry.Rows)
-            {
-                if (row.IsNewRow) continue;
-
-                //Posting Date format validation (only if not empty)
-                string postingDateValue = row.Cells["inserted_date"].Value?.ToString();
-                if (!string.IsNullOrWhiteSpace(postingDateValue))
+                //Validate required controls in the panel
+                if (Helpers.ValidateControlsValues(pnl_content))
                 {
-                    if (!DateTime.TryParseExact(
-                            postingDateValue,
-                            "MM/dd/yyyy",
-                            CultureInfo.InvariantCulture,
-                            DateTimeStyles.None,
-                            out _))
+                    Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                    return;
+                }
+
+                //Validate Datagridview columns
+                string[] columnsToValidate = { "account_title", "posting_ref" };
+                if (await Helpers.ValidateDataGridViewCells(dgv_journal_entry, columnsToValidate))
+                    return;
+
+                //Validate that journal entry details are not empty
+                var journalEntryDetails = Helpers.DatagridviewMapper.BuildModelsFromData<JournalEntryDetailsModel>(dgv_journal_entry);
+                if (journalEntryDetails == null || journalEntryDetails.Count == 0)
+                {
+                    Helpers.ShowDialogMessage("error", "Journal Entry cannot be empty.");
+                    return;
+                }
+
+                foreach (DataGridViewRow row in dgv_journal_entry.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    //Posting Date format validation (only if not empty)
+                    string postingDateValue = row.Cells["inserted_date"].Value?.ToString();
+                    if (!string.IsNullOrWhiteSpace(postingDateValue))
+                    {
+                        if (!DateTime.TryParseExact(
+                                postingDateValue,
+                                "MM/dd/yyyy",
+                                CultureInfo.InvariantCulture,
+                                DateTimeStyles.None,
+                                out _))
+                        {
+                            Helpers.ShowDialogMessage(
+                                "error",
+                                "Posting Date must be in MM/dd/yyyy format."
+                            );
+                            return;
+                        }
+                    }
+
+                    // Debit / Credit "/" validation
+                    string debitText = row.Cells["debit"].Value?.ToString();
+                    string creditText = row.Cells["credit"].Value?.ToString();
+
+                    if ((debitText != null && debitText.Contains("/")) ||
+                        (creditText != null && creditText.Contains("/")))
                     {
                         Helpers.ShowDialogMessage(
                             "error",
-                            "Posting Date must be in MM/dd/yyyy format."
+                            "Please insert appropriate Debit and Credit amounts."
+                        );
+                        return;
+                    }
+
+                    //Debit / Credit validation
+                    decimal debit = 0;
+                    decimal credit = 0;
+
+                    decimal.TryParse(row.Cells["debit"].Value?.ToString(), out debit);
+                    decimal.TryParse(row.Cells["credit"].Value?.ToString(), out credit);
+
+                    if (debit <= 0 && credit <= 0)
+                    {
+                        Helpers.ShowDialogMessage(
+                            "error",
+                            "Each journal entry row must have a value in either Debit or Credit."
                         );
                         return;
                     }
                 }
 
-                // Debit / Credit "/" validation
-                string debitText = row.Cells["debit"].Value?.ToString();
-                string creditText = row.Cells["credit"].Value?.ToString();
-
-                if ((debitText != null && debitText.Contains("/")) ||
-                    (creditText != null && creditText.Contains("/")))
+                // Assign created_by and posting reference info for each detail
+                foreach (DataGridViewRow row in dgv_journal_entry.Rows)
                 {
-                    Helpers.ShowDialogMessage(
-                        "error",
-                        "Please insert appropriate Debit and Credit amounts."
-                    );
-                    return;
-                }
+                    if (row.IsNewRow) continue;
 
-                //Debit / Credit validation
-                decimal debit = 0;
-                decimal credit = 0;
+                    var detail = journalEntryDetails[row.Index];
 
-                decimal.TryParse(row.Cells["debit"].Value?.ToString(), out debit);
-                decimal.TryParse(row.Cells["credit"].Value?.ToString(), out credit);
+                    detail.created_by = _userName;
 
-                if (debit <= 0 && credit <= 0)
-                {
-                    Helpers.ShowDialogMessage(
-                        "error",
-                        "Each journal entry row must have a value in either Debit or Credit."
-                    );
-                    return;
-                }
-            }
-
-            // Assign created_by and posting reference info for each detail
-            foreach (DataGridViewRow row in dgv_journal_entry.Rows)
-            {
-                if (row.IsNewRow) continue;
-
-                var detail = journalEntryDetails[row.Index];
-
-                detail.created_by = _userName;
-
-                // Get posting_ref_id and posting_ref from the ComboBox column
-                var postingRefCell = row.Cells["cmb_posting_ref"];
-                if (postingRefCell.Value != null)
-                {
-                    int postingRefId = 0;
-                    if (int.TryParse(postingRefCell.Value.ToString(), out postingRefId))
+                    // Get posting_ref_id and posting_ref from the ComboBox column
+                    var postingRefCell = row.Cells["cmb_posting_ref"];
+                    if (postingRefCell.Value != null)
                     {
-                        detail.posting_ref_id = postingRefId;
-
-                        var selectedCoa = _coadata.FirstOrDefault(c => c.id == postingRefId);
-                        if (selectedCoa != null)
+                        int postingRefId = 0;
+                        if (int.TryParse(postingRefCell.Value.ToString(), out postingRefId))
                         {
-                            detail.posting_ref = selectedCoa.code; // DisplayMember
+                            detail.posting_ref_id = postingRefId;
+
+                            var selectedCoa = _coadata.FirstOrDefault(c => c.id == postingRefId);
+                            if (selectedCoa != null)
+                            {
+                                detail.posting_ref = selectedCoa.code; // DisplayMember
+                            }
                         }
                     }
                 }
-            }
 
-            if (!ValidateDebitCreditBalance())
-            {
-                return;
-            }
+                if (!ValidateDebitCreditBalance())
+                {
+                    return;
+                }
 
-            var journalEntryParent = Helpers.BuildModelFromPanels<JournalEntryModel>(new Panel[] { pnl_content });
-            journalEntryParent.created_by = _userName;
-            journalEntryParent.currency = _companySetup.currency_code;
-            journalEntryParent.period = _companySetup.start_fiscal_date + " to " + _companySetup.end_fiscal_date;
+                var journalEntryParent = Helpers.BuildModelFromPanels<JournalEntryModel>(new Panel[] { pnl_content });
+                journalEntryParent.created_by = _userName;
+                journalEntryParent.currency = _companySetup.currency_code;
+                journalEntryParent.period = _companySetup.start_fiscal_date + " to " + _companySetup.end_fiscal_date;
 
-            if (!ValidatePeriodOverlap(journalEntryParent))
-            {
-                return;
-            }
+                if (!ValidatePeriodOverlap(journalEntryParent))
+                {
+                    return;
+                }
 
-            // Wrap everything into Journal Entry Payload
-            var jePayload = new JournalEntryPayload
-            {
-                journal_entry = journalEntryParent,
-                journal_entry_details = journalEntryDetails
-            };
+                // Wrap everything into Journal Entry Payload
+                var jePayload = new JournalEntryPayload
+                {
+                    journal_entry = journalEntryParent,
+                    journal_entry_details = journalEntryDetails
+                };
 
-            try
-            {
                 Helpers.Loading.ShowLoading(dgv_journal_entry, "Saving data...");
 
                 if (_isNewMode)
@@ -381,6 +384,9 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             {
                 SetEditMode(false);
                 await LoadJournalEntries();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_journal_entry);
             }

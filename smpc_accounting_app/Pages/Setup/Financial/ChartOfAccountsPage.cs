@@ -109,137 +109,140 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_chart_of_account.EndEdit();
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
-            // Validate required controls in selected panel
-            bool hasError = Helpers.ValidateControlsValues(pnl_content);
-
-            if (hasError)
+            try
             {
-                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
-                return;
-            }
+                dgv_chart_of_account.EndEdit();
 
-            if (txt_code.Text.Contains("--"))
-            {
-                Helpers.ShowDialogMessage("error", "Code cannot contain consecutive dashes (--).");
-                return;
-            }
+                // Validate required controls in selected panel
+                bool hasError = Helpers.ValidateControlsValues(pnl_content);
 
-            // Validate number of dashes should not exceed 5
-            int dashCount = txt_code.Text.Count(c => c == '-');
-            if (dashCount > 5)
-            {
-                Helpers.ShowDialogMessage("error", "Code cannot contain more than 5 dashes (-).");
-                return;
-            }
-
-            if(cmb_group.Text == null || cmb_group.Text == "")
-            {
-                // Must be at least 6 characters
-                if (txt_code.Text.Length < 6)
+                if (hasError)
                 {
-                    Helpers.ShowDialogMessage("error", "Code must be at least 6 characters long.");
+                    Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
                     return;
                 }
-            }
-            else
-            {
-                // Must be at least 7 characters
-                if (txt_code.Text.Length < 7)
+
+                if (txt_code.Text.Contains("--"))
                 {
-                    Helpers.ShowDialogMessage("error", "Code must be at least 7 characters long.");
+                    Helpers.ShowDialogMessage("error", "Code cannot contain consecutive dashes (--).");
                     return;
                 }
-            }
 
-            if(cmb_group.Text == null || cmb_group.Text == "")
-            {
-                // Validate code prefix based on selected Account Class
-                if (cmb_account_class.SelectedItem != null)
+                // Validate number of dashes should not exceed 5
+                int dashCount = txt_code.Text.Count(c => c == '-');
+                if (dashCount > 5)
                 {
-                    DataRowView selectedRow = cmb_account_class.SelectedItem as DataRowView;
+                    Helpers.ShowDialogMessage("error", "Code cannot contain more than 5 dashes (-).");
+                    return;
+                }
+
+                if (cmb_group.Text == null || cmb_group.Text == "")
+                {
+                    // Must be at least 6 characters
+                    if (txt_code.Text.Length < 6)
+                    {
+                        Helpers.ShowDialogMessage("error", "Code must be at least 6 characters long.");
+                        return;
+                    }
+                }
+                else
+                {
+                    // Must be at least 7 characters
+                    if (txt_code.Text.Length < 7)
+                    {
+                        Helpers.ShowDialogMessage("error", "Code must be at least 7 characters long.");
+                        return;
+                    }
+                }
+
+                if (cmb_group.Text == null || cmb_group.Text == "")
+                {
+                    // Validate code prefix based on selected Account Class
+                    if (cmb_account_class.SelectedItem != null)
+                    {
+                        DataRowView selectedRow = cmb_account_class.SelectedItem as DataRowView;
+
+                        if (selectedRow != null)
+                        {
+                            string accountType = selectedRow["type"]?.ToString().Replace(" ", "").ToUpper();
+                            string expectedPrefix = "";
+
+                            switch (accountType)
+                            {
+                                case "ASSET":
+                                    expectedPrefix = "10000";
+                                    break;
+                                case "LIABILITY":
+                                    expectedPrefix = "20000";
+                                    break;
+                                case "EQUITY":
+                                    expectedPrefix = "30000";
+                                    break;
+                                case "REVENUE":
+                                    expectedPrefix = "40000";
+                                    break;
+                                case "EXPENSE":
+                                    expectedPrefix = "50000";
+                                    break;
+                            }
+
+                            if (!string.IsNullOrEmpty(expectedPrefix) && !txt_code.Text.StartsWith(expectedPrefix))
+                            {
+                                Helpers.ShowDialogMessage("error", $"Code must start with '{expectedPrefix}' for {accountType} accounts.");
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                // Validate code prefix based on selected Group
+                if (cmb_group.SelectedItem != null)
+                {
+                    DataRowView selectedRow = cmb_group.SelectedItem as DataRowView;
 
                     if (selectedRow != null)
                     {
-                        string accountType = selectedRow["type"]?.ToString().Replace(" ", "").ToUpper();
-                        string expectedPrefix = "";
+                        string groupCode = selectedRow["code"]?.ToString();
 
-                        switch (accountType)
+                        if (!string.IsNullOrEmpty(groupCode) && !txt_code.Text.StartsWith(groupCode))
                         {
-                            case "ASSET":
-                                expectedPrefix = "10000";
-                                break;
-                            case "LIABILITY":
-                                expectedPrefix = "20000";
-                                break;
-                            case "EQUITY":
-                                expectedPrefix = "30000";
-                                break;
-                            case "REVENUE":
-                                expectedPrefix = "40000";
-                                break;
-                            case "EXPENSE":
-                                expectedPrefix = "50000";
-                                break;
-                        }
-
-                        if (!string.IsNullOrEmpty(expectedPrefix) && !txt_code.Text.StartsWith(expectedPrefix))
-                        {
-                            Helpers.ShowDialogMessage("error", $"Code must start with '{expectedPrefix}' for {accountType} accounts.");
+                            Helpers.ShowDialogMessage("error", $"Code must start with '{groupCode}' for the selected group.");
                             return;
                         }
                     }
                 }
-            }
 
-            // Validate code prefix based on selected Group
-            if (cmb_group.SelectedItem != null)
-            {
-                DataRowView selectedRow = cmb_group.SelectedItem as DataRowView;
+                int? currentId = null;
 
-                if (selectedRow != null)
+                if (!_isNewMode && int.TryParse(txt_id.Text, out int idValue))
                 {
-                    string groupCode = selectedRow["code"]?.ToString();
-
-                    if (!string.IsNullOrEmpty(groupCode) && !txt_code.Text.StartsWith(groupCode))
-                    {
-                        Helpers.ShowDialogMessage("error", $"Code must start with '{groupCode}' for the selected group.");
-                        return;
-                    }
+                    currentId = idValue;
                 }
-            }
 
-            int? currentId = null;
+                if (IsDuplicateCode(txt_code.Text.Trim(), currentId))
+                {
+                    Helpers.ShowDialogMessage(
+                        "error",
+                        $"Code '{txt_code.Text}' already exists. Please use a unique Chart of Account code."
+                    );
+                    return;
+                }
 
-            if (!_isNewMode && int.TryParse(txt_id.Text, out int idValue))
-            {
-                currentId = idValue;
-            }
+                var chartOfAccountPayload = Helpers.BuildModelFromPanels<ChartOfAccountsModel>(new Panel[] { pnl_content });
 
-            if (IsDuplicateCode(txt_code.Text.Trim(), currentId))
-            {
-                Helpers.ShowDialogMessage(
-                    "error",
-                    $"Code '{txt_code.Text}' already exists. Please use a unique Chart of Account code."
-                );
-                return;
-            }
+                if (cmb_account_class.SelectedValue != null)
+                {
+                    chartOfAccountPayload.class_id = Convert.ToInt32(cmb_account_class.SelectedValue);
+                }
+                else
+                {
+                    Helpers.ShowDialogMessage("error", "Please select a valid Account Class.");
+                    return;
+                }
 
-            var chartOfAccountPayload = Helpers.BuildModelFromPanels<ChartOfAccountsModel>(new Panel[] { pnl_content });
-
-            if (cmb_account_class.SelectedValue != null)
-            {
-                chartOfAccountPayload.class_id = Convert.ToInt32(cmb_account_class.SelectedValue);
-            }
-            else
-            {
-                Helpers.ShowDialogMessage("error", "Please select a valid Account Class.");
-                return;
-            }
-
-            try
-            {
                 Helpers.Loading.ShowLoading(dgv_chart_of_account, "Saving data...");
 
                 if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
@@ -262,6 +265,9 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 SetEditMode(false);
                 await FetchChartOfAccount();
                 LoadSelectedChartOfAccount();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_chart_of_account);
             }

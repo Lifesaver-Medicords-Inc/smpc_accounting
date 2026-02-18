@@ -41,22 +41,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "line_amount" });
         }
 
-        private void SetEditableColumns(bool isEdit)
-        {
-            var editableColumns = new[] { "line_amount" };
-
-            foreach (var colName in editableColumns)
-            {
-                if (dgv_main.Columns.Contains(colName))
-                    dgv_main.Columns[colName].ReadOnly = !isEdit;
-            }
-        }
-
         private void SetEditMode(bool enable, bool isNewMode = false)
         {
             _isNewMode = isNewMode;
             dgv_main.AllowUserToAddRows = enable;
-            SetEditableColumns(enable);
 
             btn_supplier.Enabled = enable;
 
@@ -128,45 +116,47 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_main.EndEdit();
-
-            // Validate required controls in selected panel
-            bool hasError = Helpers.ValidateControlsValues(pnl_main);
-
-            if (hasError) // if validation failed
-            {
-                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
-                return;
-            }
-
-            string[] columnsToValidate = new[] { "receipt_no", "ir_doc_no", "line_amount" };
-
-            if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
-                return;
-
-            var apVoucherParent = Helpers.BuildModelFromPanels<APVoucherModel>(new Panel[] { pnl_main });
-
-            apVoucherParent.prepared_by = _userName;
-
-
-            var apVoucherDetails = Helpers.DatagridviewMapper.BuildModelsFromData<APVoucherDetailsModel>(dgv_main);
-
-            //Check if ap voucher details is null or empty
-            if (apVoucherDetails == null || apVoucherDetails.Count == 0)
-            {
-                Helpers.ShowDialogMessage("error", "Please select at least one item.");
-                return;
-            }
-
-            // Wrap everything into Invoice R Payload
-            var avPayload = new APVoucherPayload
-            {
-                ap_voucher = apVoucherParent,
-                ap_voucher_details = apVoucherDetails,
-            };
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
             try
             {
+                dgv_main.EndEdit();
+
+                // Validate required controls in selected panel
+                bool hasError = Helpers.ValidateControlsValues(pnl_main);
+
+                if (hasError) // if validation failed
+                {
+                    Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                    return;
+                }
+
+                string[] columnsToValidate = new[] { "receipt_no", "ir_doc_no", "line_amount" };
+
+                if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
+                    return;
+
+                var apVoucherParent = Helpers.BuildModelFromPanels<APVoucherModel>(new Panel[] { pnl_main });
+
+                apVoucherParent.prepared_by = _userName;
+
+                var apVoucherDetails = Helpers.DatagridviewMapper.BuildModelsFromData<APVoucherDetailsModel>(dgv_main);
+
+                //Check if ap voucher details is null or empty
+                if (apVoucherDetails == null || apVoucherDetails.Count == 0)
+                {
+                    Helpers.ShowDialogMessage("error", "Please select at least one item.");
+                    return;
+                }
+
+                // Wrap everything into Invoice R Payload
+                var avPayload = new APVoucherPayload
+                {
+                    ap_voucher = apVoucherParent,
+                    ap_voucher_details = apVoucherDetails,
+                };
+
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
 
                 var result = await apVoucherService.CreateAPVoucherRecord(avPayload);
@@ -180,6 +170,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             {
                 SetEditMode(false);
                 await LoadAPVouchers();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_main);
             }
@@ -374,6 +367,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
                     targetRow.Cells["invoice_receipt_id"].Value = irRow["invoice_receipt_id"];
                     targetRow.Cells["receipt_no"].Value = irRow["receipt_no"];
+                    targetRow.Cells["ir_due_date"].Value = irRow["ir_due_date"];
                     targetRow.Cells["ir_doc_date"].Value = irRow["ir_doc_date"];
                     targetRow.Cells["line_amount"].Value = irRow["line_amount"];
                     targetRow.Cells["receipt_type"].Value = irRow["receipt_type"];
@@ -412,6 +406,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             {
                 // Update net amount
                 UpdateNetAmount();
+            }
+        }
+
+        private void btn_payment_voucher_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Disable button immediately
+                btn_payment_voucher.Enabled = false;
+
+                var layout = this.FindForm() as Layout;
+
+                if (layout != null)
+                {
+                    layout.OpenRoute("Payment Voucher"); // route key
+                }
+            }
+            catch (Exception ex)
+            {
+                // Re-enable only if something failed
+                btn_payment_voucher.Enabled = true;
+
+                Helpers.ShowDialogMessage("error", $"Failed to open Payment Voucher: {ex.Message}");
             }
         }
     }

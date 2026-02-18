@@ -368,17 +368,23 @@ namespace smpc_accounting_app.Services.Helpers
 
         public static class NumericTextBox
         {
-            public static void HandleNumericTextBox(TextBox textBox, params char[] extraAllowedChars)
+            public static void HandleNumericTextBox(params TextBox[] textBoxes)
             {
-                if (textBox == null) return;
+                HandleNumericTextBox(textBoxes, null);
+            }
 
-                // Detach first to avoid duplicate handlers
-                textBox.KeyPress -= NumericTextBox_KeyPress;
+            public static void HandleNumericTextBox(TextBox[] textBoxes, params char[] extraAllowedChars)
+            {
+                if (textBoxes == null) return;
 
-                // Store allowed chars in Tag
-                textBox.Tag = extraAllowedChars;
+                foreach (var textBox in textBoxes)
+                {
+                    if (textBox == null) continue;
 
-                textBox.KeyPress += NumericTextBox_KeyPress;
+                    textBox.KeyPress -= NumericTextBox_KeyPress;
+                    textBox.Tag = extraAllowedChars;
+                    textBox.KeyPress += NumericTextBox_KeyPress;
+                }
             }
 
             private static void NumericTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -388,24 +394,19 @@ namespace smpc_accounting_app.Services.Helpers
 
                 var extraAllowedChars = tb.Tag as char[];
 
-                // Allow control keys (Backspace, Delete, etc.)
                 if (char.IsControl(e.KeyChar))
                     return;
 
-                // Allow digits
                 if (char.IsDigit(e.KeyChar))
                     return;
 
-                // Allow decimal point (only once)
                 if (e.KeyChar == '.' && !tb.Text.Contains('.'))
                     return;
 
-                // Allow extra characters
                 if (extraAllowedChars != null &&
                     extraAllowedChars.Contains(e.KeyChar))
                     return;
 
-                // Block everything else
                 e.Handled = true;
             }
         }

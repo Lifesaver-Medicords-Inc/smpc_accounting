@@ -39,10 +39,12 @@ namespace smpc_accounting_app.Shared
         public const string JOURNAL_ENTRY = "/accounting/journal_entry2";
         public const string INVOICE_RECEIPT = "/accounting/invoice_receipt";
         public const string AP_VOUCHER = "/accounting/ap_voucher";
+        public const string PAYMENT_VOUCHER = "/accounting/payment_voucher";
         public const string AP_VOUCHER_INVOICE = "/accounting/ap_voucher/invoice/";
         public const string BULK_INVOICE_RECEIPT = "/accounting/bulk_invoice_receipt";
         public const string INVOICE_RECEIPT_TAX = "/accounting/invoice_receipt/tax_view";
         public const string INVOICE_RECEIPT_SUPPLIER = "/accounting/invoice_receipt/supplier_trade";
+        public const string AP_VOUCHER_PAYMENT = "/accounting/payment_voucher/ap_voucher/";
         public const string INVOICE_RECEIPT_PO = "/accounting/invoice_receipt/supplier_po/";
     }
 }

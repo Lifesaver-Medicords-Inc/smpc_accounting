@@ -1,7 +1,7 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 {
-    partial class BulkInvoiceSearch
+    partial class PaymentVoucherSearch
     {
         /// <summary>
         /// Required designer variable.
@@ -30,23 +30,23 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgv_ir_search = new System.Windows.Forms.DataGridView();
-            this.txt_search = new System.Windows.Forms.TextBox();
+            this.dgv_pv_search = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tax_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.invoice_due = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.reference_apv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.currency = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.net_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_ir_search)).BeginInit();
+            this.transaction_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_search = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_pv_search)).BeginInit();
             this.SuspendLayout();
             // 
-            // dgv_ir_search
+            // dgv_pv_search
             // 
-            this.dgv_ir_search.AllowUserToAddRows = false;
-            this.dgv_ir_search.AllowUserToDeleteRows = false;
+            this.dgv_pv_search.AllowUserToAddRows = false;
+            this.dgv_pv_search.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -54,29 +54,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_ir_search.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv_ir_search.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_ir_search.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgv_pv_search.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv_pv_search.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_pv_search.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.supplier,
             this.supplier_code,
-            this.tax_code,
-            this.invoice_due,
+            this.reference_apv,
+            this.currency,
             this.doc_no,
             this.doc_date,
-            this.net_amount});
-            this.dgv_ir_search.Location = new System.Drawing.Point(-1, 31);
-            this.dgv_ir_search.Name = "dgv_ir_search";
-            this.dgv_ir_search.Size = new System.Drawing.Size(802, 389);
-            this.dgv_ir_search.TabIndex = 8;
-            this.dgv_ir_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_ir_search_CellClick);
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 9;
+            this.transaction_amount});
+            this.dgv_pv_search.Location = new System.Drawing.Point(-1, 31);
+            this.dgv_pv_search.Name = "dgv_pv_search";
+            this.dgv_pv_search.Size = new System.Drawing.Size(802, 389);
+            this.dgv_pv_search.TabIndex = 8;
+            this.dgv_pv_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_pv_search_CellClick);
             // 
             // id
             // 
@@ -104,25 +97,26 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.supplier_code.Name = "supplier_code";
             this.supplier_code.ReadOnly = true;
             // 
-            // tax_code
+            // reference_apv
             // 
-            this.tax_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.tax_code.DataPropertyName = "tax_code";
-            this.tax_code.HeaderText = "TAX CODE";
-            this.tax_code.Name = "tax_code";
-            this.tax_code.ReadOnly = true;
+            this.reference_apv.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.reference_apv.DataPropertyName = "reference_apv";
+            this.reference_apv.HeaderText = "REFERENCE APV";
+            this.reference_apv.Name = "reference_apv";
+            this.reference_apv.ReadOnly = true;
             // 
-            // invoice_due
+            // currency
             // 
-            this.invoice_due.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.invoice_due.DataPropertyName = "invoice_due";
-            this.invoice_due.HeaderText = "INVOICE DUE";
-            this.invoice_due.MinimumWidth = 150;
-            this.invoice_due.Name = "invoice_due";
-            this.invoice_due.ReadOnly = true;
+            this.currency.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.currency.DataPropertyName = "currency";
+            this.currency.HeaderText = "CURRENCY";
+            this.currency.MinimumWidth = 150;
+            this.currency.Name = "currency";
+            this.currency.ReadOnly = true;
             // 
             // doc_no
             // 
+            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_no.DataPropertyName = "doc_no";
             this.doc_no.HeaderText = "DOC NO";
             this.doc_no.Name = "doc_no";
@@ -130,29 +124,38 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // doc_date
             // 
+            this.doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_date.DataPropertyName = "doc_date";
             this.doc_date.HeaderText = "DOC DATE";
             this.doc_date.Name = "doc_date";
             this.doc_date.ReadOnly = true;
             // 
-            // net_amount
+            // transaction_amount
             // 
-            this.net_amount.DataPropertyName = "net_amount";
-            this.net_amount.HeaderText = "NET AMOUNT";
-            this.net_amount.Name = "net_amount";
-            this.net_amount.ReadOnly = true;
+            this.transaction_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.transaction_amount.DataPropertyName = "transaction_amount";
+            this.transaction_amount.HeaderText = "TRANSACTION AMOUNT";
+            this.transaction_amount.Name = "transaction_amount";
+            this.transaction_amount.ReadOnly = true;
             // 
-            // BulkInvoiceSearch
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 9;
+            // 
+            // PaymentVoucherSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dgv_ir_search);
+            this.Controls.Add(this.dgv_pv_search);
             this.Controls.Add(this.txt_search);
-            this.Name = "BulkInvoiceSearch";
-            this.Text = "BulkInvoiceSearch";
-            this.Load += new System.EventHandler(this.BulkInvoiceSearch_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_ir_search)).EndInit();
+            this.Name = "PaymentVoucherSearch";
+            this.Text = "PaymentVoucherSearch";
+            this.Load += new System.EventHandler(this.PaymentVoucherSearch_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_pv_search)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -160,15 +163,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgv_ir_search;
+        private System.Windows.Forms.DataGridView dgv_pv_search;
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn supplier;
         private System.Windows.Forms.DataGridViewTextBoxColumn supplier_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tax_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn invoice_due;
+        private System.Windows.Forms.DataGridViewTextBoxColumn reference_apv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn currency;
         private System.Windows.Forms.DataGridViewTextBoxColumn doc_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn doc_date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn net_amount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn transaction_amount;
     }
 }

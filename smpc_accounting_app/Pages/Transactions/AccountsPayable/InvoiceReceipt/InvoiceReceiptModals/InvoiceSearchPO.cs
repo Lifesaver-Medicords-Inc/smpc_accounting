@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Services;
 using smpc_accounting_app.Models;
-using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals

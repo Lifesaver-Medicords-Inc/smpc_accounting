@@ -656,6 +656,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.btn_ap_voucher.TabIndex = 36;
             this.btn_ap_voucher.Text = "AP VOUCHER";
             this.btn_ap_voucher.UseVisualStyleBackColor = false;
+            this.btn_ap_voucher.Click += new System.EventHandler(this.btn_ap_voucher_Click);
             // 
             // dgv_main
             // 

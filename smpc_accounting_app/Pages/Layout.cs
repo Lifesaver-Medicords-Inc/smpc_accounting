@@ -47,6 +47,19 @@ namespace smpc_accounting_app
             }
         }
 
+        public void OpenRoute(string routeName)
+        {
+            try
+            {
+                RoutesService route = new RoutesService(routeName);
+                ShowForm(route.GetTitle(), route.GetForm());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private void ShowForm(string tabTitle, Control control)
         {
             try
@@ -64,12 +77,12 @@ namespace smpc_accounting_app
                 tabContainer.TabPages.Add(newTab);
                 tabContainer.SelectTab(newTab);
             }
-            catch (Exception  )
+            catch (Exception)
             {
-
                 throw;
             }
         }
+
         private void removeTab(object sender, EventArgs e)
         {
             try
@@ -78,7 +91,6 @@ namespace smpc_accounting_app
             }
             catch (Exception)
             {
-
                 throw;
             }  
         }
@@ -139,7 +151,7 @@ namespace smpc_accounting_app
                 {
                     TabPage tabToRemove = tabContainer.TabPages[i];
                     tabContainer.TabPages.Remove(tabToRemove);
-                    break; // 🔁 IMPORTANT: Break right after removing
+                    break; //Break right after removing
                 }
             }
             return;

@@ -142,90 +142,93 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_main.EndEdit();
-
-            // Validate Other Charges textbox
-            if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
-            {
-                if (!float.TryParse(txt_other_charges.Text, out _))
-                {
-                    Helpers.ShowDialogMessage(
-                        "error",
-                        "Other Charges must be a valid numeric value."
-                    );
-
-                    txt_other_charges.Focus();
-                    txt_other_charges.SelectAll();
-                    return;
-                }
-            }
-
-            // Validate required controls in selected panel
-            bool hasError = Helpers.ValidateControlsValues(pnl_main);
-
-            if (hasError) // if validation failed
-            {
-                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
-                return;
-            }
-
-            string[] columnsToValidate = new[] { "payment_charge_code", "charge_description", "account_code", "line_amount" };
-
-            if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
-                return;
-
-            var bulkInvoiceReceiptParent = Helpers.BuildModelFromPanels<BulkInvoiceReceiptModel>(new Panel[] { pnl_main });
-
-            //get tax_code_id FROM COMBOBOX
-            if (cmb_tax_code.SelectedItem is DataRowView row)
-            {
-                bulkInvoiceReceiptParent.tax_code_id = Convert.ToInt32(row["view_id"]);
-            }
-            else
-            {
-                bulkInvoiceReceiptParent.tax_code_id = 0;
-            }
-
-            bulkInvoiceReceiptParent.prepared_by = _userName;
-
-
-            var bulkInvoiceReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<BulkInvoiceReceiptDetailsModel>(dgv_main);
-
-            //Check if bulk invoice receipt details is null or empty
-            if (bulkInvoiceReceiptDetails == null || bulkInvoiceReceiptDetails.Count == 0)
-            {
-                Helpers.ShowDialogMessage("error", "Please select at least one item.");
-                return;
-            }
-
-            // Assign created_by and posting reference info for each detail
-            foreach (DataGridViewRow rows in dgv_main.Rows)
-            {
-                if (rows.IsNewRow) continue;
-
-                var detail = bulkInvoiceReceiptDetails[rows.Index];
-
-                // Get account_code_id and posting_ref from the ComboBox column
-                var accountCodeCell = rows.Cells["cmb_account_code"];
-                if (accountCodeCell.Value != null)
-                {
-                    int accountCodeId = 0;
-                    if (int.TryParse(accountCodeCell.Value.ToString(), out accountCodeId))
-                    {
-                        detail.account_id = accountCodeId;
-                    }
-                }
-            }
-
-            // Wrap everything into Bulk Invoice Receipt Payload
-            var birPayload = new BulkInvoiceReceiptPayload
-            {
-                bulk_invoice_receipt = bulkInvoiceReceiptParent,
-                bulk_invoice_receipt_details = bulkInvoiceReceiptDetails,
-            };
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
             try
             {
+                dgv_main.EndEdit();
+
+                // Validate Other Charges textbox
+                if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
+                {
+                    if (!float.TryParse(txt_other_charges.Text, out _))
+                    {
+                        Helpers.ShowDialogMessage(
+                            "error",
+                            "Other Charges must be a valid numeric value."
+                        );
+
+                        txt_other_charges.Focus();
+                        txt_other_charges.SelectAll();
+                        return;
+                    }
+                }
+
+                // Validate required controls in selected panel
+                bool hasError = Helpers.ValidateControlsValues(pnl_main);
+
+                if (hasError) // if validation failed
+                {
+                    Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                    return;
+                }
+
+                string[] columnsToValidate = new[] { "payment_charge_code", "charge_description", "account_code", "line_amount" };
+
+                if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
+                    return;
+
+                var bulkInvoiceReceiptParent = Helpers.BuildModelFromPanels<BulkInvoiceReceiptModel>(new Panel[] { pnl_main });
+
+                //get tax_code_id FROM COMBOBOX
+                if (cmb_tax_code.SelectedItem is DataRowView row)
+                {
+                    bulkInvoiceReceiptParent.tax_code_id = Convert.ToInt32(row["view_id"]);
+                }
+                else
+                {
+                    bulkInvoiceReceiptParent.tax_code_id = 0;
+                }
+
+                bulkInvoiceReceiptParent.prepared_by = _userName;
+
+
+                var bulkInvoiceReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<BulkInvoiceReceiptDetailsModel>(dgv_main);
+
+                //Check if bulk invoice receipt details is null or empty
+                if (bulkInvoiceReceiptDetails == null || bulkInvoiceReceiptDetails.Count == 0)
+                {
+                    Helpers.ShowDialogMessage("error", "Please select at least one item.");
+                    return;
+                }
+
+                // Assign created_by and posting reference info for each detail
+                foreach (DataGridViewRow rows in dgv_main.Rows)
+                {
+                    if (rows.IsNewRow) continue;
+
+                    var detail = bulkInvoiceReceiptDetails[rows.Index];
+
+                    // Get account_code_id and posting_ref from the ComboBox column
+                    var accountCodeCell = rows.Cells["cmb_account_code"];
+                    if (accountCodeCell.Value != null)
+                    {
+                        int accountCodeId = 0;
+                        if (int.TryParse(accountCodeCell.Value.ToString(), out accountCodeId))
+                        {
+                            detail.account_id = accountCodeId;
+                        }
+                    }
+                }
+
+                // Wrap everything into Bulk Invoice Receipt Payload
+                var birPayload = new BulkInvoiceReceiptPayload
+                {
+                    bulk_invoice_receipt = bulkInvoiceReceiptParent,
+                    bulk_invoice_receipt_details = bulkInvoiceReceiptDetails,
+                };
+
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
 
                 var result = await bulkInvoiceReceiptService.CreateBulkInvoiceReceiptRecord(birPayload);
@@ -239,6 +242,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             {
                 SetEditMode(false);
                 await LoadBulkInvoiceReceipts();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_main);
             }
@@ -583,6 +589,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             if (_isNewMode)
             {
                 UpdateNetAmount();
+            }
+        }
+
+        private void btn_ap_voucher_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Disable button immediately
+                btn_ap_voucher.Enabled = false;
+
+                var layout = this.FindForm() as Layout;
+
+                if (layout != null)
+                {
+                    layout.OpenRoute("AP Voucher"); // route key
+                }
+            }
+            catch (Exception ex)
+            {
+                // Re-enable only if something failed
+                btn_ap_voucher.Enabled = true;
+
+                Helpers.ShowDialogMessage("error", $"Failed to open AP Voucher: {ex.Message}");
             }
         }
     }

@@ -140,54 +140,57 @@ namespace smpc_accounting_app.Pages.Setup.Tax
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_tax_details.EndEdit();
-
-            if (!await ValidateTaxSetupAsync())
-                return;
-
-            var taxSetupParent = Helpers.BuildModelFromPanels<TaxSetupModel>(new Panel[] { pnl_content });
-            taxSetupParent.input_tax_creditable = chk_input_tax_creditable.Checked;
-
-            taxSetupParent.coa_sales_id = cmb_coa_sales.SelectedIndex != -1? Convert.ToInt32(cmb_coa_sales.SelectedValue): 0;
-
-            taxSetupParent.coa_purchase_id = cmb_coa_purchase.SelectedIndex != -1? Convert.ToInt32(cmb_coa_purchase.SelectedValue): 0;
-
-            var taxSetupDetails = Helpers.DatagridviewMapper.BuildModelsFromData<TaxDetailsModel>(dgv_tax_details);
-
-            if (ValidateDateFields(taxSetupDetails, out string overlapError))
-            {
-                Helpers.ShowDialogMessage("error", overlapError);
-                return;
-            }
-
-            taxSetupDetails = taxSetupDetails
-                .OrderBy(d =>
-                    DateTime.ParseExact(
-                        d.valid_from,
-                        "MM/dd/yyyy",
-                        CultureInfo.InvariantCulture))
-                .ToList();
-
-            for (int i = 0; i < taxSetupDetails.Count - 1; i++)
-            {
-                var current = taxSetupDetails[i];
-                var next = taxSetupDetails[i + 1];
-
-                if (string.IsNullOrWhiteSpace(current.valid_to))
-                {
-                    current.valid_to = next.valid_from;
-                }
-            }
-
-            // Wrap everything into ReceivingReportPayload
-            var taxPayload = new TaxSetupPayload
-            {
-                tax_setup = taxSetupParent,
-                tax_setup_details = taxSetupDetails
-            };
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
             try
             {
+                dgv_tax_details.EndEdit();
+
+                if (!await ValidateTaxSetupAsync())
+                    return;
+
+                var taxSetupParent = Helpers.BuildModelFromPanels<TaxSetupModel>(new Panel[] { pnl_content });
+                taxSetupParent.input_tax_creditable = chk_input_tax_creditable.Checked;
+
+                taxSetupParent.coa_sales_id = cmb_coa_sales.SelectedIndex != -1 ? Convert.ToInt32(cmb_coa_sales.SelectedValue) : 0;
+
+                taxSetupParent.coa_purchase_id = cmb_coa_purchase.SelectedIndex != -1 ? Convert.ToInt32(cmb_coa_purchase.SelectedValue) : 0;
+
+                var taxSetupDetails = Helpers.DatagridviewMapper.BuildModelsFromData<TaxDetailsModel>(dgv_tax_details);
+
+                if (ValidateDateFields(taxSetupDetails, out string overlapError))
+                {
+                    Helpers.ShowDialogMessage("error", overlapError);
+                    return;
+                }
+
+                taxSetupDetails = taxSetupDetails
+                    .OrderBy(d =>
+                        DateTime.ParseExact(
+                            d.valid_from,
+                            "MM/dd/yyyy",
+                            CultureInfo.InvariantCulture))
+                    .ToList();
+
+                for (int i = 0; i < taxSetupDetails.Count - 1; i++)
+                {
+                    var current = taxSetupDetails[i];
+                    var next = taxSetupDetails[i + 1];
+
+                    if (string.IsNullOrWhiteSpace(current.valid_to))
+                    {
+                        current.valid_to = next.valid_from;
+                    }
+                }
+
+                // Wrap everything into ReceivingReportPayload
+                var taxPayload = new TaxSetupPayload
+                {
+                    tax_setup = taxSetupParent,
+                    tax_setup_details = taxSetupDetails
+                };
+
                 Helpers.Loading.ShowLoading(dgv_tax_details, "Saving data...");
                 Helpers.Loading.ShowLoading(dgv_tax_code_list, "Saving data...");
 
@@ -210,6 +213,9 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             {
                 SetEditMode(false);
                 await LoadTaxSetups();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_tax_details);
                 Helpers.Loading.HideLoading(dgv_tax_code_list);

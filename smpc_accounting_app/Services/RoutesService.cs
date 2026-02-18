@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables;
@@ -44,7 +45,7 @@ namespace smpc_accounting_app.Services
              
             //========================================================================
             // ACCOUNTS PAYABLES
-            { "Payment Voucher", new PaymentVoucherPage() },
+            { "Payment Voucher", new PaymentVoucherPage2() },
             { "AP Voucher", new APVoucherPage() },
             { "Invoice Receipt", new InvoiceReceiptPage() },
             { "Bulk Invoice Receipt", new BulkInvoiceReceiptPage() },

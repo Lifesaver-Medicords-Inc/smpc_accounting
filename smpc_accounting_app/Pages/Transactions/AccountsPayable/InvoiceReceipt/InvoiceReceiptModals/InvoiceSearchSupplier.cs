@@ -88,7 +88,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             else
             {
                 dgv_suplier_search.DataSource = null;
-                Helpers.ShowDialogMessage("info", "No supplier found.");
+                Helpers.ShowDialogMessage("error", "No supplier found.");
             }
         }
 

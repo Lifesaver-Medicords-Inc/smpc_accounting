@@ -66,75 +66,78 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_list.EndEdit();
-
-            // Validate required controls in selected panel
-            bool hasError = Helpers.ValidateControlsValues(pnl_content);
-
-            if (hasError)
-            {
-                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
-                return;
-            }
-
-            if (txt_code.Text.Contains("--"))
-            {
-                Helpers.ShowDialogMessage("error", "Code cannot contain consecutive dashes (--).");
-                return;
-            }
-
-            // Validate code prefix based on selected type
-            if (cmb_type.SelectedItem != null)
-            {
-                string selectedType = cmb_type.SelectedItem.ToString().ToUpper();
-                string expectedPrefix = "";
-
-                switch (selectedType)
-                {
-                    case "ASSET":
-                        expectedPrefix = "10000";
-                        break;
-                    case "LIABILITY":
-                        expectedPrefix = "20000";
-                        break;
-                    case "EQUITY":
-                        expectedPrefix = "30000";
-                        break;
-                    case "REVENUE":
-                        expectedPrefix = "40000";
-                        break;
-                    case "EXPENSE":
-                        expectedPrefix = "50000";
-                        break;
-                }
-
-                if (!string.IsNullOrEmpty(expectedPrefix) && !txt_code.Text.StartsWith(expectedPrefix))
-                {
-                    Helpers.ShowDialogMessage("error", $"Code must start with '{expectedPrefix}' for {selectedType} type.");
-                    return;
-                }
-            }
-
-            int? currentId = null;
-
-            if (!_isNewMode && int.TryParse(txt_id.Text, out int idValue))
-            {
-                currentId = idValue;
-            }
-
-            if (IsDuplicateCode(txt_code.Text.Trim(), currentId))
-            {
-                Helpers.ShowDialogMessage(
-                    "error",
-                    $"Code '{txt_code.Text}' already exists. Please use a unique Chart of Account code."
-                );
-                return;
-            }
-
-            var chartClassPayload = Helpers.BuildModelFromPanels<ChartClassModel>(new Panel[] { pnl_content });
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
             try
             {
+                dgv_list.EndEdit();
+
+                // Validate required controls in selected panel
+                bool hasError = Helpers.ValidateControlsValues(pnl_content);
+
+                if (hasError)
+                {
+                    Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                    return;
+                }
+
+                if (txt_code.Text.Contains("--"))
+                {
+                    Helpers.ShowDialogMessage("error", "Code cannot contain consecutive dashes (--).");
+                    return;
+                }
+
+                // Validate code prefix based on selected type
+                if (cmb_type.SelectedItem != null)
+                {
+                    string selectedType = cmb_type.SelectedItem.ToString().ToUpper();
+                    string expectedPrefix = "";
+
+                    switch (selectedType)
+                    {
+                        case "ASSET":
+                            expectedPrefix = "10000";
+                            break;
+                        case "LIABILITY":
+                            expectedPrefix = "20000";
+                            break;
+                        case "EQUITY":
+                            expectedPrefix = "30000";
+                            break;
+                        case "REVENUE":
+                            expectedPrefix = "40000";
+                            break;
+                        case "EXPENSE":
+                            expectedPrefix = "50000";
+                            break;
+                    }
+
+                    if (!string.IsNullOrEmpty(expectedPrefix) && !txt_code.Text.StartsWith(expectedPrefix))
+                    {
+                        Helpers.ShowDialogMessage("error", $"Code must start with '{expectedPrefix}' for {selectedType} type.");
+                        return;
+                    }
+                }
+
+                int? currentId = null;
+
+                if (!_isNewMode && int.TryParse(txt_id.Text, out int idValue))
+                {
+                    currentId = idValue;
+                }
+
+                if (IsDuplicateCode(txt_code.Text.Trim(), currentId))
+                {
+                    Helpers.ShowDialogMessage(
+                        "error",
+                        $"Code '{txt_code.Text}' already exists. Please use a unique Chart of Account code."
+                    );
+                    return;
+                }
+
+                var chartClassPayload = Helpers.BuildModelFromPanels<ChartClassModel>(new Panel[] { pnl_content });
+
                 Helpers.Loading.ShowLoading(dgv_list, "Saving data...");
 
                 if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
@@ -163,6 +166,9 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 SetEditMode(false);
                 await GetChartClass();
                 LoadSelectedChartClass();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_list);
             }

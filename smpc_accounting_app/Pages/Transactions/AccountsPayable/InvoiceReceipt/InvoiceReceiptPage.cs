@@ -35,7 +35,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         {
             InitializeComponent();
 
-            Helpers.NumericTextBox.HandleNumericTextBox(txt_other_charges, '.');
+            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_other_charges }, '.');
 
             _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
 
@@ -74,7 +74,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
             Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier_code", 
                 "txt_payment_term", "txt_currency","txt_supplier", "txt_invoice_type", "txt_type", "txt_ap_voucher",
-                "txt_twas_amount", "txt_net_amount", "dtp_doc_date" });
+                "txt_twas_amount", "txt_net_amount", "dtp_doc_date", "txt_reference_po" });
         }
 
         private void ChangeRecord(int step)
@@ -131,95 +131,98 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            dgv_main.EndEdit();
-
-            // Validate discount column values
-            foreach (DataGridViewRow dgRow in dgv_main.Rows)
-            {
-                if (dgRow.IsNewRow) continue;
-
-                var discountCell = dgRow.Cells["discount"];
-
-                if (discountCell?.Value != null &&
-                    !string.IsNullOrWhiteSpace(discountCell.Value.ToString()))
-                {
-                    if (!float.TryParse(discountCell.Value.ToString(), out _))
-                    {
-                        Helpers.ShowDialogMessage(
-                            "error",
-                            "One or more discount values are invalid. Please enter a valid number."
-                        );
-
-                        dgv_main.CurrentCell = discountCell;
-                        dgv_main.BeginEdit(true);
-                        return;
-                    }
-                }
-            }
-
-            // Validate Other Charges textbox
-            if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
-            {
-                if (!float.TryParse(txt_other_charges.Text, out _))
-                {
-                    Helpers.ShowDialogMessage(
-                        "error",
-                        "Other Charges must be a valid numeric value."
-                    );
-
-                    txt_other_charges.Focus();
-                    txt_other_charges.SelectAll();
-                    return;
-                }
-            }
-
-            // Validate required controls in selected panel
-            bool hasError = Helpers.ValidateControlsValues(pnl_main);
-
-            if (hasError) // if validation failed
-            {
-                Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
-                return;
-            }
-
-            string[] columnsToValidate = new[] { "item_code", "item_description", "req_qty", "unit_price", "total_cost", "line_amount" };
-
-            if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
-                return;
-
-            var invoiceReceiptParent = Helpers.BuildModelFromPanels<InvoiceReceiptModel>(new Panel[] { pnl_main });
-
-            //get tax_code_id FROM COMBOBOX
-            if (cmb_tax_code.SelectedItem is DataRowView row)
-            {
-                invoiceReceiptParent.tax_code_id = Convert.ToInt32(row["view_id"]);
-            }
-            else
-            {
-                invoiceReceiptParent.tax_code_id = 0;
-            }
-
-            invoiceReceiptParent.prepared_by = _userName;
-
-
-            var invoiceReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<InvoiceReceiptDetailsModel>(dgv_main);
-
-            //Check if invoice receipt details is null or empty
-            if (invoiceReceiptDetails == null || invoiceReceiptDetails.Count == 0)
-            {
-                Helpers.ShowDialogMessage("error", "Please select at least one item.");
-                return;
-            }
-
-            // Wrap everything into Invoice R Payload
-            var irPayload = new InvoiceReceiptPayload
-            {
-                invoice_receipt = invoiceReceiptParent,
-                invoice_receipt_details = invoiceReceiptDetails,
-            };
+            btn_save.Enabled = false;
+            btn_cancel.Enabled = false;
 
             try
             {
+                dgv_main.EndEdit();
+
+                // Validate discount column values
+                foreach (DataGridViewRow dgRow in dgv_main.Rows)
+                {
+                    if (dgRow.IsNewRow) continue;
+
+                    var discountCell = dgRow.Cells["discount"];
+
+                    if (discountCell?.Value != null &&
+                        !string.IsNullOrWhiteSpace(discountCell.Value.ToString()))
+                    {
+                        if (!float.TryParse(discountCell.Value.ToString(), out _))
+                        {
+                            Helpers.ShowDialogMessage(
+                                "error",
+                                "One or more discount values are invalid. Please enter a valid number."
+                            );
+
+                            dgv_main.CurrentCell = discountCell;
+                            dgv_main.BeginEdit(true);
+                            return;
+                        }
+                    }
+                }
+
+                // Validate Other Charges textbox
+                if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
+                {
+                    if (!float.TryParse(txt_other_charges.Text, out _))
+                    {
+                        Helpers.ShowDialogMessage(
+                            "error",
+                            "Other Charges must be a valid numeric value."
+                        );
+
+                        txt_other_charges.Focus();
+                        txt_other_charges.SelectAll();
+                        return;
+                    }
+                }
+
+                // Validate required controls in selected panel
+                bool hasError = Helpers.ValidateControlsValues(pnl_main);
+
+                if (hasError) // if validation failed
+                {
+                    Helpers.ShowDialogMessage("error", "Please fill in all required fields.");
+                    return;
+                }
+
+                string[] columnsToValidate = new[] { "item_code", "item_description", "req_qty", "unit_price", "total_cost", "line_amount" };
+
+                if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
+                    return;
+
+                var invoiceReceiptParent = Helpers.BuildModelFromPanels<InvoiceReceiptModel>(new Panel[] { pnl_main });
+
+                //get tax_code_id FROM COMBOBOX
+                if (cmb_tax_code.SelectedItem is DataRowView row)
+                {
+                    invoiceReceiptParent.tax_code_id = Convert.ToInt32(row["view_id"]);
+                }
+                else
+                {
+                    invoiceReceiptParent.tax_code_id = 0;
+                }
+
+                invoiceReceiptParent.prepared_by = _userName;
+
+
+                var invoiceReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<InvoiceReceiptDetailsModel>(dgv_main);
+
+                //Check if invoice receipt details is null or empty
+                if (invoiceReceiptDetails == null || invoiceReceiptDetails.Count == 0)
+                {
+                    Helpers.ShowDialogMessage("error", "Please select at least one item.");
+                    return;
+                }
+
+                // Wrap everything into Invoice R Payload
+                var irPayload = new InvoiceReceiptPayload
+                {
+                    invoice_receipt = invoiceReceiptParent,
+                    invoice_receipt_details = invoiceReceiptDetails,
+                };
+
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
 
                 var result = await invoiceReceiptService.CreateInvoiceReceiptRecord(irPayload);
@@ -233,6 +236,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             {
                 SetEditMode(false);
                 await LoadInvoiceReceipts();
+
+                btn_save.Enabled = true;
+                btn_cancel.Enabled = true;
 
                 Helpers.Loading.HideLoading(dgv_main);
             }
@@ -559,6 +565,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             if (_isNewMode)
             {
                 UpdateNetAmount();
+            }
+        }
+
+        private void btn_ap_voucher_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Disable button immediately
+                btn_ap_voucher.Enabled = false;
+
+                var layout = this.FindForm() as Layout;
+
+                if (layout != null)
+                {
+                    layout.OpenRoute("AP Voucher"); // route key
+                }
+            }
+            catch (Exception ex)
+            {
+                // Re-enable only if something failed
+                btn_ap_voucher.Enabled = true;
+
+                Helpers.ShowDialogMessage("error", $"Failed to open AP Voucher: {ex.Message}");
             }
         }
     }

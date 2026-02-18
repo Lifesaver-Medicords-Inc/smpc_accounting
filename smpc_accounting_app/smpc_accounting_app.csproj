@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\APVoucherModel.cs" />
+    <Compile Include="Models\ApVoucherViewModel.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\BulkInvoiceReceiptModel.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Models\GeneralSetup.cs" />
     <Compile Include="Models\InvoiceReceiptModel.cs" />
     <Compile Include="Models\JournalEntryModel.cs" />
+    <Compile Include="Models\PaymentVoucherModel.cs" />
     <Compile Include="Models\PurchaseOrderInvoiceModel.cs" />
     <Compile Include="Models\SalesInvoice.cs" />
     <Compile Include="Models\SaleInvoiceList.cs" />
@@ -239,11 +241,23 @@
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchSupplier.Designer.cs">
       <DependentUpon>InvoiceSearchSupplier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.Designer.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.Designer.cs">
       <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherSearch.Designer.cs">
+      <DependentUpon>PaymentVoucherSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherSearchAPV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherSearchAPV.Designer.cs">
+      <DependentUpon>PaymentVoucherSearchAPV.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsReceivables\PaymentReceiptPage.cs">
       <SubType>UserControl</SubType>
@@ -298,6 +312,7 @@
     <Compile Include="Services\Transactions\BulkInvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\InvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
+    <Compile Include="Services\Transactions\PaymentVoucherService.cs" />
     <Compile Include="Shared\ApiEndPoints.cs" />
     <Compile Include="Shared\CacheData.cs" />
     <Compile Include="Shared\ChartType.cs" />
@@ -446,8 +461,14 @@
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.resx">
       <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage2.resx">
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.resx">
       <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherSearch.resx">
+      <DependentUpon>PaymentVoucherSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherSearchAPV.resx">
+      <DependentUpon>PaymentVoucherSearchAPV.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\PaymentReceiptPage.resx">
       <DependentUpon>PaymentReceiptPage.cs</DependentUpon>

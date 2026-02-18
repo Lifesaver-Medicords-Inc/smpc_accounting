@@ -11,23 +11,24 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 {
-    public partial class BulkInvoiceSearch : Form
+    public partial class PaymentVoucherSearch : Form
     {
-        public string SelectedBIRId { get; private set; } = null;
-        private string placeHolderText = "Bulk Invoice Receipt Search...";
-        private BulkInvoiceReceiptList BulkInvoiceReceipt;
-        readonly BulkInvoiceReceiptService bulkinvoiceReceiptService = new BulkInvoiceReceiptService();
-        private DataTable birTable;
-        public BulkInvoiceSearch()
+        public string SelectedPVId { get; private set; } = null;
+        private string placeHolderText = "Payment Voucher Search...";
+        private PaymentVoucherList PaymentVoucher;
+        readonly PaymentVoucherService paymentVoucherService = new PaymentVoucherService();
+        private DataTable pvTable;
+
+        public PaymentVoucherSearch()
         {
             InitializeComponent();
 
             // Center the modal relative to its parent form
             this.StartPosition = FormStartPosition.CenterParent;
 
-            dgv_ir_search.AutoGenerateColumns = false;
+            dgv_pv_search.AutoGenerateColumns = false;
             InitializeSearchBox();
         }
 
@@ -39,29 +40,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
         private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            if (birTable == null || birTable.Rows.Count == 0)
+            if (pvTable == null || pvTable.Rows.Count == 0)
                 return;
 
             string searchText = txt_search.Text.Trim();
 
             if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
             {
-                dgv_ir_search.DataSource = birTable;
+                dgv_pv_search.DataSource = pvTable;
             }
             else
             {
-                var searchedData = Helpers.FilterDataTable(birTable, searchText,
-                    "supplier", "supplier_code", "tax_code", "invoice_due", "doc_no", "doc_date", "net_amount");
-                dgv_ir_search.DataSource = searchedData;
+                var searchedData = Helpers.FilterDataTable(pvTable, searchText,
+                    "supplier", "supplier_code", "reference_apv", "currency", "doc_no", "doc_date", "transaction_amount");
+                dgv_pv_search.DataSource = searchedData;
             }
         }
 
-        private async void BulkInvoiceSearch_Load(object sender, EventArgs e)
+        private async void PaymentVoucherSearch_Load(object sender, EventArgs e)
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_ir_search, "Fetching data...");
-                await BulkInvoiceReceipts();
+                Helpers.Loading.ShowLoading(dgv_pv_search, "Fetching data...");
+                await PaymentVouchers();
             }
             catch (Exception ex)
             {
@@ -69,43 +70,43 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             }
             finally
             {
-                Helpers.Loading.HideLoading(dgv_ir_search);
+                Helpers.Loading.HideLoading(dgv_pv_search);
             }
         }
 
-        private async Task BulkInvoiceReceipts()
+        private async Task PaymentVouchers()
         {
-            BulkInvoiceReceipt = await bulkinvoiceReceiptService.GetAsModel();
+            PaymentVoucher = await paymentVoucherService.GetAsModel();
 
-            BulkInvoiceReceipt.bulk_invoice_receipt.Reverse();
+            PaymentVoucher.payment_voucher.Reverse();
 
             // Convert journal entry list to DataTable using helper
-            birTable = Helpers.ToDataTable(BulkInvoiceReceipt.bulk_invoice_receipt);
+            pvTable = Helpers.ToDataTable(PaymentVoucher.payment_voucher);
 
-            if (birTable?.Rows.Count > 0)
+            if (pvTable?.Rows.Count > 0)
             {
-                dgv_ir_search.DataSource = birTable;
+                dgv_pv_search.DataSource = pvTable;
             }
             else
             {
-                dgv_ir_search.DataSource = null;
-                Helpers.ShowDialogMessage("error", "No bulk invoice receipt found.");
+                dgv_pv_search.DataSource = null;
+                Helpers.ShowDialogMessage("error", "No payment voucher found.");
             }
         }
 
-        private void dgv_ir_search_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgv_pv_search_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
 
-            var row = dgv_ir_search.Rows[e.RowIndex];
+            var row = dgv_pv_search.Rows[e.RowIndex];
 
             // Always get the id value from the row, regardless of which column was clicked
             var idValue = row.Cells["id"].Value;
 
             if (idValue != null)
             {
-                SelectedBIRId = idValue.ToString();
+                SelectedPVId = idValue.ToString();
 
                 this.DialogResult = DialogResult.OK; // close the modal with OK
                 this.Close();
