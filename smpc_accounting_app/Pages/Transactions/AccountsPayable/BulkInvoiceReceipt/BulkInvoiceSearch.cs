@@ -28,6 +28,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.StartPosition = FormStartPosition.CenterParent;
 
             dgv_ir_search.AutoGenerateColumns = false;
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ir_search, new[] { "net_amount" });
             InitializeSearchBox();
         }
 

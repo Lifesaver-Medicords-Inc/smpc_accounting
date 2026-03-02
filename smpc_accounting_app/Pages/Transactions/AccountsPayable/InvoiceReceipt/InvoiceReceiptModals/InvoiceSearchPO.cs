@@ -19,6 +19,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         public DataTable SelectedPO { get; private set; } = null;
         public DataTable SelectedRows { get; private set; } = null;
         public List<string> SelectedPOLabels { get; private set; } = null;
+        public float? SelectedTotalAmount { get; private set; } = null;
         GeneralService<PurchaseOrderInvoiceList> serviceSetup;
         private int _supplierID;
         private PurchaseOrderInvoiceList _podata;
@@ -155,9 +156,23 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 Font = new Font("Segoe UI", 9, FontStyle.Bold)
             };
 
+            Label lblTotalAmount = new Label
+            {
+                Text = $"Total Amount: {parent.total_amount_po}",
+                Left = 400,
+                Top = 8,
+                Width = panel.Width - 410,   // fits inside panel
+                Height = 18,
+                AutoSize = false,
+                AutoEllipsis = true,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Visible = false,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold)
+            };
+
             panel.Controls.AddRange(new Control[]
             {
-                lblId, lblPoNo, lblDate, lblSupplier
+                lblId, lblPoNo, lblDate, lblSupplier, lblTotalAmount
             });
 
             DataGridView dgv = CreateChildGrid(parent.id);

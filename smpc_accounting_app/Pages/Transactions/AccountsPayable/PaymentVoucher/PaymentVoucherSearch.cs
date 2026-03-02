@@ -30,6 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
             dgv_pv_search.AutoGenerateColumns = false;
             InitializeSearchBox();
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_pv_search, new[] { "transaction_amount" });
         }
 
         private void InitializeSearchBox()

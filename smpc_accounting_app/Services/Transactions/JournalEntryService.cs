@@ -15,7 +15,7 @@ namespace smpc_accounting_app.Services.Transactions
         public JournalEntryService() : base(ApiEndPoints.JOURNAL_ENTRY) { }
 
         // CREATE
-        public async Task<object> CreateJERecord(JournalEntryPayload payload)
+        public async Task<ApiResponseModel<object>> CreateJERecord(JournalEntryPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Post(ApiEndPoints.JOURNAL_ENTRY, new Dictionary<string, dynamic>
                 {
@@ -24,11 +24,11 @@ namespace smpc_accounting_app.Services.Transactions
                 }
             );
 
-            return response.data;
+            return response;
         }
 
         // UPDATE
-        public async Task<object> UpdateJERecord(JournalEntryPayload payload)
+        public async Task<ApiResponseModel<object>> UpdateJERecord(JournalEntryPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Put(ApiEndPoints.JOURNAL_ENTRY, new Dictionary<string, dynamic>
                 {
@@ -37,11 +37,11 @@ namespace smpc_accounting_app.Services.Transactions
                 } 
             );
 
-            return response.data;
+            return response;
         }
 
         // DELETE
-        public async Task<object> DeleteJERecord(JournalEntryPayload payload)
+        public async Task<ApiResponseModel<object>> DeleteJERecord(JournalEntryPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Delete(ApiEndPoints.JOURNAL_ENTRY, new Dictionary<string, dynamic>
                 {
@@ -50,7 +50,7 @@ namespace smpc_accounting_app.Services.Transactions
                 }
             );
 
-            return response.data;
+            return response;
         }
     }
 }

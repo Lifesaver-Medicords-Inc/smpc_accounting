@@ -50,6 +50,7 @@ namespace smpc_accounting_app.Models
         public string receipt_no { get; set; }
         public string ir_due_date { get; set; }
         public string ir_doc_date { get; set; }
+        public float twas_amount { get; set; }
         public float line_amount { get; set; }
         public string receipt_type { get; set; }
     }

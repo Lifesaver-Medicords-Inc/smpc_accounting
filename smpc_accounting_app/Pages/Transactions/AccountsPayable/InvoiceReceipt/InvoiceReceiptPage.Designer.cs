@@ -32,6 +32,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InvoiceReceiptPage));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnl_main = new System.Windows.Forms.Panel();
+            this.txt_total_amount_po = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.txt_other_charges = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.cmb_tax_code = new System.Windows.Forms.ComboBox();
@@ -43,7 +45,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.txt_id = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.btn_supplier = new System.Windows.Forms.Button();
-            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_invoice_due = new System.Windows.Forms.DateTimePicker();
             this.txt_remarks = new System.Windows.Forms.TextBox();
             this.txt_type = new System.Windows.Forms.TextBox();
@@ -94,6 +95,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.total_cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
             this.pnl_main.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -103,6 +105,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // pnl_main
             // 
+            this.pnl_main.Controls.Add(this.txt_total_amount_po);
+            this.pnl_main.Controls.Add(this.label21);
             this.pnl_main.Controls.Add(this.txt_other_charges);
             this.pnl_main.Controls.Add(this.label20);
             this.pnl_main.Controls.Add(this.cmb_tax_code);
@@ -149,6 +153,26 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.pnl_main.Size = new System.Drawing.Size(1400, 242);
             this.pnl_main.TabIndex = 16;
             // 
+            // txt_total_amount_po
+            // 
+            this.txt_total_amount_po.Enabled = false;
+            this.txt_total_amount_po.Location = new System.Drawing.Point(595, 84);
+            this.txt_total_amount_po.Name = "txt_total_amount_po";
+            this.txt_total_amount_po.Size = new System.Drawing.Size(289, 20);
+            this.txt_total_amount_po.TabIndex = 306;
+            this.txt_total_amount_po.Tag = "";
+            this.txt_total_amount_po.Visible = false;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(462, 87);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(116, 13);
+            this.label21.TabIndex = 305;
+            this.label21.Text = "TOTAL AMOUNT PO :";
+            this.label21.Visible = false;
+            // 
             // txt_other_charges
             // 
             this.txt_other_charges.Enabled = false;
@@ -156,7 +180,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.txt_other_charges.Name = "txt_other_charges";
             this.txt_other_charges.Size = new System.Drawing.Size(289, 20);
             this.txt_other_charges.TabIndex = 304;
-            this.txt_other_charges.Tag = "";
+            this.txt_other_charges.Tag = "MONEY";
             this.txt_other_charges.TextChanged += new System.EventHandler(this.txt_other_charges_TextChanged);
             // 
             // label20
@@ -183,10 +207,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.cmb_tax_code.TabIndex = 302;
             this.cmb_tax_code.TabStop = false;
             this.cmb_tax_code.Tag = "REQUIRED";
+            this.cmb_tax_code.SelectedIndexChanged += new System.EventHandler(this.cmb_tax_code_SelectedIndexChanged);
             // 
             // txt_prepared_by
             // 
-            this.txt_prepared_by.Location = new System.Drawing.Point(595, 140);
+            this.txt_prepared_by.Location = new System.Drawing.Point(595, 126);
             this.txt_prepared_by.Name = "txt_prepared_by";
             this.txt_prepared_by.Size = new System.Drawing.Size(289, 20);
             this.txt_prepared_by.TabIndex = 301;
@@ -196,7 +221,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(493, 147);
+            this.label19.Location = new System.Drawing.Point(493, 132);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(86, 13);
             this.label19.TabIndex = 300;
@@ -238,7 +263,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // txt_id
             // 
             this.txt_id.Enabled = false;
-            this.txt_id.Location = new System.Drawing.Point(595, 173);
+            this.txt_id.Location = new System.Drawing.Point(595, 147);
             this.txt_id.Name = "txt_id";
             this.txt_id.Size = new System.Drawing.Size(289, 20);
             this.txt_id.TabIndex = 295;
@@ -248,7 +273,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(555, 176);
+            this.label17.Location = new System.Drawing.Point(555, 150);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(24, 13);
             this.label17.TabIndex = 294;
@@ -266,16 +291,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.btn_supplier.TabIndex = 293;
             this.btn_supplier.UseVisualStyleBackColor = true;
             this.btn_supplier.Click += new System.EventHandler(this.btn_supplier_Click);
-            // 
-            // dtp_doc_date
-            // 
-            this.dtp_doc_date.Enabled = false;
-            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_doc_date.Location = new System.Drawing.Point(995, 39);
-            this.dtp_doc_date.Name = "dtp_doc_date";
-            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
-            this.dtp_doc_date.TabIndex = 291;
-            this.dtp_doc_date.Tag = "REQUIRED";
             // 
             // dtp_invoice_due
             // 
@@ -321,7 +336,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.txt_twas_amount.Name = "txt_twas_amount";
             this.txt_twas_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_twas_amount.TabIndex = 286;
-            this.txt_twas_amount.Tag = "";
+            this.txt_twas_amount.Tag = "MONEY REQUIRED";
+            this.txt_twas_amount.TextChanged += new System.EventHandler(this.txt_twas_amount_TextChanged);
             // 
             // txt_net_amount
             // 
@@ -330,7 +346,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.txt_net_amount.Name = "txt_net_amount";
             this.txt_net_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_net_amount.TabIndex = 285;
-            this.txt_net_amount.Tag = "REQUIRED";
+            this.txt_net_amount.Tag = "MONEY REQUIRED";
             // 
             // txt_invoice_type
             // 
@@ -366,7 +382,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.txt_payment_term.Name = "txt_payment_term";
             this.txt_payment_term.Size = new System.Drawing.Size(289, 20);
             this.txt_payment_term.TabIndex = 278;
-            this.txt_payment_term.Tag = "REQUIRED";
+            this.txt_payment_term.Tag = "";
             // 
             // txt_reference_po
             // 
@@ -711,7 +727,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.item_code.DataPropertyName = "item_code";
-            this.item_code.HeaderText = "ITEM  CODE";
+            this.item_code.HeaderText = "ITEM CODE";
             this.item_code.MinimumWidth = 200;
             this.item_code.Name = "item_code";
             this.item_code.ReadOnly = true;
@@ -747,7 +763,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.total_cost.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.total_cost.DataPropertyName = "total_cost";
             this.total_cost.HeaderText = "TOTAL COST";
-            this.total_cost.MinimumWidth = 180;
             this.total_cost.Name = "total_cost";
             this.total_cost.ReadOnly = true;
             // 
@@ -766,6 +781,16 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.line_amount.HeaderText = "LINE AMOUNT";
             this.line_amount.Name = "line_amount";
             this.line_amount.ReadOnly = true;
+            // 
+            // dtp_doc_date
+            // 
+            this.dtp_doc_date.Enabled = false;
+            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_doc_date.Location = new System.Drawing.Point(995, 39);
+            this.dtp_doc_date.Name = "dtp_doc_date";
+            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
+            this.dtp_doc_date.TabIndex = 291;
+            this.dtp_doc_date.Tag = "REQUIRED";
             // 
             // InvoiceReceiptPage
             // 
@@ -832,7 +857,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private System.Windows.Forms.TextBox txt_net_amount;
         private System.Windows.Forms.TextBox txt_invoice_type;
         private System.Windows.Forms.DateTimePicker dtp_invoice_due;
-        private System.Windows.Forms.DateTimePicker dtp_doc_date;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btn_ap_voucher;
         private System.Windows.Forms.DataGridView dgv_main;
@@ -847,6 +871,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private System.Windows.Forms.ComboBox cmb_tax_code;
         private System.Windows.Forms.TextBox txt_other_charges;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txt_total_amount_po;
+        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn purchase_order_details_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
@@ -856,5 +882,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private System.Windows.Forms.DataGridViewTextBoxColumn total_cost;
         private System.Windows.Forms.DataGridViewTextBoxColumn discount;
         private System.Windows.Forms.DataGridViewTextBoxColumn line_amount;
+        private System.Windows.Forms.DateTimePicker dtp_doc_date;
     }
 }

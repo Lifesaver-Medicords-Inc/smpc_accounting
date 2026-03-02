@@ -121,7 +121,13 @@ namespace smpc_accounting_app.Pages.Setup.Tax
                     tax_setup = taxModel
                 };
 
-                await taxSetupService.DeleteTaxRecord(taxPayload);
+                var result = await taxSetupService.DeleteTaxRecord(taxPayload);
+
+                if (!result.success)
+                {
+                    Helpers.ShowDialogMessage("error", "Tax Setup not Deleted.");
+                    return;
+                }
 
                 Helpers.ShowDialogMessage("success", "Tax Setup deleted successfully.");
             }
@@ -197,13 +203,30 @@ namespace smpc_accounting_app.Pages.Setup.Tax
                 if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
                 {
                     var result = await taxSetupService.CreateTaxRecord(taxPayload);
+
+                    if (!result.success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Tax Setup not Created.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Tax Setup created successfully.");
                 }
                 else
                 {
                     var result = await taxSetupService.UpdateTaxRecord(taxPayload);
+
+                    if (!result.success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Tax Setup not Updated.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Tax Setup updated successfully.");
                 }
+
+                SetEditMode(false);
+                await LoadTaxSetups();
             }
             catch (Exception ex)
             {
@@ -211,9 +234,6 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             }
             finally
             {
-                SetEditMode(false);
-                await LoadTaxSetups();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 

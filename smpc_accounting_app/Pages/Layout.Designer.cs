@@ -31,42 +31,44 @@ namespace smpc_accounting_app
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Sales Invoice");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Payment Receipt");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Account Receivables", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sales Invoice2");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Account Receivables", new System.Windows.Forms.TreeNode[] {
             treeNode1,
-            treeNode2});
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Invoice Receipt");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Payment Voucher");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("AP Voucher");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Bulk Invoice Receipt");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Accounts Payables", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
+            treeNode2,
+            treeNode3});
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Invoice Receipt");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Payment Voucher");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("AP Voucher");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Bulk Invoice Receipt");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Accounts Payables", new System.Windows.Forms.TreeNode[] {
             treeNode5,
             treeNode6,
-            treeNode7});
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Journal Voucher");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Credit Memo");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Journal Entry");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Transactions", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode8,
+            treeNode7,
+            treeNode8});
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Journal Voucher");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Credit Memo");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Journal Entry");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Transactions", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
             treeNode9,
             treeNode10,
-            treeNode11});
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Book Setup");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Bank Setup");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Currency Setup");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Chart Of Accounts Setup");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("GL Mapper Setup");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Chart Class Setup");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Tax Setup");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
-            treeNode13,
+            treeNode11,
+            treeNode12});
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Book Setup");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Bank Setup");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Currency Setup");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Chart Of Accounts Setup");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("GL Mapper Setup");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Chart Class Setup");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Tax Setup");
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
             treeNode14,
             treeNode15,
             treeNode16,
             treeNode17,
             treeNode18,
-            treeNode19});
+            treeNode19,
+            treeNode20});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Layout));
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -258,45 +260,47 @@ namespace smpc_accounting_app
             treeNode1.Text = "Sales Invoice";
             treeNode2.Name = "Payment Receipt";
             treeNode2.Text = "Payment Receipt";
-            treeNode3.Name = "parent_2";
-            treeNode3.Text = "Account Receivables";
-            treeNode4.Name = "Invoice Receipt";
-            treeNode4.Text = "Invoice Receipt";
-            treeNode5.Name = "Payment Voucher";
-            treeNode5.Text = "Payment Voucher";
-            treeNode6.Name = "AP Voucher";
-            treeNode6.Text = "AP Voucher";
-            treeNode7.Name = "Bulk Invoice Receipt";
-            treeNode7.Text = "Bulk Invoice Receipt";
-            treeNode8.Name = "parent_3";
-            treeNode8.Text = "Accounts Payables";
-            treeNode9.Name = "Journal Voucher";
-            treeNode9.Text = "Journal Voucher";
-            treeNode10.Name = "Credit Memo";
-            treeNode10.Text = "Credit Memo";
-            treeNode11.Name = "Journal Entry";
-            treeNode11.Text = "Journal Entry";
-            treeNode12.Name = "parent_1";
-            treeNode12.Text = "Transactions";
-            treeNode13.Name = "Book Setup";
-            treeNode13.Text = "Book Setup";
-            treeNode14.Name = "Bank Setup";
-            treeNode14.Text = "Bank Setup";
-            treeNode15.Name = "Currency Setup";
-            treeNode15.Text = "Currency Setup";
-            treeNode16.Name = "Chart Of Accounts Setup";
-            treeNode16.Text = "Chart Of Accounts Setup";
-            treeNode17.Name = "GL Mapper Setup";
-            treeNode17.Text = "GL Mapper Setup";
-            treeNode18.Name = "Chart Class Setup";
-            treeNode18.Text = "Chart Class Setup";
-            treeNode19.Name = "Tax Setup";
-            treeNode19.Text = "Tax Setup";
-            treeNode20.Name = "parent_6";
-            treeNode20.Text = "System Configuration";
+            treeNode3.Name = "Sales Invoice2";
+            treeNode3.Text = "Sales Invoice2";
+            treeNode4.Name = "parent_2";
+            treeNode4.Text = "Account Receivables";
+            treeNode5.Name = "Invoice Receipt";
+            treeNode5.Text = "Invoice Receipt";
+            treeNode6.Name = "Payment Voucher";
+            treeNode6.Text = "Payment Voucher";
+            treeNode7.Name = "AP Voucher";
+            treeNode7.Text = "AP Voucher";
+            treeNode8.Name = "Bulk Invoice Receipt";
+            treeNode8.Text = "Bulk Invoice Receipt";
+            treeNode9.Name = "parent_3";
+            treeNode9.Text = "Accounts Payables";
+            treeNode10.Name = "Journal Voucher";
+            treeNode10.Text = "Journal Voucher";
+            treeNode11.Name = "Credit Memo";
+            treeNode11.Text = "Credit Memo";
+            treeNode12.Name = "Journal Entry";
+            treeNode12.Text = "Journal Entry";
+            treeNode13.Name = "parent_1";
+            treeNode13.Text = "Transactions";
+            treeNode14.Name = "Book Setup";
+            treeNode14.Text = "Book Setup";
+            treeNode15.Name = "Bank Setup";
+            treeNode15.Text = "Bank Setup";
+            treeNode16.Name = "Currency Setup";
+            treeNode16.Text = "Currency Setup";
+            treeNode17.Name = "Chart Of Accounts Setup";
+            treeNode17.Text = "Chart Of Accounts Setup";
+            treeNode18.Name = "GL Mapper Setup";
+            treeNode18.Text = "GL Mapper Setup";
+            treeNode19.Name = "Chart Class Setup";
+            treeNode19.Text = "Chart Class Setup";
+            treeNode20.Name = "Tax Setup";
+            treeNode20.Text = "Tax Setup";
+            treeNode21.Name = "parent_6";
+            treeNode21.Text = "System Configuration";
             this.Sidebar.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode12,
-            treeNode20});
+            treeNode13,
+            treeNode21});
             this.Sidebar.Size = new System.Drawing.Size(230, 428);
             this.Sidebar.TabIndex = 0;
             this.Sidebar.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.Sidebar_NodeMouseClick);

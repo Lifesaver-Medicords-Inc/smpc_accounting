@@ -31,6 +31,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
             // Center the modal relative to its parent form
             this.StartPosition = FormStartPosition.CenterParent;
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ir_search, new[] { "line_amount" });
 
             dgv_ir_search.AutoGenerateColumns = false;
             InitializeSearchBox();

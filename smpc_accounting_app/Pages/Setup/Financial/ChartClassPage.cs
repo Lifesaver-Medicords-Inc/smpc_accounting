@@ -143,6 +143,13 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
                 {
                     var result = await chartClassServices.Insert(chartClassPayload);
+
+                    if (!result.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Chart Class not created.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Chart Class created successfully.");
                 }
                 else
@@ -154,8 +161,19 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                     }
 
                     var result = await chartClassServices.Update(chartClassPayload);
+
+                    if (!result.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Chart Class not updated.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Chart Class updated successfully.");
                 }
+
+                SetEditMode(false);
+                await GetChartClass();
+                LoadSelectedChartClass();
             }
             catch (Exception ex)
             {
@@ -163,10 +181,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             }
             finally
             {
-                SetEditMode(false);
-                await GetChartClass();
-                LoadSelectedChartClass();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 
@@ -196,7 +210,13 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                     id = int.Parse(txt_id.Text),
                 };
 
-                await chartClassServices.Delete(clModel);
+                var result = await chartClassServices.Delete(clModel);
+
+                if (!result)
+                {
+                    Helpers.ShowDialogMessage("error", "Chart of Account not Deleted.");
+                    return;
+                }
 
                 Helpers.ShowDialogMessage("success", "Chart Class deleted successfully.");
             }

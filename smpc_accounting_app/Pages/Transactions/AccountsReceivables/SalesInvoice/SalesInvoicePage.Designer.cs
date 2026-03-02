@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
 {
     partial class SalesInvoicePage
     {
@@ -31,14 +31,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesInvoicePage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();
             this.btn_search = new System.Windows.Forms.ToolStripButton();
-            this.btn_prev = new System.Windows.Forms.ToolStripButton();
             this.btn_next = new System.Windows.Forms.ToolStripButton();
             this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
+            this.btn_prev = new System.Windows.Forms.ToolStripButton();
+            this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.txt_doc_no = new System.Windows.Forms.TextBox();
@@ -136,7 +137,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             this.txt_total_amount_due = new System.Windows.Forms.TextBox();
             this.txt_total_amount_due_label = new System.Windows.Forms.Label();
             this.pnl_footer = new System.Windows.Forms.Panel();
-            this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.panel6.SuspendLayout();
             this.pnl_header.SuspendLayout();
@@ -184,16 +184,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             this.btn_search.Size = new System.Drawing.Size(62, 22);
             this.btn_search.Text = "Search";
             // 
-            // btn_prev
-            // 
-            this.btn_prev.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btn_prev.Image = ((System.Drawing.Image)(resources.GetObject("btn_prev.Image")));
-            this.btn_prev.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_prev.Name = "btn_prev";
-            this.btn_prev.Size = new System.Drawing.Size(72, 22);
-            this.btn_prev.Text = "Previous";
-            this.btn_prev.Click += new System.EventHandler(this.btn_prev_Click);
-            // 
             // btn_next
             // 
             this.btn_next.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -222,6 +212,26 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             this.btn_save.Text = "Save";
             this.btn_save.Visible = false;
             this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
+            // 
+            // btn_prev
+            // 
+            this.btn_prev.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btn_prev.Image = ((System.Drawing.Image)(resources.GetObject("btn_prev.Image")));
+            this.btn_prev.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_prev.Name = "btn_prev";
+            this.btn_prev.Size = new System.Drawing.Size(72, 22);
+            this.btn_prev.Text = "Previous";
+            this.btn_prev.Click += new System.EventHandler(this.btn_prev_Click);
+            // 
+            // btn_cancel
+            // 
+            this.btn_cancel.Image = ((System.Drawing.Image)(resources.GetObject("btn_cancel.Image")));
+            this.btn_cancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(63, 22);
+            this.btn_cancel.Text = "Cancel";
+            this.btn_cancel.Visible = false;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // panel6
             // 
@@ -437,6 +447,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             // cmb_tax
             // 
             this.cmb_tax.FormattingEnabled = true;
+            this.cmb_tax.Items.AddRange(new object[] {
+            "VAT"});
             this.cmb_tax.Location = new System.Drawing.Point(123, 101);
             this.cmb_tax.Name = "cmb_tax";
             this.cmb_tax.Size = new System.Drawing.Size(182, 21);
@@ -753,8 +765,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             // 
             this.discount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.discount.DataPropertyName = "discount";
-            dataGridViewCellStyle2.NullValue = null;
-            this.discount.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.NullValue = null;
+            this.discount.DefaultCellStyle = dataGridViewCellStyle1;
             this.discount.HeaderText = "DISCOUNT";
             this.discount.Name = "discount";
             this.discount.ReadOnly = true;
@@ -1123,16 +1135,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             this.pnl_footer.Size = new System.Drawing.Size(1121, 268);
             this.pnl_footer.TabIndex = 83;
             this.pnl_footer.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_footer_Paint);
-            // 
-            // btn_cancel
-            // 
-            this.btn_cancel.Image = ((System.Drawing.Image)(resources.GetObject("btn_cancel.Image")));
-            this.btn_cancel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(63, 22);
-            this.btn_cancel.Text = "Cancel";
-            this.btn_cancel.Visible = false;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // SalesInvoicePage
             // 

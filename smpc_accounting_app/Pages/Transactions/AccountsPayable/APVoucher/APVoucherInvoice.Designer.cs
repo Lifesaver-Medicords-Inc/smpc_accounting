@@ -36,6 +36,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.receipt_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.twas_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receipt_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ir_search)).BeginInit();
@@ -59,6 +60,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.receipt_no,
             this.ir_doc_date,
             this.ir_due_date,
+            this.twas_amount,
             this.line_amount,
             this.receipt_type});
             this.dgv_ir_search.Location = new System.Drawing.Point(-1, 31);
@@ -108,6 +110,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.ir_due_date.ReadOnly = true;
             this.ir_due_date.Visible = false;
             // 
+            // twas_amount
+            // 
+            this.twas_amount.DataPropertyName = "twas_amount";
+            this.twas_amount.HeaderText = "TWAS AMOUNT";
+            this.twas_amount.Name = "twas_amount";
+            this.twas_amount.ReadOnly = true;
+            this.twas_amount.Visible = false;
+            // 
             // line_amount
             // 
             this.line_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -148,6 +158,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private System.Windows.Forms.DataGridViewTextBoxColumn receipt_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_doc_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_due_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn twas_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn line_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn receipt_type;
     }

@@ -27,6 +27,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
 
             // Center the modal relative to its parent form
             this.StartPosition = FormStartPosition.CenterParent;
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_suplier_search, new[] { "overpayment_amount" });
 
             dgv_suplier_search.AutoGenerateColumns = false;
             InitializeSearchBox();
@@ -52,7 +53,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             else
             {
                 var searchedData = Helpers.FilterDataTable(supplierTable, searchText, 
-                    "supplier_code", "supplier", "invoice_type", "payment_term", "type");
+                    "supplier_code", "supplier", "invoice_type", "payment_term", "type", "overpayment_amount");
                 dgv_suplier_search.DataSource = searchedData;
             }
         }

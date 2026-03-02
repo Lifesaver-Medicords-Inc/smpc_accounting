@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
 {
    
     public partial class SalesInvoicePage : UserControl
@@ -47,9 +47,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
             GetPanelWithDigitValidationFields(pnl_footer);
             FetchSalesOrderWithDr();
             FetchPaymentTerms();
-            FetchChartOfAccounts();
+            //FetchChartOfAccounts();
             FetchSalesInvoiceDocNo();
-            FetchTaxCode();
+            //FetchTaxCode();
             cmb_currency.SelectedIndex = 1;
             SalesInvoiceRecords();
 

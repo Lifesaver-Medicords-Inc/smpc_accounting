@@ -17,7 +17,11 @@ namespace smpc_accounting_app
     public partial class Layout : Form
     {
         private int tabCount = 0;
-        GeneralService<CompanySetupModel> serviceSetup;
+        GeneralService<CompanySetupModel> serviceCompanySetup;
+        GeneralService<JournalEntryModel> serviceJournalSetup;
+        GeneralService<ExchangeRateModel> serviceCurrencyRateSetup;
+        private string _currencyCode;
+
         public Layout()
         {
             InitializeComponent();
@@ -167,8 +171,15 @@ namespace smpc_accounting_app
                 lbl_department.Text = CacheData.CurrentUser.department;
                 this.Enabled = true;
 
-                serviceSetup = new GeneralService<CompanySetupModel>(ApiEndPoints.COMPANY_SETUP);
-                CacheData.CompanySetup = await serviceSetup.GetAsModel();
+                serviceCompanySetup = new GeneralService<CompanySetupModel>(ApiEndPoints.COMPANY_SETUP);
+                CacheData.CompanySetup = await serviceCompanySetup.GetAsModel();
+                _currencyCode = CacheData.CompanySetup.currency_code;
+
+                serviceJournalSetup = new GeneralService<JournalEntryModel>(ApiEndPoints.CURRENT_JOURNAL);
+                CacheData.CurrentJournal = await serviceJournalSetup.GetAsModel();
+
+                serviceCurrencyRateSetup = new GeneralService<ExchangeRateModel>(ApiEndPoints.CURRENCY_RATE + _currencyCode);
+                CacheData.CurrencyRate = await serviceCurrencyRateSetup.GetAsModel();
             }
             else
             {

@@ -15,6 +15,7 @@ namespace smpc_accounting_app.Models
         public string reference_apv { get; set; }
         public string currency { get; set; }
         public float transaction_amount { get; set; }
+        public float unapplied_amount { get; set; }
         public string doc_no { get; set; }
         public string doc_date { get; set; }
         public string remarks { get; set; }
@@ -31,12 +32,14 @@ namespace smpc_accounting_app.Models
         public string ref_doc_no { get; set; }
         public string ref_doc_date { get; set; }
         public string prepared_by { get; set; }
+        public float overpayment_amount { get; set; }
     }
 
     public class PaymentVoucherDetailsModel
     {
         public int id { get; set; }
         public int payment_voucher_id { get; set; }
+        public int ap_voucher_details_id { get; set; }
         public string doc_no { get; set; }
         public string due_date { get; set; }
         public float trans_amount { get; set; }

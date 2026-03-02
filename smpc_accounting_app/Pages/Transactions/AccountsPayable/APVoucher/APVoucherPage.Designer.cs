@@ -69,6 +69,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.receipt_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.twas_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receipt_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel6.SuspendLayout();
@@ -223,6 +224,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.receipt_no,
             this.ir_doc_date,
             this.ir_due_date,
+            this.twas_amount,
             this.line_amount,
             this.receipt_type});
             this.dgv_main.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -267,8 +269,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.txt_transaction_amount.Location = new System.Drawing.Point(162, 76);
             this.txt_transaction_amount.Name = "txt_transaction_amount";
             this.txt_transaction_amount.Size = new System.Drawing.Size(289, 20);
-            this.txt_transaction_amount.TabIndex = 320;
-            this.txt_transaction_amount.Tag = "REQUIRED";
+            this.txt_transaction_amount.TabIndex = 321;
+            this.txt_transaction_amount.Tag = "MONEY REQUIRED";
             // 
             // label3
             // 
@@ -483,6 +485,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.ir_due_date.ReadOnly = true;
             this.ir_due_date.Visible = false;
             // 
+            // twas_amount
+            // 
+            this.twas_amount.DataPropertyName = "twas_amount";
+            this.twas_amount.HeaderText = "TWAS AMOUNT";
+            this.twas_amount.Name = "twas_amount";
+            this.twas_amount.ReadOnly = true;
+            this.twas_amount.Visible = false;
+            // 
             // line_amount
             // 
             this.line_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -540,7 +550,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private System.Windows.Forms.Button btn_payment_voucher;
         private System.Windows.Forms.DataGridView dgv_main;
         private System.Windows.Forms.Panel pnl_main;
-        private System.Windows.Forms.TextBox txt_transaction_amount;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txt_prepared_by;
         private System.Windows.Forms.Label label19;
@@ -559,11 +568,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txt_transaction_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn invoice_receipt_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn receipt_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_doc_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_due_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn twas_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn line_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn receipt_type;
     }

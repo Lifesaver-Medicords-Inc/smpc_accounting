@@ -91,7 +91,13 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                     id = int.Parse(txt_id.Text),
                 };
 
-                await chartOfAccountService.Delete(coaModel);
+                var result = await chartOfAccountService.Delete(coaModel);
+
+                if (!result)
+                {
+                    Helpers.ShowDialogMessage("error", "Chart of Account not Deleted.");
+                    return;
+                }
 
                 Helpers.ShowDialogMessage("success", "Chart of Account deleted successfully.");
             }
@@ -248,13 +254,31 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 if (_isNewMode && (txt_id.Text == null || txt_id.Text == ""))
                 {
                     var result = await chartOfAccountService.Insert(chartOfAccountPayload);
+
+                    if (!result.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Chart of Account not created.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Chart of Account created successfully.");
                 }
                 else
                 {
                     var result = await chartOfAccountService.Update(chartOfAccountPayload);
+
+                    if (!result.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Chart of Account not updated.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Chart of Account updated successfully.");
                 }
+
+                SetEditMode(false);
+                await FetchChartOfAccount();
+                LoadSelectedChartOfAccount();
             }
             catch (Exception ex)
             {
@@ -262,10 +286,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             }
             finally
             {
-                SetEditMode(false);
-                await FetchChartOfAccount();
-                LoadSelectedChartOfAccount();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 

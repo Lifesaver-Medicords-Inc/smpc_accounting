@@ -29,6 +29,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
 
             dgv_ir_search.AutoGenerateColumns = false;
             InitializeSearchBox();
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ir_search, new[] { "net_amount" });
         }
 
         private void InitializeSearchBox()

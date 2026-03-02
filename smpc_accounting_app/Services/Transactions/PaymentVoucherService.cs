@@ -14,7 +14,7 @@ namespace smpc_accounting_app.Services.Transactions
         public PaymentVoucherService() : base(ApiEndPoints.PAYMENT_VOUCHER) { }
 
         // CREATE
-        public async Task<object> CreatePaymentVoucherRecord(PaymentVoucherPayload payload)
+        public async Task<ApiResponseModel<object>> CreatePaymentVoucherRecord(PaymentVoucherPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Post(ApiEndPoints.PAYMENT_VOUCHER, new Dictionary<string, dynamic>
                 {
@@ -23,7 +23,7 @@ namespace smpc_accounting_app.Services.Transactions
                 }
             );
 
-            return response.data;
+            return response;
         }
     }
 }

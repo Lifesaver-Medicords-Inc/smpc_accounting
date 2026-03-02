@@ -17,6 +17,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
     public partial class PaymentVoucherSearchAPV : Form
     {
         public DataTable SelectedAPVs { get; private set; } = null;
+        public float? OverpaymentAmount { get; private set; } = null;
         private string placeHolderText = "AP Voucher Search...";
         GeneralService<ApVoucherViewList> serviceSetup;
         private DataTable supplierTable;
@@ -37,7 +38,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
             dgv_apv_search.AutoGenerateColumns = false;
             InitializeSearchBox();
-
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_apv_search, new[] { "transaction_amount" });
             _supplierID = supplierId;
         }
 
@@ -61,7 +62,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             else
             {
                 var searchedData = Helpers.FilterDataTable(supplierTable, searchText,
-                    "supplier_code", "supplier", "doc_no", "doc_date", "currency", "doc_no", "doc_date", "transaction_amount");
+                    "supplier_code", "supplier", "doc_no", "doc_date", "currency", "doc_no", "doc_date", "transaction_amount", "twas_amount");
                 dgv_apv_search.DataSource = searchedData;
             }
         }
@@ -151,7 +152,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             if (supplierTable == null || supplierTable.Rows.Count == 0)
                 return;
 
-            // Step 1: Collect selected ap_voucher_ids
+            //Collect selected ap_voucher_ids
             var selectedIds = new HashSet<int>();
 
             foreach (DataGridViewRow row in dgv_apv_search.Rows)
@@ -174,7 +175,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                         selectedIds.Add(id);
                     }
 
-                    // Optional: still collect doc_no if needed
+                    // still collect doc_no if needed
                     var docNo = row.Cells["doc_no"].Value?.ToString();
                     if (!string.IsNullOrEmpty(docNo))
                     {
@@ -189,7 +190,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 return;
             }
 
-            // Step 2: Filter child data based on selected ap_voucher_id
+            // Filter child data based on selected ap_voucher_id
             var filteredChildData = _childdata
                 ?.Where(c => selectedIds.Contains(c.ap_voucher_id))
                 .ToList();
@@ -200,7 +201,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 return;
             }
 
-            // Step 3: Convert filtered child data to DataTable
+            // Convert filtered child data to DataTable
             SelectedAPVs = Helpers.ToDataTable(filteredChildData);
 
             this.DialogResult = DialogResult.OK;

@@ -30,16 +30,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private DataTable _taxSetupTable;
         private bool _isNewMode = false;
         private string _userName;
+        private bool _isEditing;
 
         public InvoiceReceiptPage()
         {
             InitializeComponent();
 
-            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_other_charges }, '.');
-
-            _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
-
+            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_other_charges, txt_net_amount, txt_twas_amount }, '.');
             Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_other_charges, txt_net_amount, txt_twas_amount });
+            _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "discount", "unit_price", "total_cost", "line_amount" });
         }
 
@@ -57,6 +56,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private void SetEditMode(bool enable, bool isNewMode = false)
         {
             _isNewMode = isNewMode;
+            _isEditing = enable;
 
             SetEditableColumns(enable);
             btn_reference_po.Enabled = enable;
@@ -93,12 +93,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         {
             // Save current index before clearing
             _previousIRIndex = _currentIRIndex;
+            Helpers.ResetControls(pnl_main);
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
             dgv_main.DataSource = null;
             dgv_main.Rows.Clear();
-            Helpers.ResetControls(pnl_main);
         }
 
         private async void btn_search_Click(object sender, EventArgs e)
@@ -206,7 +206,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
                 invoiceReceiptParent.prepared_by = _userName;
 
-
                 var invoiceReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<InvoiceReceiptDetailsModel>(dgv_main);
 
                 //Check if invoice receipt details is null or empty
@@ -216,7 +215,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     return;
                 }
 
-                // Wrap everything into Invoice R Payload
+                // Wrap everything into Invoice Receipt Payload
                 var irPayload = new InvoiceReceiptPayload
                 {
                     invoice_receipt = invoiceReceiptParent,
@@ -226,7 +225,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
 
                 var result = await invoiceReceiptService.CreateInvoiceReceiptRecord(irPayload);
+
+                if (!result.success)
+                {
+                    Helpers.ShowDialogMessage("error", "Invoice Receipt not created.");
+                    return;
+                }
+
                 Helpers.ShowDialogMessage("success", "Invoice Receipt created successfully.");
+
+                SetEditMode(false);
+                await LoadInvoiceReceipts();
             }
             catch (Exception ex)
             {
@@ -234,9 +243,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             }
             finally
             {
-                SetEditMode(false);
-                await LoadInvoiceReceipts();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 
@@ -247,6 +253,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
             SetEditMode(false);
+
+            // If no records exist, clear everything
+            if (_invoiceReceipts == null || !_invoiceReceipts.Any())
+            {
+                ClearInvoiceReceiptUI();
+                return;
+            }
 
             // Return to the previous record index if available
             if (_previousIRIndex >= 0 && _invoiceReceipts != null && _invoiceReceipts.Count > 0)
@@ -455,18 +468,21 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     modal.SelectedRows.Rows.Count > 0)
                 {
                     //Bind SelectedRows to dgv_main
-                    dgv_main.AutoGenerateColumns = false;
-                    dgv_main.DataSource = modal.SelectedRows;
-
-                    foreach (DataGridViewRow row in dgv_main.Rows)
+                    foreach (DataRow soRow in modal.SelectedRows.Rows)
                     {
-                        if (row.IsNewRow) continue;
+                        int newRowIndex = dgv_main.Rows.Add();
+                        var targetRow = dgv_main.Rows[newRowIndex];
 
-                        if (row.Cells["total_cost"].Value != null)
-                        {
-                            row.Cells["line_amount"].Value = row.Cells["total_cost"].Value;
-                        }
+                        targetRow.Cells["purchase_order_details_id"].Value = soRow["purchase_order_details_id"];
+                        targetRow.Cells["item_code"].Value = soRow["item_code"];
+                        targetRow.Cells["item_description"].Value = soRow["item_description"];
+                        targetRow.Cells["req_qty"].Value = soRow["req_qty"];
+                        targetRow.Cells["unit_price"].Value = soRow["unit_price"];
+                        targetRow.Cells["total_cost"].Value = soRow["total_cost"];
+                        targetRow.Cells["line_amount"].Value = soRow["total_cost"];
                     }
+
+                    dgv_main.Refresh();
 
                     //Set Reference PO textbox
                     if (modal.SelectedPOLabels != null && modal.SelectedPOLabels.Any())
@@ -532,8 +548,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
         private void UpdateNetAmount()
         {
-            float totalLineAmount = 0f;
-            float otherCharges = 0f;
+            if (!_isEditing)
+                return;
+
+            decimal totalLineAmount = 0m;
+            decimal otherCharges = 0m;
 
             // Sum all line_amounts from dgv_main
             foreach (DataGridViewRow dgRow in dgv_main.Rows)
@@ -541,7 +560,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                 if (dgRow.IsNewRow) continue;
 
                 if (dgRow.Cells["line_amount"]?.Value != null &&
-                    float.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out float lineAmount))
+                    decimal.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out decimal lineAmount))
                 {
                     totalLineAmount += lineAmount;
                 }
@@ -550,14 +569,43 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // Parse Other Charges (default to 0 if empty or invalid)
             if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
             {
-                float.TryParse(txt_other_charges.Text, out otherCharges);
+                decimal.TryParse(txt_other_charges.Text, out otherCharges);
+            }
+
+            // Determine TWAS Amount based on tax code
+            decimal twasAmount = 0m;
+            if (cmb_tax_code.SelectedValue != null && int.TryParse(cmb_tax_code.SelectedValue.ToString(), out int taxId))
+            {
+                if (taxId == 10006)
+                {
+                    // Only divide by 1.12 if tax code is 10006
+                    twasAmount = (totalLineAmount / 1.12m) * 0.10m;
+                }
+                else
+                {
+                    // For other tax codes, do not divide
+                    twasAmount = totalLineAmount * 0.10m;
+                }
+            }
+            else
+            {
+                // For other tax codes, do not divide
+                twasAmount = totalLineAmount * 0.10m;
             }
 
             // Compute Net Amount
-            float netAmount = totalLineAmount - otherCharges;
+            decimal netAmount = (totalLineAmount - twasAmount) - otherCharges;
 
-            // Prevent negative net amount
-            txt_net_amount.Text = Math.Max(netAmount, 0).ToString("0.00");
+            // Prevent negative display
+            if (twasAmount < 0) twasAmount = 0m;
+            if (netAmount < 0) netAmount = 0m;
+
+            // Display full precision
+            txt_twas_amount.Text = twasAmount.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_twas_amount.AccessibleDescription = twasAmount.ToString(); // Store full precise value
+
+            txt_net_amount.Text = netAmount.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_net_amount.AccessibleDescription = netAmount.ToString(); // Store full precise value
         }
 
         private void txt_other_charges_TextChanged(object sender, EventArgs e)
@@ -588,6 +636,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                 btn_ap_voucher.Enabled = true;
 
                 Helpers.ShowDialogMessage("error", $"Failed to open AP Voucher: {ex.Message}");
+            }
+        }
+
+        private void txt_twas_amount_TextChanged(object sender, EventArgs e)
+        {
+            if (_isNewMode)
+            {
+                UpdateNetAmount();
+            }
+        }
+
+        private void cmb_tax_code_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isNewMode)
+            {
+                UpdateNetAmount();
             }
         }
     }

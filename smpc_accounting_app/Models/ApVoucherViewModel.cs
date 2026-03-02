@@ -24,6 +24,8 @@ namespace smpc_accounting_app.Models
         public string doc_no { get; set; }
         public string due_date { get; set; }
         public float trans_amount { get; set; }
+        public float twas_applied { get; set; }
+        public float open_amount { get; set; }
     }
 
     public class ApVoucherViewList

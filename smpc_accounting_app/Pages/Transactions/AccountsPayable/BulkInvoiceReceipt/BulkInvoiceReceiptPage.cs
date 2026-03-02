@@ -32,6 +32,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private DataTable _taxSetupTable;
         private bool _isNewMode = false;
         private string _userName;
+        private bool _isEditing;
 
         public BulkInvoiceReceiptPage()
         {
@@ -57,6 +58,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private void SetEditMode(bool enable, bool isNewMode = false)
         {
             _isNewMode = isNewMode;
+            _isEditing = enable;
 
             dgv_main.AllowUserToAddRows = enable;
 
@@ -104,12 +106,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         {
             // Save current index before clearing
             _previousBIRIndex = _currentBIRIndex;
+            Helpers.ResetControls(pnl_main);
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
             dgv_main.DataSource = null;
             dgv_main.Rows.Clear();
-            Helpers.ResetControls(pnl_main);
         }
 
         private async void btn_search_Click(object sender, EventArgs e)
@@ -232,7 +234,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
 
                 var result = await bulkInvoiceReceiptService.CreateBulkInvoiceReceiptRecord(birPayload);
+
+                if (!result.success)
+                {
+                    Helpers.ShowDialogMessage("error", "Bulk Invoice Receipt not created.");
+                    return;
+                }
+
                 Helpers.ShowDialogMessage("success", "Bulk Invoice Receipt created successfully.");
+
+                SetEditMode(false);
+                await LoadBulkInvoiceReceipts();
             }
             catch (Exception ex)
             {
@@ -240,9 +252,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             }
             finally
             {
-                SetEditMode(false);
-                await LoadBulkInvoiceReceipts();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 
@@ -253,6 +262,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
             SetEditMode(false);
+
+            // If no records exist, clear everything
+            if (_bulkInvoiceReceipts == null || !_bulkInvoiceReceipts.Any())
+            {
+                ClearBulkInvoiceReceiptUI();
+                return;
+            }
 
             // Return to the previous record index if available
             if (_previousBIRIndex >= 0 && _bulkInvoiceReceipts != null && _bulkInvoiceReceipts.Count > 0)
@@ -556,8 +572,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
         private void UpdateNetAmount()
         {
-            float totalLineAmount = 0f;
-            float otherCharges = 0f;
+            if (!_isEditing)
+                return;
+
+            decimal totalLineAmount = 0m;
+            decimal otherCharges = 0m;
 
             // Sum all line_amounts from dgv_main
             foreach (DataGridViewRow dgRow in dgv_main.Rows)
@@ -565,7 +584,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 if (dgRow.IsNewRow) continue;
 
                 if (dgRow.Cells["line_amount"]?.Value != null &&
-                    float.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out float lineAmount))
+                    decimal.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out decimal lineAmount))
                 {
                     totalLineAmount += lineAmount;
                 }
@@ -574,14 +593,43 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // Parse Other Charges (default to 0 if empty or invalid)
             if (!string.IsNullOrWhiteSpace(txt_other_charges.Text))
             {
-                float.TryParse(txt_other_charges.Text, out otherCharges);
+                decimal.TryParse(txt_other_charges.Text, out otherCharges);
+            }
+
+            // Determine TWAS Amount based on tax code
+            decimal twasAmount = 0m;
+            if (cmb_tax_code.SelectedValue != null && int.TryParse(cmb_tax_code.SelectedValue.ToString(), out int taxId))
+            {
+                if (taxId == 10006)
+                {
+                    // Only divide by 1.12 if tax code is 10006
+                    twasAmount = (totalLineAmount / 1.12m) * 0.10m;
+                }
+                else
+                {
+                    // For other tax codes, do not divide
+                    twasAmount = totalLineAmount * 0.10m;
+                }
+            }
+            else
+            {
+                // For other tax codes, do not divide
+                twasAmount = totalLineAmount * 0.10m;
             }
 
             // Compute Net Amount
-            float netAmount = totalLineAmount - otherCharges;
+            decimal netAmount = (totalLineAmount - twasAmount) - otherCharges;
 
-            // Prevent negative net amount
-            txt_net_amount.Text = Math.Max(netAmount, 0).ToString("0.00");
+            // Prevent negative display
+            if (twasAmount < 0) twasAmount = 0m;
+            if (netAmount < 0) netAmount = 0m;
+
+            // Display full precision
+            txt_twas_amount.Text = twasAmount.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_twas_amount.AccessibleDescription = twasAmount.ToString(); // Store full precise value
+
+            txt_net_amount.Text = netAmount.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_net_amount.AccessibleDescription = netAmount.ToString(); // Store full precise value
         }
 
         private void txt_other_charges_TextChanged(object sender, EventArgs e)
@@ -612,6 +660,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 btn_ap_voucher.Enabled = true;
 
                 Helpers.ShowDialogMessage("error", $"Failed to open AP Voucher: {ex.Message}");
+            }
+        }
+
+        private void cmb_tax_code_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isNewMode)
+            {
+                UpdateNetAmount();
             }
         }
     }

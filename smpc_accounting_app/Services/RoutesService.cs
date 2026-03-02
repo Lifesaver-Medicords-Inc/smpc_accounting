@@ -17,6 +17,8 @@ using smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables;
+using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice;
+using smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt;
 
 namespace smpc_accounting_app.Services
 {
@@ -53,6 +55,7 @@ namespace smpc_accounting_app.Services
             //========================================================================
             // ACCOUNTS RECEIVABLES
             {"Sales Invoice", new SalesInvoicePage()},
+            {"Sales Invoice2", new SalesInvoicePage2()},
             {"Payment Receipt", new PaymentReceiptPage()},
         };
 

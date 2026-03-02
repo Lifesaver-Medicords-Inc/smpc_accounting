@@ -14,5 +14,6 @@ namespace smpc_accounting_app.Models
         public string payment_term { get; set; }
         public string invoice_type { get; set; }
         public string type { get; set; }
+        public float overpayment_amount { get; set; }
     }
 }

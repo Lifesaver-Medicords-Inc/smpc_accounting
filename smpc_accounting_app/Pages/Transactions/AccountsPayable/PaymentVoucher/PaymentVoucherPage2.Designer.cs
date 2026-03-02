@@ -30,7 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentVoucherPage2));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -42,8 +42,16 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btn_printing = new System.Windows.Forms.Button();
             this.dgv_main = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ap_voucher_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trans_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.open_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amount_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.twas_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label11 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -58,17 +66,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_remarks = new System.Windows.Forms.TextBox();
             this.btn_supplier = new System.Windows.Forms.Button();
             this.pnl_main = new System.Windows.Forms.Panel();
-            this.txt_prepared_by = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.txt_supplier_id = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.txt_id = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.btn_apv = new System.Windows.Forms.Button();
-            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txt_doc_no = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.txt_unapplied_amount = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.txt_overpayment_amount = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.cmb_check_bank = new System.Windows.Forms.ComboBox();
             this.dtp_ref_doc_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_check_date = new System.Windows.Forms.DateTimePicker();
@@ -94,18 +95,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_cash_amount = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ap_voucher_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.trans_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.open_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amount_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.twas_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_prepared_by = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txt_supplier_id = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.txt_id = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.btn_apv = new System.Windows.Forms.Button();
+            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txt_doc_no = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_main)).BeginInit();
             this.pnl_main.SuspendLayout();
             this.SuspendLayout();
@@ -216,41 +218,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.btn_printing);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 850);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1400, 100);
             this.panel3.TabIndex = 20;
             // 
-            // btn_printing
-            // 
-            this.btn_printing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_printing.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(218)))), ((int)(((byte)(248)))));
-            this.btn_printing.Location = new System.Drawing.Point(136, 50);
-            this.btn_printing.Name = "btn_printing";
-            this.btn_printing.Size = new System.Drawing.Size(108, 25);
-            this.btn_printing.TabIndex = 36;
-            this.btn_printing.Text = "PRINT";
-            this.btn_printing.UseVisualStyleBackColor = false;
-            // 
             // dgv_main
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
-            this.ap_voucher_id,
+            this.ap_voucher_details_id,
             this.doc_no,
             this.due_date,
             this.trans_amount,
@@ -264,6 +254,83 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.dgv_main.Name = "dgv_main";
             this.dgv_main.Size = new System.Drawing.Size(1400, 402);
             this.dgv_main.TabIndex = 78;
+            this.dgv_main.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgv_main_CellValidating);
+            this.dgv_main.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_main_CellValueChanged);
+            this.dgv_main.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_main_CurrentCellDirtyStateChanged);
+            this.dgv_main.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_main_EditingControlShowing);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // ap_voucher_details_id
+            // 
+            this.ap_voucher_details_id.DataPropertyName = "ap_voucher_details_id";
+            this.ap_voucher_details_id.HeaderText = "AVD";
+            this.ap_voucher_details_id.Name = "ap_voucher_details_id";
+            this.ap_voucher_details_id.ReadOnly = true;
+            this.ap_voucher_details_id.Visible = false;
+            // 
+            // doc_no
+            // 
+            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.doc_no.DataPropertyName = "doc_no";
+            this.doc_no.HeaderText = "DOC NO.";
+            this.doc_no.MinimumWidth = 200;
+            this.doc_no.Name = "doc_no";
+            this.doc_no.ReadOnly = true;
+            // 
+            // due_date
+            // 
+            this.due_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.due_date.DataPropertyName = "due_date";
+            this.due_date.HeaderText = "DUE DATE";
+            this.due_date.Name = "due_date";
+            this.due_date.ReadOnly = true;
+            // 
+            // trans_amount
+            // 
+            this.trans_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.trans_amount.DataPropertyName = "trans_amount";
+            this.trans_amount.HeaderText = "TRANS AMOUNT";
+            this.trans_amount.Name = "trans_amount";
+            this.trans_amount.ReadOnly = true;
+            // 
+            // open_amount
+            // 
+            this.open_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.open_amount.DataPropertyName = "open_amount";
+            this.open_amount.HeaderText = "OPEN AMOUNT";
+            this.open_amount.MinimumWidth = 180;
+            this.open_amount.Name = "open_amount";
+            this.open_amount.ReadOnly = true;
+            // 
+            // amount_applied
+            // 
+            this.amount_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.amount_applied.DataPropertyName = "amount_applied";
+            this.amount_applied.HeaderText = "AMOUNT APPLIED";
+            this.amount_applied.Name = "amount_applied";
+            this.amount_applied.ReadOnly = true;
+            // 
+            // twas_applied
+            // 
+            this.twas_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.twas_applied.DataPropertyName = "twas_applied";
+            this.twas_applied.HeaderText = "TWAS APPLIED";
+            this.twas_applied.Name = "twas_applied";
+            this.twas_applied.ReadOnly = true;
+            // 
+            // balance
+            // 
+            this.balance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.balance.DataPropertyName = "balance";
+            this.balance.HeaderText = "BALANCE";
+            this.balance.Name = "balance";
+            this.balance.ReadOnly = true;
             // 
             // label11
             // 
@@ -362,7 +429,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_transaction_amount.Name = "txt_transaction_amount";
             this.txt_transaction_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_transaction_amount.TabIndex = 279;
-            this.txt_transaction_amount.Tag = "REQUIRED";
+            this.txt_transaction_amount.Tag = "MONEY REQUIRED";
             // 
             // txt_remarks
             // 
@@ -387,6 +454,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // pnl_main
             // 
+            this.pnl_main.Controls.Add(this.txt_unapplied_amount);
+            this.pnl_main.Controls.Add(this.label26);
+            this.pnl_main.Controls.Add(this.txt_overpayment_amount);
+            this.pnl_main.Controls.Add(this.label25);
             this.pnl_main.Controls.Add(this.cmb_check_bank);
             this.pnl_main.Controls.Add(this.dtp_ref_doc_date);
             this.pnl_main.Controls.Add(this.dtp_check_date);
@@ -442,113 +513,41 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.pnl_main.Size = new System.Drawing.Size(1400, 376);
             this.pnl_main.TabIndex = 17;
             // 
-            // txt_prepared_by
+            // txt_unapplied_amount
             // 
-            this.txt_prepared_by.Location = new System.Drawing.Point(633, 93);
-            this.txt_prepared_by.Name = "txt_prepared_by";
-            this.txt_prepared_by.Size = new System.Drawing.Size(289, 20);
-            this.txt_prepared_by.TabIndex = 336;
-            this.txt_prepared_by.Tag = "";
-            this.txt_prepared_by.Visible = false;
+            this.txt_unapplied_amount.Enabled = false;
+            this.txt_unapplied_amount.Location = new System.Drawing.Point(929, 56);
+            this.txt_unapplied_amount.Name = "txt_unapplied_amount";
+            this.txt_unapplied_amount.Size = new System.Drawing.Size(289, 20);
+            this.txt_unapplied_amount.TabIndex = 365;
+            this.txt_unapplied_amount.Tag = "MONEY";
             // 
-            // label22
+            // label26
             // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(531, 100);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(86, 13);
-            this.label22.TabIndex = 335;
-            this.label22.Text = "PREPARED BY:";
-            this.label22.Visible = false;
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(784, 63);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(124, 13);
+            this.label26.TabIndex = 364;
+            this.label26.Text = "UNAPPLIED AMOUNT :";
             // 
-            // txt_supplier_id
+            // txt_overpayment_amount
             // 
-            this.txt_supplier_id.Enabled = false;
-            this.txt_supplier_id.Location = new System.Drawing.Point(633, 58);
-            this.txt_supplier_id.Name = "txt_supplier_id";
-            this.txt_supplier_id.Size = new System.Drawing.Size(289, 20);
-            this.txt_supplier_id.TabIndex = 334;
-            this.txt_supplier_id.Tag = "";
-            this.txt_supplier_id.Visible = false;
+            this.txt_overpayment_amount.Enabled = false;
+            this.txt_overpayment_amount.Location = new System.Drawing.Point(184, 119);
+            this.txt_overpayment_amount.Name = "txt_overpayment_amount";
+            this.txt_overpayment_amount.Size = new System.Drawing.Size(289, 20);
+            this.txt_overpayment_amount.TabIndex = 363;
+            this.txt_overpayment_amount.Tag = "MONEY";
             // 
-            // label23
+            // label25
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(537, 61);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(80, 13);
-            this.label23.TabIndex = 333;
-            this.label23.Text = "SUPPLIER ID :";
-            this.label23.Visible = false;
-            // 
-            // txt_id
-            // 
-            this.txt_id.Enabled = false;
-            this.txt_id.Location = new System.Drawing.Point(633, 126);
-            this.txt_id.Name = "txt_id";
-            this.txt_id.Size = new System.Drawing.Size(289, 20);
-            this.txt_id.TabIndex = 332;
-            this.txt_id.Tag = "";
-            this.txt_id.Visible = false;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(593, 129);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(24, 13);
-            this.label24.TabIndex = 331;
-            this.label24.Text = "ID :";
-            this.label24.Visible = false;
-            // 
-            // btn_apv
-            // 
-            this.btn_apv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_apv.BackgroundImage")));
-            this.btn_apv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_apv.Enabled = false;
-            this.btn_apv.Location = new System.Drawing.Point(479, 56);
-            this.btn_apv.Name = "btn_apv";
-            this.btn_apv.Size = new System.Drawing.Size(30, 23);
-            this.btn_apv.TabIndex = 299;
-            this.btn_apv.UseVisualStyleBackColor = true;
-            this.btn_apv.Click += new System.EventHandler(this.btn_apv_Click);
-            // 
-            // dtp_doc_date
-            // 
-            this.dtp_doc_date.Enabled = false;
-            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_doc_date.Location = new System.Drawing.Point(929, 35);
-            this.dtp_doc_date.Name = "dtp_doc_date";
-            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
-            this.dtp_doc_date.TabIndex = 298;
-            this.dtp_doc_date.Tag = "";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(854, 42);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 13);
-            this.label7.TabIndex = 296;
-            this.label7.Text = "DOC DATE :";
-            // 
-            // txt_doc_no
-            // 
-            this.txt_doc_no.Enabled = false;
-            this.txt_doc_no.Location = new System.Drawing.Point(929, 14);
-            this.txt_doc_no.Name = "txt_doc_no";
-            this.txt_doc_no.Size = new System.Drawing.Size(289, 20);
-            this.txt_doc_no.TabIndex = 295;
-            this.txt_doc_no.Tag = "";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(854, 21);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 13);
-            this.label6.TabIndex = 294;
-            this.label6.Text = "DOC NO :";
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(27, 126);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(145, 13);
+            this.label25.TabIndex = 362;
+            this.label25.Text = "OVERPAYMENT AMOUNT :";
             // 
             // cmb_check_bank
             // 
@@ -681,7 +680,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_transfer_amount.Name = "txt_transfer_amount";
             this.txt_transfer_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_transfer_amount.TabIndex = 349;
-            this.txt_transfer_amount.Tag = "";
+            this.txt_transfer_amount.Tag = "MONEY";
+            this.txt_transfer_amount.TextChanged += new System.EventHandler(this.txt_transfer_amount_TextChanged);
             // 
             // label21
             // 
@@ -753,7 +753,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_check_amount.Name = "txt_check_amount";
             this.txt_check_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_check_amount.TabIndex = 341;
-            this.txt_check_amount.Tag = "";
+            this.txt_check_amount.Tag = "MONEY";
+            this.txt_check_amount.TextChanged += new System.EventHandler(this.txt_check_amount_TextChanged);
             // 
             // label9
             // 
@@ -771,7 +772,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_cash_amount.Name = "txt_cash_amount";
             this.txt_cash_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_cash_amount.TabIndex = 339;
-            this.txt_cash_amount.Tag = "";
+            this.txt_cash_amount.Tag = "MONEY ";
+            this.txt_cash_amount.TextChanged += new System.EventHandler(this.txt_cash_amount_TextChanged);
             // 
             // label8
             // 
@@ -791,78 +793,113 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.label31.TabIndex = 337;
             this.label31.Text = "PAYMENT INFORMATION";
             // 
-            // dataGridViewTextBoxColumn1
+            // txt_prepared_by
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Visible = false;
+            this.txt_prepared_by.Location = new System.Drawing.Point(585, 299);
+            this.txt_prepared_by.Name = "txt_prepared_by";
+            this.txt_prepared_by.Size = new System.Drawing.Size(289, 20);
+            this.txt_prepared_by.TabIndex = 336;
+            this.txt_prepared_by.Tag = "";
+            this.txt_prepared_by.Visible = false;
             // 
-            // ap_voucher_id
+            // label22
             // 
-            this.ap_voucher_id.DataPropertyName = "ap_voucher_id";
-            this.ap_voucher_id.HeaderText = "AVI";
-            this.ap_voucher_id.Name = "ap_voucher_id";
-            this.ap_voucher_id.ReadOnly = true;
-            this.ap_voucher_id.Visible = false;
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(483, 306);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(86, 13);
+            this.label22.TabIndex = 335;
+            this.label22.Text = "PREPARED BY:";
+            this.label22.Visible = false;
             // 
-            // doc_no
+            // txt_supplier_id
             // 
-            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.doc_no.DataPropertyName = "doc_no";
-            this.doc_no.HeaderText = "DOC NO.";
-            this.doc_no.MinimumWidth = 200;
-            this.doc_no.Name = "doc_no";
-            this.doc_no.ReadOnly = true;
+            this.txt_supplier_id.Enabled = false;
+            this.txt_supplier_id.Location = new System.Drawing.Point(585, 264);
+            this.txt_supplier_id.Name = "txt_supplier_id";
+            this.txt_supplier_id.Size = new System.Drawing.Size(289, 20);
+            this.txt_supplier_id.TabIndex = 334;
+            this.txt_supplier_id.Tag = "";
+            this.txt_supplier_id.Visible = false;
             // 
-            // due_date
+            // label23
             // 
-            this.due_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.due_date.DataPropertyName = "due_date";
-            this.due_date.HeaderText = "DUE DATE";
-            this.due_date.Name = "due_date";
-            this.due_date.ReadOnly = true;
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(489, 267);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(80, 13);
+            this.label23.TabIndex = 333;
+            this.label23.Text = "SUPPLIER ID :";
+            this.label23.Visible = false;
             // 
-            // trans_amount
+            // txt_id
             // 
-            this.trans_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.trans_amount.DataPropertyName = "trans_amount";
-            this.trans_amount.HeaderText = "TRANS AMOUNT";
-            this.trans_amount.Name = "trans_amount";
-            this.trans_amount.ReadOnly = true;
+            this.txt_id.Enabled = false;
+            this.txt_id.Location = new System.Drawing.Point(585, 332);
+            this.txt_id.Name = "txt_id";
+            this.txt_id.Size = new System.Drawing.Size(289, 20);
+            this.txt_id.TabIndex = 332;
+            this.txt_id.Tag = "";
+            this.txt_id.Visible = false;
             // 
-            // open_amount
+            // label24
             // 
-            this.open_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.open_amount.DataPropertyName = "open_amount";
-            this.open_amount.HeaderText = "OPEN AMOUNT";
-            this.open_amount.MinimumWidth = 180;
-            this.open_amount.Name = "open_amount";
-            this.open_amount.ReadOnly = true;
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(545, 335);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(24, 13);
+            this.label24.TabIndex = 331;
+            this.label24.Text = "ID :";
+            this.label24.Visible = false;
             // 
-            // amount_applied
+            // btn_apv
             // 
-            this.amount_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.amount_applied.DataPropertyName = "amount_applied";
-            this.amount_applied.HeaderText = "AMOUNT APPLIED";
-            this.amount_applied.Name = "amount_applied";
-            this.amount_applied.ReadOnly = true;
+            this.btn_apv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_apv.BackgroundImage")));
+            this.btn_apv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_apv.Enabled = false;
+            this.btn_apv.Location = new System.Drawing.Point(479, 56);
+            this.btn_apv.Name = "btn_apv";
+            this.btn_apv.Size = new System.Drawing.Size(30, 23);
+            this.btn_apv.TabIndex = 299;
+            this.btn_apv.UseVisualStyleBackColor = true;
+            this.btn_apv.Click += new System.EventHandler(this.btn_apv_Click);
             // 
-            // twas_applied
+            // dtp_doc_date
             // 
-            this.twas_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.twas_applied.DataPropertyName = "twas_applied";
-            this.twas_applied.HeaderText = "TWAS APPLIED";
-            this.twas_applied.Name = "twas_applied";
-            this.twas_applied.ReadOnly = true;
+            this.dtp_doc_date.Enabled = false;
+            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_doc_date.Location = new System.Drawing.Point(929, 35);
+            this.dtp_doc_date.Name = "dtp_doc_date";
+            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
+            this.dtp_doc_date.TabIndex = 298;
+            this.dtp_doc_date.Tag = "";
             // 
-            // balance
+            // label7
             // 
-            this.balance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.balance.DataPropertyName = "balance";
-            this.balance.HeaderText = "BALANCE";
-            this.balance.Name = "balance";
-            this.balance.ReadOnly = true;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(841, 42);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 13);
+            this.label7.TabIndex = 296;
+            this.label7.Text = "DOC DATE :";
+            // 
+            // txt_doc_no
+            // 
+            this.txt_doc_no.Enabled = false;
+            this.txt_doc_no.Location = new System.Drawing.Point(929, 14);
+            this.txt_doc_no.Name = "txt_doc_no";
+            this.txt_doc_no.Size = new System.Drawing.Size(289, 20);
+            this.txt_doc_no.TabIndex = 295;
+            this.txt_doc_no.Tag = "";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(854, 21);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.TabIndex = 294;
+            this.label6.Text = "DOC NO :";
             // 
             // PaymentVoucherPage2
             // 
@@ -880,7 +917,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.panel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_main)).EndInit();
             this.pnl_main.ResumeLayout(false);
             this.pnl_main.PerformLayout();
@@ -902,7 +938,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         private System.Windows.Forms.ToolStripButton btn_save;
         private System.Windows.Forms.ToolStripButton btn_cancel;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button btn_printing;
         private System.Windows.Forms.DataGridView dgv_main;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label2;
@@ -954,8 +989,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         private System.Windows.Forms.TextBox txt_cash_amount;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox txt_overpayment_amount;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox txt_unapplied_amount;
+        private System.Windows.Forms.Label label26;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ap_voucher_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ap_voucher_details_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn doc_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn due_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn trans_amount;

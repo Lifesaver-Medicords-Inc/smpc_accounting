@@ -29,6 +29,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.StartPosition = FormStartPosition.CenterParent;
 
             dgv_av_search.AutoGenerateColumns = false;
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_av_search, new[] { "transaction_amount" });
             InitializeSearchBox();
         }
 

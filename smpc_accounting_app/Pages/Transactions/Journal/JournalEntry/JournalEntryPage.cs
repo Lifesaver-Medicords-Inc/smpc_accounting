@@ -130,6 +130,13 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         {
             SetEditMode(false);
 
+            // If no records exist, clear everything
+            if (_journalEntries == null || !_journalEntries.Any())
+            {
+                ClearJournalEntryUI();
+                return;
+            }
+
             // Return to the previous record index if available
             if (_previousJEIndex >= 0 && _journalEntries != null && _journalEntries.Count > 0)
             {
@@ -194,9 +201,13 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                     journal_entry = jeModel
                 };
 
-                await journalEntryService.DeleteJERecord(jePayload);
+                var result = await journalEntryService.DeleteJERecord(jePayload);
 
-                Helpers.ShowDialogMessage("success", "Journal Entry deleted successfully.");
+                if (!result.success)
+                {
+                    Helpers.ShowDialogMessage("error", "Journal Entry not deleted.");
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -350,6 +361,8 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 journalEntryParent.created_by = _userName;
                 journalEntryParent.currency = _companySetup.currency_code;
                 journalEntryParent.period = _companySetup.start_fiscal_date + " to " + _companySetup.end_fiscal_date;
+                journalEntryParent.period_from = _companySetup.start_fiscal_date;
+                journalEntryParent.period_to = _companySetup.end_fiscal_date;
 
                 if (!ValidatePeriodOverlap(journalEntryParent))
                 {
@@ -365,14 +378,31 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
                 Helpers.Loading.ShowLoading(dgv_journal_entry, "Saving data...");
 
+                SetEditMode(false);
+                await LoadJournalEntries();
+
                 if (_isNewMode)
                 {
                     var result = await journalEntryService.CreateJERecord(jePayload);
+
+                    if (!result.success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Journal Entry not created.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Journal Entry created successfully.");
                 }
                 else
                 {
                     var result = await journalEntryService.UpdateJERecord(jePayload);
+
+                    if (!result.success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Journal Entry not updated.");
+                        return;
+                    }
+
                     Helpers.ShowDialogMessage("success", "Journal Entry updated successfully.");
                 }
             }
@@ -382,9 +412,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             }
             finally
             {
-                SetEditMode(false);
-                await LoadJournalEntries();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 

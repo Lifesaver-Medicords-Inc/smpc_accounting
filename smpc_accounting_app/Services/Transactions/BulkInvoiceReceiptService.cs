@@ -14,7 +14,7 @@ namespace smpc_accounting_app.Services.Transactions
         public BulkInvoiceReceiptService() : base(ApiEndPoints.BULK_INVOICE_RECEIPT) { }
 
         // CREATE
-        public async Task<object> CreateBulkInvoiceReceiptRecord(BulkInvoiceReceiptPayload payload)
+        public async Task<ApiResponseModel<object>> CreateBulkInvoiceReceiptRecord(BulkInvoiceReceiptPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Post(ApiEndPoints.BULK_INVOICE_RECEIPT, new Dictionary<string, dynamic>
                 {
@@ -23,7 +23,7 @@ namespace smpc_accounting_app.Services.Transactions
                 }
             );
 
-            return response.data;
+            return response;
         }
     }
 }

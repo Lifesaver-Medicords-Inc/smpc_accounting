@@ -29,6 +29,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private BindingList<APVoucherDetailsModel> _currentDetails;
         private CompanySetupModel _companySetup = CacheData.CompanySetup;
         private bool _isNewMode = false;
+        private bool _isEditing = false;
         private string _userName;
 
         public APVoucherPage()
@@ -45,6 +46,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         {
             _isNewMode = isNewMode;
             dgv_main.AllowUserToAddRows = enable;
+            _isEditing = enable;
 
             btn_supplier.Enabled = enable;
 
@@ -160,7 +162,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
 
                 var result = await apVoucherService.CreateAPVoucherRecord(avPayload);
+
+                if (!result.success)
+                {
+                    Helpers.ShowDialogMessage("error", "AP Voucher not created.");
+                    return;
+                }
+
                 Helpers.ShowDialogMessage("success", "AP Voucher created successfully.");
+
+                SetEditMode(false);
+                await LoadAPVouchers();
             }
             catch (Exception ex)
             {
@@ -168,9 +180,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             }
             finally
             {
-                SetEditMode(false);
-                await LoadAPVouchers();
-
                 btn_save.Enabled = true;
                 btn_cancel.Enabled = true;
 
@@ -181,6 +190,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
             SetEditMode(false);
+
+            // If no records exist, clear everything
+            if (_apVouchers == null || !_apVouchers.Any())
+            {
+                ClearAPVoucherUI();
+                return;
+            }
 
             // Return to the previous record index if available
             if (_previousAVIndex >= 0 && _apVouchers != null && _apVouchers.Count > 0)
@@ -371,6 +387,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
                     targetRow.Cells["ir_doc_date"].Value = irRow["ir_doc_date"];
                     targetRow.Cells["line_amount"].Value = irRow["line_amount"];
                     targetRow.Cells["receipt_type"].Value = irRow["receipt_type"];
+                    targetRow.Cells["twas_amount"].Value = irRow["twas_amount"];
 
                     dgv_main.Refresh();
                 }
@@ -379,7 +396,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
         private void UpdateNetAmount()
         {
-            float totalLineAmount = 0f;
+            if (!_isEditing)
+                return;
+
+            decimal totalLineAmount = 0m;
 
             // Sum all line_amounts from dgv_main
             foreach (DataGridViewRow dgRow in dgv_main.Rows)
@@ -387,17 +407,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
                 if (dgRow.IsNewRow) continue;
 
                 if (dgRow.Cells["line_amount"]?.Value != null &&
-                    float.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out float lineAmount))
+                    decimal.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out decimal lineAmount))
                 {
                     totalLineAmount += lineAmount;
                 }
             }
 
-            // Compute Net Amount
-            float netAmount = totalLineAmount;
+            // Compute Transaction Amount
+            decimal transactionAmount = totalLineAmount;
 
-            // Prevent negative net amount
-            txt_transaction_amount.Text = Math.Max(netAmount, 0).ToString("0.00");
+            txt_transaction_amount.Text = transactionAmount.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_transaction_amount.AccessibleDescription = transactionAmount.ToString(); // Store full precise value
         }
 
         private void dgv_main_CellValueChanged(object sender, DataGridViewCellEventArgs e)

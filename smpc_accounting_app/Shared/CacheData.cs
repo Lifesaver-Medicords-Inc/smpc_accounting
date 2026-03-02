@@ -20,5 +20,7 @@ namespace smpc_accounting_app.Shared
         public static DataTable PaymentTerms { get; set; } = new DataTable();
         public static CurrentUserModel CurrentUser { get; set; } = null;
         public static CompanySetupModel CompanySetup { get; set; } = null;
+        public static JournalEntryModel CurrentJournal { get; set; } = null;
+        public static ExchangeRateModel CurrencyRate { get; set; } = null;
     }
 }

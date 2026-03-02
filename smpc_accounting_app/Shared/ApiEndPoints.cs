@@ -20,6 +20,8 @@ namespace smpc_accounting_app.Shared
         public const string CURRENCY_SETUP = "/setup/currency";
 
         public const string COMPANY_SETUP = "/accounting/company_setup";
+        public const string CURRENT_JOURNAL = "/accounting/current_journal";
+        public const string CURRENCY_RATE = "/accounting/exchange_rate/";
 
         public const string PAYMENT_TERMS_SETUP = "/setup/payment_terms";
 
@@ -38,13 +40,17 @@ namespace smpc_accounting_app.Shared
         //Transactions
         public const string JOURNAL_ENTRY = "/accounting/journal_entry2";
         public const string INVOICE_RECEIPT = "/accounting/invoice_receipt";
+        public const string SALES_INVOICE2 = "/accounting/sales_invoice2";
         public const string AP_VOUCHER = "/accounting/ap_voucher";
         public const string PAYMENT_VOUCHER = "/accounting/payment_voucher";
+        public const string PAYMENT_RECEIPT = "/accounting/payment_receipt";
         public const string AP_VOUCHER_INVOICE = "/accounting/ap_voucher/invoice/";
         public const string BULK_INVOICE_RECEIPT = "/accounting/bulk_invoice_receipt";
         public const string INVOICE_RECEIPT_TAX = "/accounting/invoice_receipt/tax_view";
         public const string INVOICE_RECEIPT_SUPPLIER = "/accounting/invoice_receipt/supplier_trade";
+        public const string CUSTOMER_VIEW = "/accounting/customer";
         public const string AP_VOUCHER_PAYMENT = "/accounting/payment_voucher/ap_voucher/";
+        public const string SALES_INVOICE_SO = "/accounting/customer_so/";
         public const string INVOICE_RECEIPT_PO = "/accounting/invoice_receipt/supplier_po/";
     }
 }

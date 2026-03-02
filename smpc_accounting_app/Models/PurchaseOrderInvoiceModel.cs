@@ -12,6 +12,7 @@ namespace smpc_accounting_app.Models
         public string po_number { get; set; }
         public string doc_date { get; set; }
         public string supplier_name { get; set; }
+        public float total_amount_po { get; set; }
     }
 
     public class PurchaseOrderDetailsInvoiceModel

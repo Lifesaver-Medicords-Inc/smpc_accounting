@@ -14,7 +14,7 @@ namespace smpc_accounting_app.Services.Setup
         public TaxSetupService() : base(ApiEndPoints.TAX_SETUP) {}
 
         // CREATE
-        public async Task<object> CreateTaxRecord(TaxSetupPayload payload)
+        public async Task<ApiResponseModel<object>> CreateTaxRecord(TaxSetupPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Post(ApiEndPoints.TAX_SETUP, new Dictionary<string, dynamic>
                 {
@@ -23,11 +23,11 @@ namespace smpc_accounting_app.Services.Setup
                 }
             );
 
-            return response.data;
+            return response;
         }
 
         // UPDATE
-        public async Task<object> UpdateTaxRecord(TaxSetupPayload payload)
+        public async Task<ApiResponseModel<object>> UpdateTaxRecord(TaxSetupPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Put(ApiEndPoints.TAX_SETUP, new Dictionary<string, dynamic>
                 {
@@ -36,11 +36,11 @@ namespace smpc_accounting_app.Services.Setup
                 }
             );
 
-            return response.data;
+            return response;
         }
 
         // DELETE
-        public async Task<object> DeleteTaxRecord(TaxSetupPayload payload)
+        public async Task<ApiResponseModel<object>> DeleteTaxRecord(TaxSetupPayload payload)
         {
             var response = await ApiService<ApiResponseModel<object>>.Delete(ApiEndPoints.TAX_SETUP, new Dictionary<string, dynamic>
                 {
@@ -49,7 +49,7 @@ namespace smpc_accounting_app.Services.Setup
                 }
             );
 
-            return response.data;
+            return response;
         }
     }
 

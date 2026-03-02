@@ -30,7 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkInvoiceReceiptPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -286,7 +286,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.txt_other_charges.Name = "txt_other_charges";
             this.txt_other_charges.Size = new System.Drawing.Size(289, 20);
             this.txt_other_charges.TabIndex = 304;
-            this.txt_other_charges.Tag = "";
+            this.txt_other_charges.Tag = "MONEY";
             this.txt_other_charges.TextChanged += new System.EventHandler(this.txt_other_charges_TextChanged);
             // 
             // label20
@@ -313,6 +313,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.cmb_tax_code.TabIndex = 302;
             this.cmb_tax_code.TabStop = false;
             this.cmb_tax_code.Tag = "REQUIRED";
+            this.cmb_tax_code.SelectedIndexChanged += new System.EventHandler(this.cmb_tax_code_SelectedIndexChanged);
             // 
             // txt_prepared_by
             // 
@@ -429,7 +430,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.txt_twas_amount.Name = "txt_twas_amount";
             this.txt_twas_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_twas_amount.TabIndex = 286;
-            this.txt_twas_amount.Tag = "";
+            this.txt_twas_amount.Tag = "MONEY REQUIRED";
             // 
             // txt_net_amount
             // 
@@ -438,7 +439,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.txt_net_amount.Name = "txt_net_amount";
             this.txt_net_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_net_amount.TabIndex = 285;
-            this.txt_net_amount.Tag = "REQUIRED";
+            this.txt_net_amount.Tag = "MONEY REQUIRED";
             // 
             // txt_invoice_type
             // 
@@ -644,14 +645,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
