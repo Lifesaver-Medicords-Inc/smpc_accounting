@@ -93,12 +93,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         {
             // Save current index before clearing
             _previousIRIndex = _currentIRIndex;
-            Helpers.ResetControls(pnl_main);
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
-            dgv_main.DataSource = null;
-            dgv_main.Rows.Clear();
+            _currentDetails = new BindingList<InvoiceReceiptDetailsModel>();
+            dgv_main.AutoGenerateColumns = false;
+            dgv_main.DataSource = _currentDetails;
+            Helpers.ResetControls(pnl_main);
         }
 
         private async void btn_search_Click(object sender, EventArgs e)
@@ -537,6 +538,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
                 float lineAmount = discount <= 0 ? totalCost : totalCost - discount;
                 dgRow.Cells[lineAmountCol].Value = Math.Max(lineAmount, 0);
+            }
+
+            //Re-assign binding list as datasource
+            if (_currentDetails != null)
+            {
+                dgv_main.DataSource = null;
+                dgv_main.DataSource = _currentDetails;
             }
 
             if (_isNewMode)

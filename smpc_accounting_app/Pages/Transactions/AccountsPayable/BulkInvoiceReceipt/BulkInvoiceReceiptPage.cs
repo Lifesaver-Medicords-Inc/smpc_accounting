@@ -39,7 +39,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             InitializeComponent();
 
             _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
-
+            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_other_charges, txt_net_amount, txt_twas_amount }, '.');
             Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_other_charges, txt_net_amount, txt_twas_amount });
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "line_amount" });
         }
@@ -561,12 +561,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                         row.Cells["account_code"].Value = coa.code;
                     }
                 }
-            }
-
-            if (_isNewMode)
-            {
-                // Update net amount
-                UpdateNetAmount();
             }
         }
 

@@ -47,6 +47,7 @@ namespace smpc_accounting_app.Shared
         public const string AP_VOUCHER_INVOICE = "/accounting/ap_voucher/invoice/";
         public const string BULK_INVOICE_RECEIPT = "/accounting/bulk_invoice_receipt";
         public const string INVOICE_RECEIPT_TAX = "/accounting/invoice_receipt/tax_view";
+        public const string SALES_INVOICE_RECEIPT = "/accounting/payment_receipt/sales_invoice/";
         public const string INVOICE_RECEIPT_SUPPLIER = "/accounting/invoice_receipt/supplier_trade";
         public const string CUSTOMER_VIEW = "/accounting/customer";
         public const string AP_VOUCHER_PAYMENT = "/accounting/payment_voucher/ap_voucher/";

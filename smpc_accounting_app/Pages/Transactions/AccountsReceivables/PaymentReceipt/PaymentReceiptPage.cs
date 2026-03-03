@@ -12,6 +12,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice;
+using smpc_accounting_app.Services;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt
 {
@@ -23,26 +24,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private PaymentReceiptList _prdata;
         private List<PaymentReceiptModel> _paymentReceipt;
         private DataTable _prTable;
+        private DataTable _salesViewTable;
         private BindingList<PaymentReceiptDetailsModel> _currentDetails;
         private CompanySetupModel _companySetup = CacheData.CompanySetup;
+        GeneralService<SalesInvoiceReceiptView> generalSalesInvoiceView;
         private bool _isNewMode = false;
         private string _userName;
         private string _currencyCode;
+        private bool _isEditing;
 
         public PaymentReceiptPage()
         {
             InitializeComponent();
 
-            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount}, '.');
+            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount}, '.');
             _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
-            Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount });
+            Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount });
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "open_amount", "amount_applied", "twas_applied", "balance" });
             _currencyCode = CacheData.CompanySetup.currency_code;
         }
 
         private void SetEditableColumns(bool isEdit)
         {
-            var editableColumns = new[] { "amount_applied" };
+            var editableColumns = new[] { "isSelected" };
 
             foreach (var colName in editableColumns)
             {
@@ -54,10 +58,16 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private void SetEditMode(bool enable, bool isNewMode = false)
         {
             _isNewMode = isNewMode;
+            _isEditing = enable;
+
+            SetEditableColumns(enable);
 
             btn_customer.Enabled = enable;
 
-            SetEditableColumns(enable);
+            if (enable)
+            {
+                txt_overpayment_amount.Clear();
+            }
 
             // buttons
             string[] editButtons = { "btn_save", "btn_cancel" };
@@ -70,7 +80,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             );
 
             Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_customer", "txt_customer_code",
-                "txt_transaction_amount", "txt_unapplied_amount", "txt_doc_no", "txt_doc_date", "txt_currency", "txt_check_type" });
+                "txt_transaction_amount", "txt_unapplied_amount", "txt_doc_no", "txt_doc_date", "txt_currency", "txt_check_type",
+                "txt_overpayment_amount" });
         }
 
         private void ChangeRecord(int step)
@@ -130,8 +141,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
-            dgv_main.DataSource = null;
-            dgv_main.Rows.Clear();
+            _currentDetails = new BindingList<PaymentReceiptDetailsModel>();
+            dgv_main.AutoGenerateColumns = false;
+            dgv_main.DataSource = _currentDetails;
             Helpers.ResetControls(pnl_main);
         }
 
@@ -172,7 +184,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
                     return;
                 }
 
-                string[] columnsToValidate = new[] { "doc_no", "due_date", "amount_applied" };
+                string[] columnsToValidate = new[] { "doc_no", "due_date" };
 
                 if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
                     return;
@@ -182,12 +194,20 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
                 paymentReceiptParent.prepared_by = _userName;
                 paymentReceiptParent.check_type = "LOCAL";
 
-                var paymentReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<PaymentReceiptDetailsModel>(dgv_main);
+                // Check Amount
+                decimal checkAmount = 0;
+                decimal.TryParse(txt_check_amount.Text, out checkAmount);
 
-                //Check if payment receipt details is null or empty
-                if (paymentReceiptDetails == null || paymentReceiptDetails.Count == 0)
+                if (checkAmount == 0)
                 {
-                    Helpers.ShowDialogMessage("error", "Please select at least one item.");
+                    paymentReceiptParent.check_date = null;   // Make sure this is nullable DateTime?
+                }
+
+                var paymentReceiptDetails = Helpers.DatagridviewMapper.BuildModelsFromData<PaymentReceiptDetailsModel>(dgv_main).Where(x => x.isSelected).ToList();
+
+                // Custom validation
+                if (!ValidatePaymentReceipt(paymentReceiptParent, paymentReceiptDetails))
+                {
                     return;
                 }
 
@@ -224,6 +244,60 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
 
                 Helpers.Loading.HideLoading(dgv_main);
             }
+        }
+
+        private bool ValidatePaymentReceipt(PaymentReceiptModel paymentReceiptParent, List<PaymentReceiptDetailsModel> paymentReceiptDetails)
+        {
+            // Validate parent
+            if (paymentReceiptParent == null)
+            {
+                Helpers.ShowDialogMessage("error", "Invalid payment receipt data.");
+                return false;
+            }
+
+            // Validate details existence
+            if (paymentReceiptDetails == null || paymentReceiptDetails.Count == 0)
+            {
+                Helpers.ShowDialogMessage("error", "Please have at least one payment receipt.");
+                return false;
+            }
+
+            bool hasPositiveAmountApplied = false;
+
+            foreach (var detail in paymentReceiptDetails)
+            {
+                decimal amountApplied = Convert.ToDecimal(detail.amount_applied);
+
+                // Only validate rows where amount_applied is not zero
+                if (amountApplied != 0)
+                {
+                    hasPositiveAmountApplied = amountApplied > 0;
+
+                    if (amountApplied < 0)
+                    {
+                        Helpers.ShowDialogMessage("error",
+                            $"Amount applied cannot be negative.\nDoc No: {detail.doc_no}");
+                        return false;
+                    }
+
+                    if (amountApplied > Convert.ToDecimal(detail.open_amount))
+                    {
+                        Helpers.ShowDialogMessage("error",
+                            $"Amount applied cannot be greater than open amount.\nDoc No: {detail.doc_no}");
+                        return false;
+                    }
+                }
+            }
+
+            // If no row has amount_applied greater than zero
+            if (!paymentReceiptDetails.Any(x => x.amount_applied > 0))
+            {
+                Helpers.ShowDialogMessage("error",
+                    "Please enter at least one Amount Applied greater than zero.");
+                return false;
+            }
+
+            return true;
         }
 
         private async void PaymentReceiptPage_Load(object sender, EventArgs e)
@@ -327,22 +401,62 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             btn_next.Enabled = false;
         }
 
-        private void btn_customer_Click(object sender, EventArgs e)
+        private async void btn_customer_Click(object sender, EventArgs e)
         {
             using (var modal = new SalesInvoiceCustomer())
             {
                 if (modal.ShowDialog(this) == DialogResult.OK && modal.SelectedCustomer != null)
                 {
-                    DataRow row = modal.SelectedCustomer.Rows[0];
+                    try
+                    {
+                        DataRow row = modal.SelectedCustomer.Rows[0];
 
-                    // Assign values to controls
-                    txt_customer_id.Text = row["customer_id"]?.ToString();
-                    txt_customer.Text = row["customer"]?.ToString();
-                    txt_customer_code.Text = row["customer_code"]?.ToString();
-                    txt_currency.Text = _currencyCode;
+                        // Assign values to controls
+                        txt_customer_id.Text = row["customer_id"]?.ToString();
+                        txt_customer.Text = row["customer"]?.ToString();
+                        txt_customer_code.Text = row["customer_code"]?.ToString();
+                        txt_overpayment_amount.Text = row["overpayment_amount"]?.ToString();
+                        txt_currency.Text = _currencyCode;
+
+                        generalSalesInvoiceView = new GeneralService<SalesInvoiceReceiptView>(
+                            ApiEndPoints.SALES_INVOICE_RECEIPT + txt_customer_id.Text
+                        );
+
+                        _salesViewTable = await generalSalesInvoiceView.GetAsDatatable();
+
+                        if (_salesViewTable == null || _salesViewTable.Rows.Count == 0)
+                        {
+                            _salesViewTable = new DataTable();
+                            Helpers.ShowDialogMessage("error", "No sales invoices found for this customer.");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Handle the error properly
+                        _salesViewTable = new DataTable(); // prevent null reference issues
+                        Helpers.ShowDialogMessage("error", "No sales invoices found for this customer.");
+                    }
 
                     dgv_main.DataSource = null;
                     dgv_main.Rows.Clear();
+
+                    // Bind SelectedRows to dgv_main
+                    foreach (DataRow svRow in _salesViewTable.Rows)
+                    {
+                        int newRowIndex = dgv_main.Rows.Add();
+                        var targetRow = dgv_main.Rows[newRowIndex];
+
+                        targetRow.Cells["sales_invoice_id"].Value = svRow["sales_invoice_id"];
+                        targetRow.Cells["doc_no"].Value = svRow["doc_no"];
+                        targetRow.Cells["doc_date"].Value = svRow["doc_date"];
+                        targetRow.Cells["due_date"].Value = svRow["due_date"];
+                        targetRow.Cells["twas_applied"].Value = svRow["twas_applied"];
+                        targetRow.Cells["open_amount"].Value = svRow["open_amount"];
+                        targetRow.Cells["amount_applied"].ReadOnly = true;
+                        targetRow.Cells["amount_applied"].Value = 0;
+                    }
+
+                    dgv_main.Refresh();
                 }
             }
         }
@@ -350,6 +464,224 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private void dgv_main_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             Helpers.HandleNumericColumns(dgv_main, e, new[] { "amount_applied" });
+        }
+
+        private void UpdateTransactionAmount()
+        {
+            if (!_isEditing)
+                return;
+
+            decimal cashAmount = 0m;
+            decimal checkAmount = 0m;
+
+            decimal.TryParse(txt_cash_amount.Text, out cashAmount);
+            decimal.TryParse(txt_check_amount.Text, out checkAmount);
+
+            decimal total = checkAmount + cashAmount;
+
+            txt_transaction_amount.Text = total.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_transaction_amount.AccessibleDescription = total.ToString(); // Store full precise value
+        }
+
+        private decimal GetTotalAmountApplied(int? editingRowIndex = null, decimal? newValue = null)
+        {
+            if (!_isEditing)
+                return 0m;
+
+            decimal totalApplied = 0m;
+
+            foreach (DataGridViewRow row in dgv_main.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                decimal value = 0m;
+
+                // If currently editing a row, use the new value instead of old value
+                if (editingRowIndex.HasValue &&
+                    row.Index == editingRowIndex.Value &&
+                    newValue.HasValue)
+                {
+                    value = newValue.Value;
+                }
+                else if (row.Cells["amount_applied"].Value != null)
+                {
+                    decimal.TryParse(row.Cells["amount_applied"].Value.ToString(), out value);
+                }
+
+                totalApplied += value;
+            }
+
+            return totalApplied;
+        }
+
+        private decimal GetTotalPaymentAmount()
+        {
+            decimal cash = 0m;
+            decimal check = 0m;
+
+            decimal.TryParse(txt_cash_amount.Text, out cash);
+            decimal.TryParse(txt_check_amount.Text, out check);
+
+            return cash + check;
+        }
+
+        private void UpdateUnappliedAmount()
+        {
+            if (!_isEditing)
+                return;
+
+            decimal totalPayment = GetTotalPaymentAmount();
+            decimal totalApplied = GetTotalAmountApplied();
+
+            decimal unapplied = totalPayment - totalApplied;
+
+            // If applied exceeds payment (should not happen because of validation),
+            // just force unapplied to zero
+            if (unapplied < 0)
+                unapplied = 0;
+
+            txt_unapplied_amount.Text = unapplied.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+            txt_unapplied_amount.AccessibleDescription = unapplied.ToString(); // Store full precise value
+        }
+
+        private void txt_cash_amount_TextChanged(object sender, EventArgs e)
+        {
+            UpdateTransactionAmount();
+            UpdateUnappliedAmount();
+        }
+
+        private void txt_check_amount_TextChanged(object sender, EventArgs e)
+        {
+            bool hasValue = !string.IsNullOrWhiteSpace(txt_check_amount.Text) &&
+                    txt_check_amount.Text != "0" &&
+                    txt_check_amount.Text != "0.00";
+
+            if (hasValue)
+            {
+                // Add REQUIRED tag
+                cmb_bank_code.Tag = "REQUIRED";
+                txt_bank_branch.Tag = "REQUIRED";
+                txt_check_no.Tag = "REQUIRED";
+                txt_check_type.Tag = "REQUIRED";
+                dtp_check_date.Tag = "REQUIRED";
+            }
+            else
+            {
+                // Remove REQUIRED tag
+                cmb_bank_code.Tag = null;
+                txt_bank_branch.Tag = null;
+                txt_check_no.Tag = null;
+                txt_check_type.Tag = null;
+                dtp_check_date.Tag = null;
+            }
+
+            UpdateTransactionAmount();
+            UpdateUnappliedAmount();
+        }
+
+        private void dgv_main_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgv_main.IsCurrentCellDirty)
+            {
+                dgv_main.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dgv_main_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dgv_main.Rows[e.RowIndex];
+
+            //When checkbox changes
+            if (dgv_main.Columns[e.ColumnIndex].Name == "isSelected")
+            {
+                bool isChecked = false;
+
+                if (row.Cells["isSelected"].Value != null)
+                    bool.TryParse(row.Cells["isSelected"].Value.ToString(), out isChecked);
+
+                // Enable/disable amount_applied for this row
+                row.Cells["amount_applied"].ReadOnly = !isChecked;
+
+                if (!isChecked)
+                {
+                    // Clear values when unchecked
+                    row.Cells["amount_applied"].Value = 0;
+                    row.Cells["balance"].Value = row.Cells["open_amount"].Value;
+                }
+
+                UpdateUnappliedAmount();
+            }
+
+            // When amount_applied changes
+            if (dgv_main.Columns[e.ColumnIndex].Name == "amount_applied")
+            {
+                decimal openAmount = 0m;
+                decimal amountApplied = 0m;
+
+                if (row.Cells["open_amount"].Value != null)
+                    decimal.TryParse(row.Cells["open_amount"].Value.ToString(), out openAmount);
+
+                if (row.Cells["amount_applied"].Value != null)
+                    decimal.TryParse(row.Cells["amount_applied"].Value.ToString(), out amountApplied);
+
+                decimal balance = openAmount - amountApplied;
+
+                row.Cells["balance"].Value = balance;
+
+                UpdateUnappliedAmount();
+            }
+        }
+
+        private void dgv_main_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            if (dgv_main.Columns[e.ColumnIndex].Name == "amount_applied")
+            {
+                var row = dgv_main.Rows[e.RowIndex];
+
+                decimal openAmount = 0m;
+                decimal newAmountApplied = 0m;
+
+                // Get open amount
+                if (row.Cells["open_amount"].Value != null)
+                    decimal.TryParse(row.Cells["open_amount"].Value.ToString(), out openAmount);
+
+                // Get the NEW value being entered (important!)
+                if (!decimal.TryParse(e.FormattedValue?.ToString(), out newAmountApplied))
+                    newAmountApplied = 0m;
+
+                //If it will cause negative balance
+                if (newAmountApplied > openAmount)
+                {
+                    MessageBox.Show(
+                        "Amount applied cannot be greater than Open Amount.",
+                        "Validation Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    e.Cancel = true; //This prevents the value from being committed
+                }
+
+                // Validate total does not exceed payment total
+                decimal totalPayment = GetTotalPaymentAmount();
+                decimal totalApplied = GetTotalAmountApplied(e.RowIndex, newAmountApplied);
+
+                if (totalApplied > totalPayment)
+                {
+                    MessageBox.Show(
+                        "Total Amount Applied cannot exceed Total Payment Amount.",
+                        "Validation Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }

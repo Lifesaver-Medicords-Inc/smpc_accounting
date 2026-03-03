@@ -128,11 +128,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // Save current index before clearing
             _previousSIIndex = _currentSIIndex;
             SetEditMode(true, isNewMode: true);
-            Helpers.ResetControls(new Panel[] { pnl_main, pnl_footer });
 
             //Clear only the rows, keep columns
-            dgv_main.DataSource = null;
-            dgv_main.Rows.Clear();
+            _currentDetails = new BindingList<SalesInvoiceDetails2Model>();
+            dgv_main.AutoGenerateColumns = false;
+            dgv_main.DataSource = _currentDetails;
+            Helpers.ResetControls(new Panel[] { pnl_main, pnl_footer });
         }
 
         private async void btn_cancel_Click(object sender, EventArgs e)
@@ -475,6 +476,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 {
                     foreach (DataRow apvRow in modal.SelectedSOs.Rows)
                     {
+
                         int newRowIndex = dgv_main.Rows.Add();
                         var targetRow = dgv_main.Rows[newRowIndex];
 
@@ -486,6 +488,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                         targetRow.Cells["item_uom"].Value = apvRow["item_uom"];
                         targetRow.Cells["discount"].Value = apvRow["discount"];
                         targetRow.Cells["unit_price"].Value = apvRow["unit_price"];
+                        targetRow.Cells["total_cost"].Value = apvRow["total_cost"];
                         targetRow.Cells["total_cost"].Value = apvRow["total_cost"];
                         targetRow.Cells["date_deliver"].Value = apvRow["date_deliver"];
 

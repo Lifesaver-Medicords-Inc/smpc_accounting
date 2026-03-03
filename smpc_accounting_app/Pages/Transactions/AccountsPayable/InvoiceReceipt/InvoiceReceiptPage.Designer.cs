@@ -45,6 +45,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.txt_id = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.btn_supplier = new System.Windows.Forms.Button();
+            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_invoice_due = new System.Windows.Forms.DateTimePicker();
             this.txt_remarks = new System.Windows.Forms.TextBox();
             this.txt_type = new System.Windows.Forms.TextBox();
@@ -95,7 +96,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.total_cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
             this.pnl_main.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -291,6 +291,16 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.btn_supplier.TabIndex = 293;
             this.btn_supplier.UseVisualStyleBackColor = true;
             this.btn_supplier.Click += new System.EventHandler(this.btn_supplier_Click);
+            // 
+            // dtp_doc_date
+            // 
+            this.dtp_doc_date.Enabled = false;
+            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_doc_date.Location = new System.Drawing.Point(995, 39);
+            this.dtp_doc_date.Name = "dtp_doc_date";
+            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
+            this.dtp_doc_date.TabIndex = 291;
+            this.dtp_doc_date.Tag = "REQUIRED";
             // 
             // dtp_invoice_due
             // 
@@ -782,16 +792,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             this.line_amount.Name = "line_amount";
             this.line_amount.ReadOnly = true;
             // 
-            // dtp_doc_date
-            // 
-            this.dtp_doc_date.Enabled = false;
-            this.dtp_doc_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_doc_date.Location = new System.Drawing.Point(995, 39);
-            this.dtp_doc_date.Name = "dtp_doc_date";
-            this.dtp_doc_date.Size = new System.Drawing.Size(289, 20);
-            this.dtp_doc_date.TabIndex = 291;
-            this.dtp_doc_date.Tag = "REQUIRED";
-            // 
             // InvoiceReceiptPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -873,6 +873,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox txt_total_amount_po;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.DateTimePicker dtp_doc_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn purchase_order_details_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
@@ -882,6 +883,5 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         private System.Windows.Forms.DataGridViewTextBoxColumn total_cost;
         private System.Windows.Forms.DataGridViewTextBoxColumn discount;
         private System.Windows.Forms.DataGridViewTextBoxColumn line_amount;
-        private System.Windows.Forms.DateTimePicker dtp_doc_date;
     }
 }

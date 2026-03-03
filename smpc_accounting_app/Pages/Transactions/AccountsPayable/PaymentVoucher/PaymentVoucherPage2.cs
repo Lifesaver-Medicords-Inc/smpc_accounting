@@ -48,6 +48,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             _isNewMode = isNewMode;
             _isEditing = enable;
 
+            if (enable)
+            {
+                txt_overpayment_amount.Clear();
+            }
+
             btn_apv.Enabled = enable;
             btn_supplier.Enabled = enable;
 
@@ -84,8 +89,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
-            dgv_main.DataSource = null;
-            dgv_main.Rows.Clear();
+            _currentDetails = new BindingList<PaymentVoucherDetailsModel>();
+            dgv_main.AutoGenerateColumns = false;
+            dgv_main.DataSource = _currentDetails;
             Helpers.ResetControls(pnl_main);
         }
 
@@ -219,7 +225,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 Helpers.ShowDialogMessage("success", "Payment Voucher created successfully.");
 
                 SetEditMode(false);
-                txt_overpayment_amount.Clear();
                 await LoadPaymentVouchers();
             }
             catch (Exception ex)
@@ -235,9 +240,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             }
         }
 
-        private bool ValidatePaymentVoucher(
-    PaymentVoucherModel paymentVoucherParent,
-    List<PaymentVoucherDetailsModel> paymentVoucherDetails)
+        private bool ValidatePaymentVoucher(PaymentVoucherModel paymentVoucherParent, List<PaymentVoucherDetailsModel> paymentVoucherDetails)
         {
             // Validate parent
             if (paymentVoucherParent == null)

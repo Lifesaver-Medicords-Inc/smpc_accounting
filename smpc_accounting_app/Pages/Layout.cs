@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using smpc_accounting_app.Pages.Components;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Models;
+using smpc_accounting_app.Services.Helpers;
 
 namespace smpc_accounting_app
 {
@@ -179,7 +180,26 @@ namespace smpc_accounting_app
                 CacheData.CurrentJournal = await serviceJournalSetup.GetAsModel();
 
                 serviceCurrencyRateSetup = new GeneralService<ExchangeRateModel>(ApiEndPoints.CURRENCY_RATE + _currencyCode);
-                CacheData.CurrencyRate = await serviceCurrencyRateSetup.GetAsModel();
+                try
+                {
+                    CacheData.CurrencyRate = await serviceCurrencyRateSetup.GetAsModel();
+
+                    if (CacheData.CurrencyRate == null)
+                    {
+                        Helpers.ShowDialogMessage("error", "No exchange rate found for currency. Please connect to the internet: " + _currencyCode);
+
+                        // Optional: stop further processing
+                        Application.Exit();
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helpers.ShowDialogMessage("error", "Error retrieving currency rate.\n\nDetails: " + ex.Message);
+
+                    Application.Exit();
+                    return;
+                }
             }
             else
             {

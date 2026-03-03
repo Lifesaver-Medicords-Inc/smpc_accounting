@@ -83,8 +83,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
-            dgv_main.DataSource = null;
-            dgv_main.Rows.Clear();
+            _currentDetails = new BindingList<APVoucherDetailsModel>();
+            dgv_main.AutoGenerateColumns = false;
+            dgv_main.DataSource = _currentDetails;
             Helpers.ResetControls(pnl_main);
         }
 

@@ -30,7 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentReceiptPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -42,6 +42,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.pnl_main = new System.Windows.Forms.Panel();
+            this.txt_overpayment_amount = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.cmb_bank_code = new System.Windows.Forms.ComboBox();
+            this.dtp_check_date = new System.Windows.Forms.DateTimePicker();
+            this.txt_check_amount = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txt_check_type = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txt_check_no = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txt_bank_branch = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.dtp_date_collect = new System.Windows.Forms.DateTimePicker();
             this.txt_unapplied_amount = new System.Windows.Forms.TextBox();
             this.txt_transaction_amount = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -72,28 +88,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.label11 = new System.Windows.Forms.Label();
             this.dgv_main = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sales_invoice_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.apply = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.sales_invoice_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.open_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.amount_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.twas_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dtp_date_collect = new System.Windows.Forms.DateTimePicker();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.txt_bank_branch = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txt_check_no = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txt_check_type = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.txt_check_amount = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.dtp_check_date = new System.Windows.Forms.DateTimePicker();
-            this.dtp_bank_code = new System.Windows.Forms.ComboBox();
             this.panel6.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.pnl_main.SuspendLayout();
@@ -206,7 +209,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // pnl_main
             // 
-            this.pnl_main.Controls.Add(this.dtp_bank_code);
+            this.pnl_main.Controls.Add(this.txt_overpayment_amount);
+            this.pnl_main.Controls.Add(this.label22);
+            this.pnl_main.Controls.Add(this.cmb_bank_code);
             this.pnl_main.Controls.Add(this.dtp_check_date);
             this.pnl_main.Controls.Add(this.txt_check_amount);
             this.pnl_main.Controls.Add(this.label21);
@@ -254,6 +259,167 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.pnl_main.Size = new System.Drawing.Size(1400, 328);
             this.pnl_main.TabIndex = 18;
             // 
+            // txt_overpayment_amount
+            // 
+            this.txt_overpayment_amount.Enabled = false;
+            this.txt_overpayment_amount.Location = new System.Drawing.Point(625, 102);
+            this.txt_overpayment_amount.Name = "txt_overpayment_amount";
+            this.txt_overpayment_amount.Size = new System.Drawing.Size(289, 20);
+            this.txt_overpayment_amount.TabIndex = 352;
+            this.txt_overpayment_amount.Tag = "MONEY";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(473, 105);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(145, 13);
+            this.label22.TabIndex = 351;
+            this.label22.Text = "OVERPAYMENT AMOUNT :";
+            // 
+            // cmb_bank_code
+            // 
+            this.cmb_bank_code.BackColor = System.Drawing.Color.White;
+            this.cmb_bank_code.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_bank_code.Enabled = false;
+            this.cmb_bank_code.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_bank_code.FormattingEnabled = true;
+            this.cmb_bank_code.Items.AddRange(new object[] {
+            "Chinabank",
+            "EastWest",
+            "Security Bank",
+            "RCBC",
+            "BDO",
+            "Metrobank"});
+            this.cmb_bank_code.Location = new System.Drawing.Point(155, 169);
+            this.cmb_bank_code.MaxLength = 50;
+            this.cmb_bank_code.MinimumSize = new System.Drawing.Size(200, 0);
+            this.cmb_bank_code.Name = "cmb_bank_code";
+            this.cmb_bank_code.Size = new System.Drawing.Size(289, 21);
+            this.cmb_bank_code.TabIndex = 350;
+            this.cmb_bank_code.TabStop = false;
+            this.cmb_bank_code.Tag = "";
+            // 
+            // dtp_check_date
+            // 
+            this.dtp_check_date.Enabled = false;
+            this.dtp_check_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_check_date.Location = new System.Drawing.Point(155, 253);
+            this.dtp_check_date.Name = "dtp_check_date";
+            this.dtp_check_date.Size = new System.Drawing.Size(289, 20);
+            this.dtp_check_date.TabIndex = 349;
+            this.dtp_check_date.Tag = "";
+            // 
+            // txt_check_amount
+            // 
+            this.txt_check_amount.Enabled = false;
+            this.txt_check_amount.Location = new System.Drawing.Point(155, 274);
+            this.txt_check_amount.Name = "txt_check_amount";
+            this.txt_check_amount.Size = new System.Drawing.Size(289, 20);
+            this.txt_check_amount.TabIndex = 348;
+            this.txt_check_amount.Tag = "MONEY";
+            this.txt_check_amount.TextChanged += new System.EventHandler(this.txt_check_amount_TextChanged);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(48, 277);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(99, 13);
+            this.label21.TabIndex = 347;
+            this.label21.Text = "CHECK AMOUNT :";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(67, 256);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(81, 13);
+            this.label20.TabIndex = 345;
+            this.label20.Text = "CHECK DATE :";
+            // 
+            // txt_check_type
+            // 
+            this.txt_check_type.Enabled = false;
+            this.txt_check_type.Location = new System.Drawing.Point(155, 232);
+            this.txt_check_type.Name = "txt_check_type";
+            this.txt_check_type.Size = new System.Drawing.Size(289, 20);
+            this.txt_check_type.TabIndex = 344;
+            this.txt_check_type.Tag = "";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(68, 235);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(80, 13);
+            this.label16.TabIndex = 343;
+            this.label16.Text = "CHECK TYPE :";
+            // 
+            // txt_check_no
+            // 
+            this.txt_check_no.Enabled = false;
+            this.txt_check_no.Location = new System.Drawing.Point(155, 211);
+            this.txt_check_no.Name = "txt_check_no";
+            this.txt_check_no.Size = new System.Drawing.Size(289, 20);
+            this.txt_check_no.TabIndex = 342;
+            this.txt_check_no.Tag = "";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(49, 214);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(99, 13);
+            this.label15.TabIndex = 341;
+            this.label15.Text = "CHECK NUMBER :";
+            // 
+            // txt_bank_branch
+            // 
+            this.txt_bank_branch.Enabled = false;
+            this.txt_bank_branch.Location = new System.Drawing.Point(155, 190);
+            this.txt_bank_branch.Name = "txt_bank_branch";
+            this.txt_bank_branch.Size = new System.Drawing.Size(289, 20);
+            this.txt_bank_branch.TabIndex = 340;
+            this.txt_bank_branch.Tag = "";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(90, 193);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(58, 13);
+            this.label14.TabIndex = 339;
+            this.label14.Text = "BRANCH :";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(54, 140);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(121, 13);
+            this.label31.TabIndex = 338;
+            this.label31.Text = "CHECK INFORMATION";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(74, 172);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(75, 13);
+            this.label12.TabIndex = 322;
+            this.label12.Text = "BANK CODE :";
+            // 
+            // dtp_date_collect
+            // 
+            this.dtp_date_collect.Enabled = false;
+            this.dtp_date_collect.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_date_collect.Location = new System.Drawing.Point(155, 77);
+            this.dtp_date_collect.Name = "dtp_date_collect";
+            this.dtp_date_collect.Size = new System.Drawing.Size(289, 20);
+            this.dtp_date_collect.TabIndex = 321;
+            this.dtp_date_collect.Tag = "REQUIRED";
+            // 
             // txt_unapplied_amount
             // 
             this.txt_unapplied_amount.Enabled = false;
@@ -261,7 +427,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.txt_unapplied_amount.Name = "txt_unapplied_amount";
             this.txt_unapplied_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_unapplied_amount.TabIndex = 320;
-            this.txt_unapplied_amount.Tag = "";
+            this.txt_unapplied_amount.Tag = "MONEY";
             // 
             // txt_transaction_amount
             // 
@@ -270,7 +436,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.txt_transaction_amount.Name = "txt_transaction_amount";
             this.txt_transaction_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_transaction_amount.TabIndex = 319;
-            this.txt_transaction_amount.Tag = "REQUIRED";
+            this.txt_transaction_amount.Tag = "MONEY REQUIRED";
             // 
             // label8
             // 
@@ -306,7 +472,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.txt_cash_amount.Name = "txt_cash_amount";
             this.txt_cash_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_cash_amount.TabIndex = 315;
-            this.txt_cash_amount.Tag = "REQUIRED";
+            this.txt_cash_amount.Tag = "";
+            this.txt_cash_amount.TextChanged += new System.EventHandler(this.txt_cash_amount_TextChanged);
             // 
             // label5
             // 
@@ -519,21 +686,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
-            this.sales_invoice_details_id,
-            this.apply,
+            this.sales_invoice_id,
+            this.isSelected,
             this.doc_no,
+            this.doc_date,
             this.due_date,
             this.open_amount,
             this.amount_applied,
@@ -545,6 +713,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.dgv_main.Name = "dgv_main";
             this.dgv_main.Size = new System.Drawing.Size(1400, 550);
             this.dgv_main.TabIndex = 79;
+            this.dgv_main.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgv_main_CellValidating);
+            this.dgv_main.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_main_CellValueChanged);
+            this.dgv_main.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_main_CurrentCellDirtyStateChanged);
             this.dgv_main.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_main_EditingControlShowing);
             // 
             // dataGridViewTextBoxColumn1
@@ -554,22 +725,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.Visible = false;
             // 
-            // sales_invoice_details_id
+            // sales_invoice_id
             // 
-            this.sales_invoice_details_id.DataPropertyName = "sales_invoice_details_id";
-            this.sales_invoice_details_id.HeaderText = "SID ID";
-            this.sales_invoice_details_id.Name = "sales_invoice_details_id";
-            this.sales_invoice_details_id.ReadOnly = true;
-            this.sales_invoice_details_id.Visible = false;
+            this.sales_invoice_id.DataPropertyName = "sales_invoice_id";
+            this.sales_invoice_id.HeaderText = "SID ID";
+            this.sales_invoice_id.Name = "sales_invoice_id";
+            this.sales_invoice_id.ReadOnly = true;
+            this.sales_invoice_id.Visible = false;
             // 
-            // apply
+            // isSelected
             // 
-            this.apply.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.apply.HeaderText = "APPLY";
-            this.apply.MinimumWidth = 80;
-            this.apply.Name = "apply";
-            this.apply.ReadOnly = true;
-            this.apply.Width = 80;
+            this.isSelected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.isSelected.HeaderText = "APPLY";
+            this.isSelected.MinimumWidth = 80;
+            this.isSelected.Name = "isSelected";
+            this.isSelected.ReadOnly = true;
+            this.isSelected.Width = 80;
             // 
             // doc_no
             // 
@@ -579,6 +750,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.doc_no.MinimumWidth = 200;
             this.doc_no.Name = "doc_no";
             this.doc_no.ReadOnly = true;
+            // 
+            // doc_date
+            // 
+            this.doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.doc_date.DataPropertyName = "doc_date";
+            this.doc_date.HeaderText = "DOC DATE";
+            this.doc_date.Name = "doc_date";
+            this.doc_date.ReadOnly = true;
             // 
             // due_date
             // 
@@ -620,147 +799,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.balance.HeaderText = "BALANCE";
             this.balance.Name = "balance";
             this.balance.ReadOnly = true;
-            // 
-            // dtp_date_collect
-            // 
-            this.dtp_date_collect.Enabled = false;
-            this.dtp_date_collect.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_date_collect.Location = new System.Drawing.Point(155, 77);
-            this.dtp_date_collect.Name = "dtp_date_collect";
-            this.dtp_date_collect.Size = new System.Drawing.Size(289, 20);
-            this.dtp_date_collect.TabIndex = 321;
-            this.dtp_date_collect.Tag = "REQUIRED";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(74, 172);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(75, 13);
-            this.label12.TabIndex = 322;
-            this.label12.Text = "BANK CODE :";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(54, 140);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(121, 13);
-            this.label31.TabIndex = 338;
-            this.label31.Text = "CHECK INFORMATION";
-            // 
-            // txt_bank_branch
-            // 
-            this.txt_bank_branch.Enabled = false;
-            this.txt_bank_branch.Location = new System.Drawing.Point(155, 190);
-            this.txt_bank_branch.Name = "txt_bank_branch";
-            this.txt_bank_branch.Size = new System.Drawing.Size(289, 20);
-            this.txt_bank_branch.TabIndex = 340;
-            this.txt_bank_branch.Tag = "REQUIRED";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(90, 193);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(58, 13);
-            this.label14.TabIndex = 339;
-            this.label14.Text = "BRANCH :";
-            // 
-            // txt_check_no
-            // 
-            this.txt_check_no.Enabled = false;
-            this.txt_check_no.Location = new System.Drawing.Point(155, 211);
-            this.txt_check_no.Name = "txt_check_no";
-            this.txt_check_no.Size = new System.Drawing.Size(289, 20);
-            this.txt_check_no.TabIndex = 342;
-            this.txt_check_no.Tag = "REQUIRED";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(49, 214);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(99, 13);
-            this.label15.TabIndex = 341;
-            this.label15.Text = "CHECK NUMBER :";
-            // 
-            // txt_check_type
-            // 
-            this.txt_check_type.Enabled = false;
-            this.txt_check_type.Location = new System.Drawing.Point(155, 232);
-            this.txt_check_type.Name = "txt_check_type";
-            this.txt_check_type.Size = new System.Drawing.Size(289, 20);
-            this.txt_check_type.TabIndex = 344;
-            this.txt_check_type.Tag = "";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(68, 235);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(80, 13);
-            this.label16.TabIndex = 343;
-            this.label16.Text = "CHECK TYPE :";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(67, 256);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(81, 13);
-            this.label20.TabIndex = 345;
-            this.label20.Text = "CHECK DATE :";
-            // 
-            // txt_check_amount
-            // 
-            this.txt_check_amount.Enabled = false;
-            this.txt_check_amount.Location = new System.Drawing.Point(155, 274);
-            this.txt_check_amount.Name = "txt_check_amount";
-            this.txt_check_amount.Size = new System.Drawing.Size(289, 20);
-            this.txt_check_amount.TabIndex = 348;
-            this.txt_check_amount.Tag = "REQUIRED";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(48, 277);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(99, 13);
-            this.label21.TabIndex = 347;
-            this.label21.Text = "CHECK AMOUNT :";
-            // 
-            // dtp_check_date
-            // 
-            this.dtp_check_date.Enabled = false;
-            this.dtp_check_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_check_date.Location = new System.Drawing.Point(155, 253);
-            this.dtp_check_date.Name = "dtp_check_date";
-            this.dtp_check_date.Size = new System.Drawing.Size(289, 20);
-            this.dtp_check_date.TabIndex = 349;
-            this.dtp_check_date.Tag = "REQUIRED";
-            // 
-            // dtp_bank_code
-            // 
-            this.dtp_bank_code.BackColor = System.Drawing.Color.White;
-            this.dtp_bank_code.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.dtp_bank_code.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.dtp_bank_code.FormattingEnabled = true;
-            this.dtp_bank_code.Items.AddRange(new object[] {
-            "Chinabank",
-            "EastWest",
-            "Security Bank",
-            "RCBC",
-            "BDO",
-            "Metrobank"});
-            this.dtp_bank_code.Location = new System.Drawing.Point(155, 169);
-            this.dtp_bank_code.MaxLength = 50;
-            this.dtp_bank_code.MinimumSize = new System.Drawing.Size(200, 0);
-            this.dtp_bank_code.Name = "dtp_bank_code";
-            this.dtp_bank_code.Size = new System.Drawing.Size(289, 21);
-            this.dtp_bank_code.TabIndex = 350;
-            this.dtp_bank_code.TabStop = false;
-            this.dtp_bank_code.Tag = "REQUIRED";
             // 
             // PaymentReceiptPage
             // 
@@ -827,15 +865,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridView dgv_main;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sales_invoice_details_id;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn apply;
-        private System.Windows.Forms.DataGridViewTextBoxColumn doc_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn due_date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn open_amount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn amount_applied;
-        private System.Windows.Forms.DataGridViewTextBoxColumn twas_applied;
-        private System.Windows.Forms.DataGridViewTextBoxColumn balance;
         private System.Windows.Forms.DateTimePicker dtp_date_collect;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox txt_check_amount;
@@ -849,6 +878,18 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.DateTimePicker dtp_check_date;
-        private System.Windows.Forms.ComboBox dtp_bank_code;
+        private System.Windows.Forms.ComboBox cmb_bank_code;
+        private System.Windows.Forms.TextBox txt_overpayment_amount;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sales_invoice_id;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isSelected;
+        private System.Windows.Forms.DataGridViewTextBoxColumn doc_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn doc_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn due_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn open_amount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn amount_applied;
+        private System.Windows.Forms.DataGridViewTextBoxColumn twas_applied;
+        private System.Windows.Forms.DataGridViewTextBoxColumn balance;
     }
 }

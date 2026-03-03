@@ -34,13 +34,16 @@ namespace smpc_accounting_app.Models
     {
         public int id { get; set; }
         public int payment_receipt_id { get; set; }
+        public int sales_invoice_id { get; set; }
         public int sales_invoice_details_id { get; set; }
         public string doc_no { get; set; }
+        public string doc_date { get; set; }
         public string due_date { get; set; }
         public float open_amount { get; set; }
         public float amount_applied { get; set; }
         public float twas_applied { get; set; }
         public float balance { get; set; }
+        public bool  isSelected { get; set; }
     }
 
     public class PaymentReceiptList
