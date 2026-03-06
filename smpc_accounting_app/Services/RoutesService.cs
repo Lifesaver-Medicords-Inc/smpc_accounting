@@ -54,8 +54,7 @@ namespace smpc_accounting_app.Services
 
             //========================================================================
             // ACCOUNTS RECEIVABLES
-            {"Sales Invoice", new SalesInvoicePage()},
-            {"Sales Invoice2", new SalesInvoicePage2()},
+            {"Sales Invoice", new SalesInvoicePage2()},
             {"Payment Receipt", new PaymentReceiptPage()},
         };
 

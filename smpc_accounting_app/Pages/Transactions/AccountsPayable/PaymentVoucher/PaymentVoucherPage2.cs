@@ -177,24 +177,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
                 var paymentVoucherParent = Helpers.BuildModelFromPanels<PaymentVoucherModel>(new Panel[] { pnl_main });
 
-                // Check Amount
-                decimal checkAmount = 0;
-                decimal.TryParse(txt_check_amount.Text, out checkAmount);
-
-                if (checkAmount == 0)
-                {
-                    paymentVoucherParent.check_date = null;   // Make sure this is nullable DateTime?
-                }
-
-                // Transfer Amount
-                decimal transferAmount = 0;
-                decimal.TryParse(txt_transfer_amount.Text, out transferAmount);
-
-                if (transferAmount == 0)
-                {
-                    paymentVoucherParent.ref_doc_date = null;  // Make sure this is nullable DateTime?
-                }
-
                 paymentVoucherParent.prepared_by = _userName;
 
                 var paymentVoucherDetails = Helpers.DatagridviewMapper.BuildModelsFromData<PaymentVoucherDetailsModel>(dgv_main);
@@ -249,6 +231,26 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 return false;
             }
 
+            // Check Amount
+            decimal checkAmount = Convert.ToDecimal(paymentVoucherParent.check_amount);
+            checkAmount = Helpers.ZeroIfNearZero(checkAmount);
+
+            // Check Amount
+            if (checkAmount == 0)
+            {
+                paymentVoucherParent.check_date = null;
+            }
+
+            // Transfer Amount
+            decimal transferAmount = Convert.ToDecimal(paymentVoucherParent.transfer_amount);
+            transferAmount = Helpers.ZeroIfNearZero(transferAmount);
+
+            // Transfer Amount
+            if (transferAmount == 0)
+            {
+                paymentVoucherParent.ref_doc_date = null;
+            }
+
             // Validate details existence
             if (paymentVoucherDetails == null || paymentVoucherDetails.Count == 0)
             {
@@ -256,38 +258,49 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 return false;
             }
 
-            bool hasPositiveAmountApplied = false;
-
             foreach (var detail in paymentVoucherDetails)
             {
-                decimal amountApplied = Convert.ToDecimal(detail.amount_applied);
+                decimal amountApplied = Helpers.ZeroIfNearZero(Convert.ToDecimal(detail.amount_applied));
+                decimal openAmount = Helpers.ZeroIfNearZero(Convert.ToDecimal(detail.open_amount));
 
-                // Only validate rows where amount_applied is not zero
-                if (amountApplied != 0)
+                // Skip pure zero
+                if (amountApplied == 0)
+                    continue;
+
+                // Negative check
+                if (amountApplied < 0)
                 {
-                    hasPositiveAmountApplied = amountApplied > 0;
+                    Helpers.ShowDialogMessage("error",
+                        $"Amount applied cannot be negative.\nDoc No: {detail.doc_no}");
+                    return false;
+                }
 
-                    if (amountApplied < 0)
-                    {
-                        Helpers.ShowDialogMessage("error",
-                            $"Amount applied cannot be negative.\nDoc No: {detail.doc_no}");
-                        return false;
-                    }
-
-                    if (amountApplied > Convert.ToDecimal(detail.open_amount))
-                    {
-                        Helpers.ShowDialogMessage("error",
-                            $"Amount applied cannot be greater than open amount.\nDoc No: {detail.doc_no}");
-                        return false;
-                    }
+                // Greater than open amount check (tolerant)
+                if (Helpers.ZeroIfNearZero(amountApplied - openAmount) > 0)
+                {
+                    Helpers.ShowDialogMessage("error",
+                        $"Amount applied cannot be greater than open amount.\nDoc No: {detail.doc_no}");
+                    return false;
                 }
             }
 
-            // If no row has amount_applied greater than zero
-            if (!paymentVoucherDetails.Any(x => x.amount_applied > 0))
+            // At least one positive amount
+            if (!paymentVoucherDetails.Any(x => Helpers.ZeroIfNearZero(Convert.ToDecimal(x.amount_applied)) > 0))
             {
                 Helpers.ShowDialogMessage("error",
                     "Please enter at least one Amount Applied greater than zero.");
+                return false;
+            }
+
+            decimal totalApplied = Helpers.ZeroIfNearZero(paymentVoucherDetails.Sum(x => Convert.ToDecimal(x.amount_applied)));
+
+            decimal transactionTotal = Helpers.ZeroIfNearZero(Convert.ToDecimal(paymentVoucherParent.transaction_amount));
+
+            // Total applied > transaction amount (tolerant)
+            if (Helpers.ZeroIfNearZero(totalApplied - transactionTotal) > 0)
+            {
+                Helpers.ShowDialogMessage("error",
+                    $"Total Amount Applied ({totalApplied:N2}) cannot exceed Transaction Amount ({transactionTotal:N2}).");
                 return false;
             }
 
@@ -495,6 +508,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
         private void dgv_main_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (!_isEditing)
+                return;
+
             if (e.RowIndex < 0) return;
 
             // Only trigger when amount_applied changes
@@ -516,13 +532,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 // Compute balance
                 decimal balance = openAmount - amountApplied;
 
-                row.Cells["balance"].Value = balance;
+                row.Cells["balance"].Value = Helpers.ZeroIfNearZero(balance);
 
                 UpdateUnappliedAmount();
             }
         }
 
-        private void dgv_main_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        private void dgv_main_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
@@ -531,49 +547,55 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 var row = dgv_main.Rows[e.RowIndex];
 
                 decimal openAmount = 0m;
-                decimal newAmountApplied = 0m;
+                decimal amountApplied = 0m;
 
                 // Get open amount
                 if (row.Cells["open_amount"].Value != null)
                     decimal.TryParse(row.Cells["open_amount"].Value.ToString(), out openAmount);
 
-                // Get the NEW value being entered (important!)
-                if (!decimal.TryParse(e.FormattedValue?.ToString(), out newAmountApplied))
-                    newAmountApplied = 0m;
+                // Get applied amount
+                if (row.Cells["amount_applied"].Value != null)
+                    decimal.TryParse(row.Cells["amount_applied"].Value.ToString(), out amountApplied);
 
-                //If it will cause negative balance
-                if (newAmountApplied > openAmount)
+                // Validate open amount
+                if (Helpers.ZeroIfNearZero(amountApplied - openAmount) > 0)
                 {
-                    MessageBox.Show(
-                        "Amount applied cannot be greater than Open Amount.",
-                        "Validation Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
+                    Helpers.ShowDialogMessage("error", "Amount applied cannot be greater than Open Amount.");
 
-                    e.Cancel = true; //This prevents the value from being committed
+                    row.Cells["amount_applied"].Value = 0;
+                    return;
                 }
 
-                // Validate total does not exceed payment total
+                dgv_main.EndEdit();
+
                 decimal totalPayment = GetTotalPaymentAmount();
-                decimal totalApplied = GetTotalAmountApplied(e.RowIndex, newAmountApplied);
+                decimal totalApplied = GetTotalAmountApplied();
 
-                if (totalApplied > totalPayment)
+                if (Helpers.ZeroIfNearZero(totalApplied - totalPayment) > 0)
                 {
-                    MessageBox.Show(
-                        "Total Amount Applied cannot exceed Total Payment Amount.",
-                        "Validation Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
+                    Helpers.ShowDialogMessage("error", "Total Amount Applied cannot exceed Total Payment Amount.");
 
-                    e.Cancel = true;
+                    row.Cells["amount_applied"].Value = 0;
+                    return;
                 }
+
+                UpdateUnappliedAmount();
             }
+        }
+
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
         }
 
         private void txt_check_amount_TextChanged(object sender, EventArgs e)
         {
+            if (!_isEditing)
+                return;
+
             bool hasValue = !string.IsNullOrWhiteSpace(txt_check_amount.Text) &&
                     txt_check_amount.Text != "0" &&
                     txt_check_amount.Text != "0.00";
@@ -596,13 +618,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             }
 
             UpdateTransactionAmount();
-            UpdateAmountAppliedColumnState();
             UpdateUnappliedAmount();
-
+            UpdateAmountAppliedColumnState();
         }
 
         private void txt_transfer_amount_TextChanged(object sender, EventArgs e)
         {
+            if (!_isEditing)
+                return;
+
             bool hasValue = !string.IsNullOrWhiteSpace(txt_transfer_amount.Text) &&
                     txt_transfer_amount.Text != "0" &&
                     txt_transfer_amount.Text != "0.00";
@@ -627,15 +651,18 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             }
 
             UpdateTransactionAmount();
-            UpdateAmountAppliedColumnState();
             UpdateUnappliedAmount();
+            UpdateAmountAppliedColumnState();
         }
 
         private void txt_cash_amount_TextChanged(object sender, EventArgs e)
         {
+            if (!_isEditing)
+                return;
+
             UpdateTransactionAmount();
-            UpdateAmountAppliedColumnState();
             UpdateUnappliedAmount();
+            UpdateAmountAppliedColumnState();
         }
 
         private void UpdateTransactionAmount()
@@ -651,7 +678,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             decimal.TryParse(txt_check_amount.Text, out checkAmount);
             decimal.TryParse(txt_transfer_amount.Text, out transferAmount);
 
-            decimal total = checkAmount + transferAmount + cashAmount;
+            decimal total = Helpers.ZeroIfNearZero(checkAmount + transferAmount + cashAmount);
 
             txt_transaction_amount.Text = total.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
             txt_transaction_amount.AccessibleDescription = total.ToString(); // Store full precise value
@@ -659,6 +686,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
         private void UpdateAmountAppliedColumnState()
         {
+            if (!_isEditing)
+                return;
+
             bool hasCash = !string.IsNullOrWhiteSpace(txt_cash_amount.Text) &&
                            txt_cash_amount.Text != "0" &&
                            txt_cash_amount.Text != "0.00";
@@ -724,20 +754,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
                 totalApplied += value;
             }
 
-            return totalApplied;
+            return Helpers.ZeroIfNearZero(totalApplied);
         }
 
         private decimal GetTotalPaymentAmount()
         {
-            decimal cash = 0m;
-            decimal check = 0m;
-            decimal transfer = 0m;
+            if (!_isEditing)
+                return 0m;
 
-            decimal.TryParse(txt_cash_amount.Text, out cash);
-            decimal.TryParse(txt_check_amount.Text, out check);
-            decimal.TryParse(txt_transfer_amount.Text, out transfer);
+            decimal total = 0m;
 
-            return cash + check + transfer;
+            decimal.TryParse(txt_transaction_amount.AccessibleDescription ?? txt_transaction_amount.Text, out total);
+
+            return Helpers.ZeroIfNearZero(total);
         }
 
         private void UpdateUnappliedAmount()
@@ -748,7 +777,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             decimal totalPayment = GetTotalPaymentAmount();
             decimal totalApplied = GetTotalAmountApplied();
 
-            decimal unapplied = totalPayment - totalApplied;
+            decimal unapplied = Helpers.ZeroIfNearZero(totalPayment - totalApplied);
 
             // If applied exceeds payment (should not happen because of validation),
             // just force unapplied to zero

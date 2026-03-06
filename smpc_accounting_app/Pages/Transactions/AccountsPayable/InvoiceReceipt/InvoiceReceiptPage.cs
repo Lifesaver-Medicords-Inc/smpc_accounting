@@ -513,6 +513,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
         private void dgv_main_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (!_isEditing)
+                return;
+
             if (e.RowIndex < 0) return;
 
             var dgRow = dgv_main.Rows[e.RowIndex];
@@ -524,20 +527,20 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             if (dgv_main.Columns[e.ColumnIndex].Name == totalCostCol ||
                 dgv_main.Columns[e.ColumnIndex].Name == discountCol)
             {
-                float totalCost = 0f;
-                float discount = 0f;
+                decimal totalCost = 0m;
+                decimal discount = 0m;
 
                 if (dgRow.Cells[totalCostCol].Value != null)
-                    float.TryParse(dgRow.Cells[totalCostCol].Value.ToString(), out totalCost);
+                    decimal.TryParse(dgRow.Cells[totalCostCol].Value.ToString(), out totalCost);
 
                 if (dgRow.Cells[discountCol].Value != null &&
                     !string.IsNullOrWhiteSpace(dgRow.Cells[discountCol].Value.ToString()))
                 {
-                    float.TryParse(dgRow.Cells[discountCol].Value.ToString(), out discount);
+                    decimal.TryParse(dgRow.Cells[discountCol].Value.ToString(), out discount);
                 }
 
-                float lineAmount = discount <= 0 ? totalCost : totalCost - discount;
-                dgRow.Cells[lineAmountCol].Value = Math.Max(lineAmount, 0);
+                decimal lineAmount = discount <= 0 ? totalCost : totalCost - discount;
+                dgRow.Cells[lineAmountCol].Value = Math.Max(Helpers.ZeroIfNearZero(lineAmount), 0);
             }
 
             //Re-assign binding list as datasource
@@ -570,7 +573,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                 if (dgRow.Cells["line_amount"]?.Value != null &&
                     decimal.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out decimal lineAmount))
                 {
-                    totalLineAmount += lineAmount;
+                    totalLineAmount += Helpers.ZeroIfNearZero(lineAmount);
                 }
             }
 
@@ -587,22 +590,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                 if (taxId == 10006)
                 {
                     // Only divide by 1.12 if tax code is 10006
-                    twasAmount = (totalLineAmount / 1.12m) * 0.10m;
+                    twasAmount = Helpers.ZeroIfNearZero((totalLineAmount / 1.12m) * 0.10m);
                 }
                 else
                 {
                     // For other tax codes, do not divide
-                    twasAmount = totalLineAmount * 0.10m;
+                    twasAmount = Helpers.ZeroIfNearZero(totalLineAmount * 0.10m);
                 }
             }
             else
             {
                 // For other tax codes, do not divide
-                twasAmount = totalLineAmount * 0.10m;
+                twasAmount = Helpers.ZeroIfNearZero(totalLineAmount * 0.10m);
             }
 
             // Compute Net Amount
-            decimal netAmount = (totalLineAmount - twasAmount) - otherCharges;
+            decimal netAmount = Helpers.ZeroIfNearZero((totalLineAmount - twasAmount) - otherCharges);
 
             // Prevent negative display
             if (twasAmount < 0) twasAmount = 0m;
@@ -661,6 +664,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             {
                 UpdateNetAmount();
             }
+        }
+
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
         }
     }
 }

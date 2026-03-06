@@ -164,6 +164,8 @@ namespace smpc_accounting_app
 
         private async void Layout_Load(object sender, EventArgs e)
         {
+            this.Enabled = false;
+
             Login login = new Login();
             if (DialogResult.OK == login.ShowDialog())
             {
@@ -179,31 +181,38 @@ namespace smpc_accounting_app
                 serviceJournalSetup = new GeneralService<JournalEntryModel>(ApiEndPoints.CURRENT_JOURNAL);
                 CacheData.CurrentJournal = await serviceJournalSetup.GetAsModel();
 
-                serviceCurrencyRateSetup = new GeneralService<ExchangeRateModel>(ApiEndPoints.CURRENCY_RATE + _currencyCode);
-                try
-                {
-                    CacheData.CurrencyRate = await serviceCurrencyRateSetup.GetAsModel();
-
-                    if (CacheData.CurrencyRate == null)
-                    {
-                        Helpers.ShowDialogMessage("error", "No exchange rate found for currency. Please connect to the internet: " + _currencyCode);
-
-                        // Optional: stop further processing
-                        Application.Exit();
-                        return;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.ShowDialogMessage("error", "Error retrieving currency rate.\n\nDetails: " + ex.Message);
-
-                    Application.Exit();
-                    return;
-                }
+                this.Enabled = true;
             }
             else
             {
                 Application.Exit();
+            }
+
+            await LoadCurrency();
+        }
+
+        private async Task LoadCurrency()
+        {
+            serviceCurrencyRateSetup = new GeneralService<ExchangeRateModel>(ApiEndPoints.CURRENCY_RATE + _currencyCode);
+            try
+            {
+                CacheData.CurrencyRate = await serviceCurrencyRateSetup.GetAsModel();
+
+                if (CacheData.CurrencyRate == null)
+                {
+                    Helpers.ShowDialogMessage("error", "No exchange rate found for currency. Please connect to the internet: " + _currencyCode);
+
+                    // Optional: stop further processing
+                    Application.Exit();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", "Error retrieving currency rate.\n\nDetails: " + ex.Message);
+
+                Application.Exit();
+                return;
             }
         }
     }

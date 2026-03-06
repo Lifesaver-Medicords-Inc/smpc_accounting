@@ -20,6 +20,11 @@ namespace smpc_accounting_app.Services.Helpers
 {
     public static class Helpers
     {
+        public static decimal ZeroIfNearZero(decimal value, decimal tolerance = 0.01m)
+        {
+            return (value > -tolerance && value < tolerance) ? 0m : value;
+        }
+
         public static void EnableGroupHeaders(DataGridView dgv, Dictionary<string, string[]> columnGroups)
         {
             if (dgv == null || columnGroups == null || columnGroups.Count == 0)
@@ -1034,6 +1039,7 @@ namespace smpc_accounting_app.Services.Helpers
                 {
                     // Reset the TextBox's text
                     textBox.Text = "";
+                    textBox.AccessibleDescription = "";
                 }
                 else if (control is ComboBox combobox)
                 {
@@ -1448,9 +1454,8 @@ namespace smpc_accounting_app.Services.Helpers
                                 (string)dt.Rows[selectedIndex][column_name].ToString().ToLower() == "true"
                                 ? true : false;
                             }
-
-                            // Check if the control is a DATETIME PICKER
-                            if (control is DateTimePicker dateTimePicker)
+                            // Check if the control is a DATETIME PICKER
+                            if (control is DateTimePicker dateTimePicker)
                             {
                                 if (selectedIndex < 0 || selectedIndex >= dt.Rows.Count)
                                     return;
@@ -1458,14 +1463,18 @@ namespace smpc_accounting_app.Services.Helpers
                                 object rawValue = dt.Rows[selectedIndex][column_name];
 
                                 if (rawValue != DBNull.Value &&
-                                DateTime.TryParse(rawValue.ToString(), out DateTime parsedDate))
+                                    DateTime.TryParse(rawValue.ToString(), out DateTime parsedDate))
                                 {
+                                    dateTimePicker.Format = DateTimePickerFormat.Custom;
+                                    dateTimePicker.CustomFormat = "MM/dd/yyyy";   // your format
                                     dateTimePicker.Value = parsedDate;
                                 }
                                 else
                                 {
-                                    dateTimePicker.Value = DateTime.Now; // or MinDate if you prefer
-                                }
+                                    // Make it appear empty
+                                    dateTimePicker.Format = DateTimePickerFormat.Custom;
+                                    dateTimePicker.CustomFormat = " ";
+                                }
                             }
                             // Check if the control is a NUMERIC
                             if (control is NumericUpDown numericUpDown)

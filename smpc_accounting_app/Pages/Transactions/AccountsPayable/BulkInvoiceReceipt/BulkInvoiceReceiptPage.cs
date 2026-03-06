@@ -541,6 +541,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
         private void dgv_main_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (!_isEditing)
+                return;
+
             if (e.RowIndex < 0)
                 return;
 
@@ -580,7 +583,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 if (dgRow.Cells["line_amount"]?.Value != null &&
                     decimal.TryParse(dgRow.Cells["line_amount"].Value.ToString(), out decimal lineAmount))
                 {
-                    totalLineAmount += lineAmount;
+                    totalLineAmount += Helpers.ZeroIfNearZero(lineAmount);
                 }
             }
 
@@ -597,22 +600,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 if (taxId == 10006)
                 {
                     // Only divide by 1.12 if tax code is 10006
-                    twasAmount = (totalLineAmount / 1.12m) * 0.10m;
+                    twasAmount = Helpers.ZeroIfNearZero((totalLineAmount / 1.12m) * 0.10m);
                 }
                 else
                 {
                     // For other tax codes, do not divide
-                    twasAmount = totalLineAmount * 0.10m;
+                    twasAmount = Helpers.ZeroIfNearZero(totalLineAmount * 0.10m);
                 }
             }
             else
             {
                 // For other tax codes, do not divide
-                twasAmount = totalLineAmount * 0.10m;
+                twasAmount = Helpers.ZeroIfNearZero(totalLineAmount * 0.10m);
             }
 
             // Compute Net Amount
-            decimal netAmount = (totalLineAmount - twasAmount) - otherCharges;
+            decimal netAmount = Helpers.ZeroIfNearZero((totalLineAmount - twasAmount) - otherCharges);
 
             // Prevent negative display
             if (twasAmount < 0) twasAmount = 0m;
@@ -663,6 +666,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             {
                 UpdateNetAmount();
             }
+        }
+
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
         }
     }
 }

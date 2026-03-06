@@ -477,6 +477,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.dgv_journal_entry.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_journal_entry_CellFormatting);
             this.dgv_journal_entry.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_journal_entry_CellValueChanged);
             this.dgv_journal_entry.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_journal_entry_CurrentCellDirtyStateChanged);
+            this.dgv_journal_entry.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_journal_entry_DataError);
             this.dgv_journal_entry.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_journal_entry_EditingControlShowing);
             // 
             // JournalEntryPage

@@ -938,5 +938,13 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 row.Cells["account_title"].Style.Padding = new Padding(0);
             }
         }
+
+        private void dgv_journal_entry_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
+        }
     }
 }

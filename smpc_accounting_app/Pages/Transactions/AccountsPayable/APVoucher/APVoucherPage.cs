@@ -415,7 +415,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             }
 
             // Compute Transaction Amount
-            decimal transactionAmount = totalLineAmount;
+            decimal transactionAmount = Helpers.ZeroIfNearZero(totalLineAmount);
 
             txt_transaction_amount.Text = transactionAmount.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
             txt_transaction_amount.AccessibleDescription = transactionAmount.ToString(); // Store full precise value
@@ -451,6 +451,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
                 Helpers.ShowDialogMessage("error", $"Failed to open Payment Voucher: {ex.Message}");
             }
+        }
+
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
         }
     }
 }

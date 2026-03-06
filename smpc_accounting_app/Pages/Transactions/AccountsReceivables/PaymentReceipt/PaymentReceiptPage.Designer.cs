@@ -513,7 +513,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_prepared_by
             // 
-            this.txt_prepared_by.Location = new System.Drawing.Point(1043, 86);
+            this.txt_prepared_by.Location = new System.Drawing.Point(581, 228);
             this.txt_prepared_by.Name = "txt_prepared_by";
             this.txt_prepared_by.Size = new System.Drawing.Size(289, 20);
             this.txt_prepared_by.TabIndex = 301;
@@ -523,7 +523,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(945, 90);
+            this.label19.Location = new System.Drawing.Point(483, 232);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(89, 13);
             this.label19.TabIndex = 300;
@@ -533,7 +533,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // txt_customer_id
             // 
             this.txt_customer_id.Enabled = false;
-            this.txt_customer_id.Location = new System.Drawing.Point(1043, 65);
+            this.txt_customer_id.Location = new System.Drawing.Point(581, 207);
             this.txt_customer_id.Name = "txt_customer_id";
             this.txt_customer_id.Size = new System.Drawing.Size(289, 20);
             this.txt_customer_id.TabIndex = 299;
@@ -543,7 +543,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(947, 68);
+            this.label18.Location = new System.Drawing.Point(485, 210);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(88, 13);
             this.label18.TabIndex = 298;
@@ -553,7 +553,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // txt_id
             // 
             this.txt_id.Enabled = false;
-            this.txt_id.Location = new System.Drawing.Point(1043, 107);
+            this.txt_id.Location = new System.Drawing.Point(581, 249);
             this.txt_id.Name = "txt_id";
             this.txt_id.Size = new System.Drawing.Size(289, 20);
             this.txt_id.TabIndex = 295;
@@ -563,7 +563,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(1010, 110);
+            this.label17.Location = new System.Drawing.Point(548, 252);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(24, 13);
             this.label17.TabIndex = 294;
@@ -713,9 +713,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.dgv_main.Name = "dgv_main";
             this.dgv_main.Size = new System.Drawing.Size(1400, 550);
             this.dgv_main.TabIndex = 79;
-            this.dgv_main.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgv_main_CellValidating);
+            this.dgv_main.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_main_CellEndEdit);
             this.dgv_main.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_main_CellValueChanged);
             this.dgv_main.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_main_CurrentCellDirtyStateChanged);
+            this.dgv_main.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_main_DataError);
             this.dgv_main.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_main_EditingControlShowing);
             // 
             // dataGridViewTextBoxColumn1

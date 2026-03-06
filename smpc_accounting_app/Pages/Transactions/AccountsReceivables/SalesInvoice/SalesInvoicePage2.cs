@@ -202,17 +202,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 decimal netVatAmount = decimal.TryParse(txt_net_vat.AccessibleDescription, out var netVat) ? netVat : 0;
                 decimal pwdDiscountAmount = decimal.TryParse(txt_pwd_discount.Text, out var pwdDiscount) ? pwdDiscount : 0;
 
-                if (addVatAmount < 0)
+                if (Helpers.ZeroIfNearZero(addVatAmount) < 0)
                 {
                     Helpers.ShowDialogMessage("error", "Additional VAT cannot be negative.");
                     return;
                 }
-                else if (totalAmountDue <= 0)
+                else if (Helpers.ZeroIfNearZero(totalAmountDue) <= 0)
                 {
                     Helpers.ShowDialogMessage("error", "Total Amount Due must be greater than zero.");
                     return;
                 }
-                else if (pwdDiscountAmount > netVatAmount)
+                else if (Helpers.ZeroIfNearZero(pwdDiscountAmount - netVatAmount) > 0)
                 {
                     Helpers.ShowDialogMessage("error", "PWD Discount cannot be greater than Net VAT.");
                     return;
@@ -541,6 +541,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             }
         }
 
+        private void dgv_main_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            Helpers.HandleNumericColumns(dgv_main, e, new[] { "item_qty" });
+        }
+
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
+        }
+
+        private void txt_pwd_discount_Leave(object sender, EventArgs e)
+        {
+            ComputeFooterAmounts();
+        }
+
+        private void txt_pwd_discount_TextChanged(object sender, EventArgs e)
+        {
+            ComputeFooterAmounts();
+        }
+
         private bool ComputeFooterAmounts()
         {
             if (!_isEditing)
@@ -613,21 +636,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             {
                 txt_pwd_discount.Text = null;
             }
-        }
-
-        private void dgv_main_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            Helpers.HandleNumericColumns(dgv_main, e, new[] { "item_qty" });
-        }
-
-        private void txt_pwd_discount_Leave(object sender, EventArgs e)
-        {
-            ComputeFooterAmounts();
-        }
-
-        private void txt_pwd_discount_TextChanged(object sender, EventArgs e)
-        {
-            ComputeFooterAmounts();
         }
     }
 }

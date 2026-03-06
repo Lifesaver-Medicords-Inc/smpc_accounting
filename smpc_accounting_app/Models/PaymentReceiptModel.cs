@@ -16,6 +16,7 @@ namespace smpc_accounting_app.Models
         public string date_collect { get; set; }
         public float transaction_amount { get; set; }
         public float unapplied_amount { get; set; }
+        public float overpayment_amount { get; set; }
         public string reference_or_no { get; set; }
         public string currency { get; set; }
         public float cash_amount { get; set; }
