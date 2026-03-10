@@ -30,7 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesInvoicePage2));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -80,6 +80,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.txt_base_rate = new System.Windows.Forms.TextBox();
             this.txt_exchange_rate = new System.Windows.Forms.TextBox();
             this.pnl_main = new System.Windows.Forms.Panel();
+            this.txt_tin = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
             this.txt_overpayment_amount = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.cmb_currency = new System.Windows.Forms.ComboBox();
@@ -185,6 +187,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.btn_print.Name = "btn_print";
             this.btn_print.Size = new System.Drawing.Size(52, 22);
             this.btn_print.Text = "Print";
+            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
             // btn_next
             // 
@@ -342,7 +345,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.txt_payment_term.Name = "txt_payment_term";
             this.txt_payment_term.Size = new System.Drawing.Size(289, 20);
             this.txt_payment_term.TabIndex = 278;
-            this.txt_payment_term.Tag = "";
+            this.txt_payment_term.Tag = "REQUIRED";
             // 
             // txt_doc_no
             // 
@@ -477,7 +480,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.txt_reference_doc_dr.Name = "txt_reference_doc_dr";
             this.txt_reference_doc_dr.Size = new System.Drawing.Size(289, 20);
             this.txt_reference_doc_dr.TabIndex = 304;
-            this.txt_reference_doc_dr.Tag = "";
+            this.txt_reference_doc_dr.Tag = "REQUIRED";
             // 
             // label3
             // 
@@ -584,6 +587,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // pnl_main
             // 
+            this.pnl_main.Controls.Add(this.txt_tin);
+            this.pnl_main.Controls.Add(this.label29);
             this.pnl_main.Controls.Add(this.txt_overpayment_amount);
             this.pnl_main.Controls.Add(this.label27);
             this.pnl_main.Controls.Add(this.cmb_currency);
@@ -630,6 +635,26 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.pnl_main.Name = "pnl_main";
             this.pnl_main.Size = new System.Drawing.Size(1400, 249);
             this.pnl_main.TabIndex = 17;
+            // 
+            // txt_tin
+            // 
+            this.txt_tin.Enabled = false;
+            this.txt_tin.Location = new System.Drawing.Point(619, 80);
+            this.txt_tin.Name = "txt_tin";
+            this.txt_tin.Size = new System.Drawing.Size(289, 20);
+            this.txt_tin.TabIndex = 321;
+            this.txt_tin.Tag = "REQUIRED";
+            this.txt_tin.Visible = false;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(582, 83);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(31, 13);
+            this.label29.TabIndex = 320;
+            this.label29.Text = "TIN :";
+            this.label29.Visible = false;
             // 
             // txt_overpayment_amount
             // 
@@ -881,14 +906,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1118,5 +1143,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private System.Windows.Forms.DataGridViewTextBoxColumn discount;
         private System.Windows.Forms.DataGridViewTextBoxColumn total_cost;
         private System.Windows.Forms.DataGridViewTextBoxColumn date_deliver;
+        private System.Windows.Forms.TextBox txt_tin;
+        private System.Windows.Forms.Label label29;
     }
 }

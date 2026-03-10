@@ -44,6 +44,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_ap_voucher = new System.Windows.Forms.Button();
             this.pnl_main = new System.Windows.Forms.Panel();
+            this.txt_supplier_address = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.dtp_doc_date = new System.Windows.Forms.DateTimePicker();
             this.txt_other_charges = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -159,6 +161,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.btn_print.Name = "btn_print";
             this.btn_print.Size = new System.Drawing.Size(52, 22);
             this.btn_print.Text = "Print";
+            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
             // btn_save
             // 
@@ -224,6 +227,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // pnl_main
             // 
+            this.pnl_main.Controls.Add(this.txt_supplier_address);
+            this.pnl_main.Controls.Add(this.label2);
             this.pnl_main.Controls.Add(this.dtp_doc_date);
             this.pnl_main.Controls.Add(this.txt_other_charges);
             this.pnl_main.Controls.Add(this.label20);
@@ -268,6 +273,26 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.pnl_main.Name = "pnl_main";
             this.pnl_main.Size = new System.Drawing.Size(1400, 242);
             this.pnl_main.TabIndex = 76;
+            // 
+            // txt_supplier_address
+            // 
+            this.txt_supplier_address.Enabled = false;
+            this.txt_supplier_address.Location = new System.Drawing.Point(595, 78);
+            this.txt_supplier_address.Name = "txt_supplier_address";
+            this.txt_supplier_address.Size = new System.Drawing.Size(289, 20);
+            this.txt_supplier_address.TabIndex = 307;
+            this.txt_supplier_address.Tag = "";
+            this.txt_supplier_address.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(457, 81);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(121, 13);
+            this.label2.TabIndex = 306;
+            this.label2.Text = "SUPPLIER ADDRESS :";
+            this.label2.Visible = false;
             // 
             // dtp_doc_date
             // 
@@ -809,5 +834,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private System.Windows.Forms.DataGridViewComboBoxColumn cmb_account_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn account_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn line_amount;
+        private System.Windows.Forms.TextBox txt_supplier_address;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -165,6 +165,7 @@ namespace smpc_accounting_app
         private async void Layout_Load(object sender, EventArgs e)
         {
             this.Enabled = false;
+            Sidebar.Enabled = false;
 
             Login login = new Login();
             if (DialogResult.OK == login.ShowDialog())
@@ -189,6 +190,8 @@ namespace smpc_accounting_app
             }
 
             await LoadCurrency();
+
+            Sidebar.Enabled = true;
         }
 
         private async Task LoadCurrency()

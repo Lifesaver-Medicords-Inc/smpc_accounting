@@ -14,6 +14,7 @@ namespace smpc_accounting_app.Models
         public string payment_term { get; set; }
         public string tax_code { get; set; }
         public string tax { get; set; }
+        public string tin { get; set; }
         public string customer_address { get; set; }
         public float overpayment_amount { get; set; }
     }

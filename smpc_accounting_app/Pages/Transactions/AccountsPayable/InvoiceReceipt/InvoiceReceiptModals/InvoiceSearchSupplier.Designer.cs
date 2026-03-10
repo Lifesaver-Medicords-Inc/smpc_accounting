@@ -38,6 +38,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.invoice_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.payment_term = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.supplier_address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.overpayment_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_suplier_search)).BeginInit();
             this.SuspendLayout();
@@ -62,6 +63,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.invoice_type,
             this.payment_term,
             this.type,
+            this.supplier_address,
             this.overpayment_amount});
             this.dgv_suplier_search.Location = new System.Drawing.Point(-1, 31);
             this.dgv_suplier_search.Name = "dgv_suplier_search";
@@ -124,6 +126,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.type.Name = "type";
             this.type.ReadOnly = true;
             // 
+            // supplier_address
+            // 
+            this.supplier_address.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.supplier_address.DataPropertyName = "supplier_address";
+            this.supplier_address.HeaderText = "SUPPLIER ADDRESS";
+            this.supplier_address.Name = "supplier_address";
+            this.supplier_address.ReadOnly = true;
+            // 
             // overpayment_amount
             // 
             this.overpayment_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -158,6 +168,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         private System.Windows.Forms.DataGridViewTextBoxColumn invoice_type;
         private System.Windows.Forms.DataGridViewTextBoxColumn payment_term;
         private System.Windows.Forms.DataGridViewTextBoxColumn type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn supplier_address;
         private System.Windows.Forms.DataGridViewTextBoxColumn overpayment_amount;
     }
 }

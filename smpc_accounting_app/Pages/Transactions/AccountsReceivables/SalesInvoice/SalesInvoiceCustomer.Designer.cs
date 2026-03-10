@@ -37,6 +37,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.customer_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tax_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tax = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.payment_term = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer_address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.overpayment_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -62,6 +63,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.customer_code,
             this.tax_code,
             this.tax,
+            this.tin,
             this.payment_term,
             this.customer_address,
             this.overpayment_amount});
@@ -120,6 +122,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.tax.ReadOnly = true;
             this.tax.Visible = false;
             // 
+            // tin
+            // 
+            this.tin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.tin.DataPropertyName = "tin";
+            this.tin.HeaderText = "TIN";
+            this.tin.Name = "tin";
+            this.tin.ReadOnly = true;
+            // 
             // payment_term
             // 
             this.payment_term.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -170,6 +180,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private System.Windows.Forms.DataGridViewTextBoxColumn customer_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn tax_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn tax;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tin;
         private System.Windows.Forms.DataGridViewTextBoxColumn payment_term;
         private System.Windows.Forms.DataGridViewTextBoxColumn customer_address;
         private System.Windows.Forms.DataGridViewTextBoxColumn overpayment_amount;

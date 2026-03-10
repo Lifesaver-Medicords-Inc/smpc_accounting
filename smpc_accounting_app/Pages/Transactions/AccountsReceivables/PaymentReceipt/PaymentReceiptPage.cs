@@ -13,6 +13,9 @@ using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice;
 using smpc_accounting_app.Services;
+using smpc_accounting_app.Printing;
+using Microsoft.Reporting.WinForms;
+using System.IO;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt
 {
@@ -37,11 +40,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         {
             InitializeComponent();
 
-            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount }, '.');
+            Helpers.NumericTextBox.HandleNumericTextBox(new TextBox[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount, txt_transfer_amount }, '.');
             _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
             _currencyCode = CacheData.CompanySetup.currency_code;
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "open_amount", "amount_applied", "twas_applied", "balance" });
-            Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount });
+            Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount, txt_transfer_amount });
         }
 
         private void SetEditableColumns(bool isEdit)
@@ -161,6 +164,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             }
         }
 
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            if (_currentPRIndex < 0) return;
+
+            var reportPath = Path.Combine(Application.StartupPath, "Printing", "AccountsReceivables", "PaymentReceiptReport.rdlc");
+
+            // DEBUG CHECK
+            if (!File.Exists(reportPath))
+            {
+                MessageBox.Show("RDLC file not found:\n" + reportPath);
+                return;
+            }
+
+            var dataSources = new List<ReportDataSource>()
+            {
+                new ReportDataSource("DataSet2", _currentDetails),
+                new ReportDataSource("DataSet1", new List<PaymentReceiptModel> { _paymentReceipt[_currentPRIndex] })
+            };
+
+            var preview = new PrintPreview(reportPath, dataSources);
+
+            preview.ShowDialog();
+        }
+
         private async void btn_save_Click(object sender, EventArgs e)
         {
             btn_save.Enabled = false;
@@ -244,10 +271,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             decimal checkAmount = Convert.ToDecimal(paymentReceiptParent.check_amount);
             checkAmount = Helpers.ZeroIfNearZero(checkAmount);
 
+            decimal transfermount = Convert.ToDecimal(paymentReceiptParent.transfer_amount);
+            transfermount = Helpers.ZeroIfNearZero(transfermount);
+
             // Check Amount
             if (checkAmount == 0)
             {
                 paymentReceiptParent.check_date = null;
+            }
+
+            // Check Amount
+            if (transfermount == 0)
+            {
+                paymentReceiptParent.ref_doc_date = null;
             }
 
             // Validate details existence
@@ -421,6 +457,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
                         txt_customer_id.Text = row["customer_id"]?.ToString();
                         txt_customer.Text = row["customer"]?.ToString();
                         txt_customer_code.Text = row["customer_code"]?.ToString();
+                        txt_customer_address.Text = row["customer_address"]?.ToString();
                         txt_currency.Text = _currencyCode;
 
                         decimal overpaymentAmount = 0m;
@@ -602,6 +639,38 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             UpdateUnappliedAmount();
         }
 
+        private void txt_transfer_amount_TextChanged(object sender, EventArgs e)
+        {
+            if (!_isEditing)
+                return;
+
+            bool hasValue = !string.IsNullOrWhiteSpace(txt_transfer_amount.Text) &&
+                    txt_transfer_amount.Text != "0" &&
+                    txt_transfer_amount.Text != "0.00";
+
+            if (hasValue)
+            {
+                // Add REQUIRED tag
+                txt_transfer_type.Tag = "REQUIRED";
+                txt_transfer_bank.Tag = "REQUIRED";
+                txt_transfer_account_no.Tag = "REQUIRED";
+                txt_ref_doc_no.Tag = "REQUIRED";
+                dtp_ref_doc_date.Tag = "REQUIRED";
+            }
+            else
+            {
+                // Remove REQUIRED tag
+                txt_transfer_type.Tag = null;
+                txt_transfer_bank.Tag = null;
+                txt_transfer_account_no.Tag = null;
+                txt_ref_doc_no.Tag = null;
+                dtp_ref_doc_date.Tag = null;
+            }
+
+            UpdateTransactionAmount();
+            UpdateUnappliedAmount();
+        }
+
         private void txt_check_amount_TextChanged(object sender, EventArgs e)
         {
             if (!_isEditing)
@@ -641,11 +710,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
 
             decimal cashAmount = 0m;
             decimal checkAmount = 0m;
+            decimal transferAmount = 0m;
 
             decimal.TryParse(txt_cash_amount.Text, out cashAmount);
             decimal.TryParse(txt_check_amount.Text, out checkAmount);
+            decimal.TryParse(txt_transfer_amount.Text, out transferAmount);
 
-            decimal total = Helpers.ZeroIfNearZero(checkAmount + cashAmount);
+            decimal total = Helpers.ZeroIfNearZero(checkAmount + cashAmount + transferAmount);
 
             txt_transaction_amount.Text = total.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
             txt_transaction_amount.AccessibleDescription = total.ToString(); // Store full precise value

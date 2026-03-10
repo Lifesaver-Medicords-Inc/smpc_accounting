@@ -58,7 +58,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
             // buttons
             string[] editButtons = { "btn_save", "btn_cancel" };
-            string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
+            string[] navButtons = { "btn_new", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,

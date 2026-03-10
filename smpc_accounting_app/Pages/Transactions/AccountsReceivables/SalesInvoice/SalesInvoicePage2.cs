@@ -11,6 +11,9 @@ using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
+using smpc_accounting_app.Printing;
+using Microsoft.Reporting.WinForms;
+using System.IO;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
 {
@@ -134,6 +137,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             dgv_main.AutoGenerateColumns = false;
             dgv_main.DataSource = _currentDetails;
             Helpers.ResetControls(new Panel[] { pnl_main, pnl_footer });
+        }
+
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            if (_currentSIIndex < 0) return;
+
+            var reportPath = Path.Combine(Application.StartupPath, "Printing", "AccountsReceivables", "SalesInvoiceReport.rdlc");
+
+            // DEBUG CHECK
+            if (!File.Exists(reportPath))
+            {
+                MessageBox.Show("RDLC file not found:\n" + reportPath);
+                return;
+            }
+
+            var dataSources = new List<ReportDataSource>()
+            {
+                new ReportDataSource("DataSet2", _currentDetails),
+                new ReportDataSource("DataSet1", new List<SalesInvoice2Model> { _salesInvoice[_currentSIIndex] })
+            };
+
+            var preview = new PrintPreview(reportPath, dataSources);
+
+            preview.ShowDialog();
         }
 
         private async void btn_cancel_Click(object sender, EventArgs e)
@@ -415,6 +442,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                     txt_tax_code.Text = row["tax_code"]?.ToString();
                     txt_customer_address.Text = row["customer_address"]?.ToString();
                     txt_overpayment_amount.Text = row["overpayment_amount"]?.ToString();
+                    txt_tin.Text = row["tin"]?.ToString();
 
                     dgv_main.DataSource = null;
                     dgv_main.Rows.Clear();

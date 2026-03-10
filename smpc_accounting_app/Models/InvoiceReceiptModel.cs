@@ -12,6 +12,7 @@ namespace smpc_accounting_app.Models
         public string supplier { get; set; }
         public string supplier_code { get; set; }
         public int supplier_id { get; set; }
+        public string supplier_address { get; set; }
         public string payment_term { get; set; }
         public string tax_code { get; set; }
         public int tax_code_id { get; set; }
@@ -37,6 +38,7 @@ namespace smpc_accounting_app.Models
         public string item_code { get; set; }
         public string item_description { get; set; }
         public int req_qty { get; set; }
+        public string req_uom { get; set; }
         public float unit_price { get; set; }
         public float total_cost { get; set; }
         public float discount { get; set; }

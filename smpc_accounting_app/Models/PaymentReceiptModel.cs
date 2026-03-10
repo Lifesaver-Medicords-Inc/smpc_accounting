@@ -11,6 +11,7 @@ namespace smpc_accounting_app.Models
         public int id { get; set; }
         public string customer { get; set; }
         public string customer_code { get; set; }
+        public string customer_address { get; set; }
         public int customer_id { get; set; }
         public string reference_cr_no { get; set; }
         public string date_collect { get; set; }
@@ -28,6 +29,12 @@ namespace smpc_accounting_app.Models
         public string check_type { get; set; }
         public string check_date { get; set; }
         public float check_amount { get; set; }
+        public float transfer_amount { get; set; }
+        public string transfer_type { get; set; }
+        public string transfer_bank { get; set; }
+        public string transfer_account_no { get; set; }
+        public string ref_doc_no { get; set; }
+        public string ref_doc_date { get; set; }
         public string prepared_by { get; set; }
     }
 

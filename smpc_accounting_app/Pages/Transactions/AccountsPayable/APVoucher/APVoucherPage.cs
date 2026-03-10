@@ -15,6 +15,9 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals;
+using smpc_accounting_app.Printing;
+using Microsoft.Reporting.WinForms;
+using System.IO;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 {
@@ -220,6 +223,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         private void btn_next_Click(object sender, EventArgs e)
         {
             ChangeRecord(1);
+        }
+
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            if (_currentAVIndex < 0) return;
+
+            var reportPath = Path.Combine(Application.StartupPath, "Printing", "AccountsPayables", "APVoucherReport.rdlc");
+
+            // DEBUG CHECK
+            if (!File.Exists(reportPath))
+            {
+                MessageBox.Show("RDLC file not found:\n" + reportPath);
+                return;
+            }
+
+            var dataSources = new List<ReportDataSource>()
+            {
+                new ReportDataSource("DataSet2", _currentDetails),
+                new ReportDataSource("DataSet1", new List<APVoucherModel> { _apVouchers[_currentAVIndex] })
+            };
+
+            var preview = new PrintPreview(reportPath, dataSources);
+
+            preview.ShowDialog();
         }
 
         private void btn_supplier_Click(object sender, EventArgs e)

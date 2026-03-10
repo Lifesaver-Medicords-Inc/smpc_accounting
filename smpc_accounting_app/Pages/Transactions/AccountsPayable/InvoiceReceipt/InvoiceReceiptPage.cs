@@ -13,6 +13,9 @@ using smpc_accounting_app.Services;
 using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
+using smpc_accounting_app.Printing;
+using Microsoft.Reporting.WinForms;
+using System.IO;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 {
@@ -128,6 +131,31 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     }
                 }
             }
+        }
+
+
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            if (_currentIRIndex < 0) return;
+
+            var reportPath = Path.Combine(Application.StartupPath, "Printing", "AccountsPayables", "InvoiceReceiptReport.rdlc");
+
+            // DEBUG CHECK
+            if (!File.Exists(reportPath))
+            {
+                MessageBox.Show("RDLC file not found:\n" + reportPath);
+                return;
+            }
+
+            var dataSources = new List<ReportDataSource>()
+            {
+                new ReportDataSource("DataSet2", _currentDetails),
+                new ReportDataSource("DataSet1", new List<InvoiceReceiptModel> { _invoiceReceipts[_currentIRIndex] })
+            };
+
+            var preview = new PrintPreview(reportPath, dataSources);
+
+            preview.ShowDialog();
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
@@ -438,6 +466,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     txt_invoice_type.Text = row["invoice_type"]?.ToString();
                     txt_payment_term.Text = row["payment_term"]?.ToString();
                     txt_type.Text = row["type"]?.ToString();
+                    txt_supplier_address.Text = row["supplier_address"]?.ToString();
                     txt_currency.Text = _companySetup.currency_code;
 
                     txt_reference_po.Text = string.Empty;
@@ -481,6 +510,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                         targetRow.Cells["unit_price"].Value = soRow["unit_price"];
                         targetRow.Cells["total_cost"].Value = soRow["total_cost"];
                         targetRow.Cells["line_amount"].Value = soRow["total_cost"];
+                        targetRow.Cells["req_uom"].Value = soRow["req_uom"];
                     }
 
                     dgv_main.Refresh();

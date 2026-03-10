@@ -54,7 +54,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             else
             {
                 var searchedData = Helpers.FilterDataTable(customerTable, searchText,
-                    "customer_code", "customer", "tax_code", "payment_term", "customer_address", "overpayment_amount");
+                    "customer_code", "customer", "tax_code", "payment_term", "customer_address", "overpayment_amount", "tin");
                 dgv_customer_search.DataSource = searchedData;
             }
         }

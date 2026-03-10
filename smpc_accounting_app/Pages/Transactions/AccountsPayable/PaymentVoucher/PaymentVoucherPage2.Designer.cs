@@ -36,7 +36,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();
             this.btn_search = new System.Windows.Forms.ToolStripButton();
-            this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.btn_next = new System.Windows.Forms.ToolStripButton();
             this.btn_prev = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
@@ -137,7 +136,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btn_new,
             this.btn_search,
-            this.btn_print,
             this.btn_next,
             this.btn_prev,
             this.btn_save,
@@ -166,14 +164,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.btn_search.Size = new System.Drawing.Size(62, 22);
             this.btn_search.Text = "Search";
             this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
-            // 
-            // btn_print
-            // 
-            this.btn_print.Image = ((System.Drawing.Image)(resources.GetObject("btn_print.Image")));
-            this.btn_print.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_print.Name = "btn_print";
-            this.btn_print.Size = new System.Drawing.Size(52, 22);
-            this.btn_print.Text = "Print";
             // 
             // btn_next
             // 
@@ -933,7 +923,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btn_new;
         private System.Windows.Forms.ToolStripButton btn_search;
-        private System.Windows.Forms.ToolStripButton btn_print;
         private System.Windows.Forms.ToolStripButton btn_next;
         private System.Windows.Forms.ToolStripButton btn_prev;
         private System.Windows.Forms.ToolStripButton btn_save;

@@ -53,7 +53,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             else
             {
                 var searchedData = Helpers.FilterDataTable(supplierTable, searchText, 
-                    "supplier_code", "supplier", "invoice_type", "payment_term", "type", "overpayment_amount");
+                    "supplier_code", "supplier", "invoice_type", "payment_term", "type", "overpayment_amount", "supplier_address");
                 dgv_suplier_search.DataSource = searchedData;
             }
         }

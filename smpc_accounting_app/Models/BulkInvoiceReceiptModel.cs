@@ -12,6 +12,7 @@ namespace smpc_accounting_app.Models
         public string supplier { get; set; }
         public string supplier_code { get; set; }
         public int supplier_id { get; set; }
+        public string supplier_address { get; set; }
         public string reference_doc { get; set; }
         public string payment_term { get; set; }
         public string currency { get; set; }

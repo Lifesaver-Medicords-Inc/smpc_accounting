@@ -16,6 +16,7 @@ namespace smpc_accounting_app.Models
         public string payment_term { get; set; }
         public string customer_address { get; set; }
         public string tax_code { get; set; }
+        public string tin { get; set; }
         public float base_rate { get; set; }
         public string currency { get; set; }
         public float exchange_rate { get; set; }
