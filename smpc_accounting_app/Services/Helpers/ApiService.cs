@@ -13,10 +13,11 @@ namespace smpc_accounting_app.Services.Helpers
 {  
 
     public static class ApiService<T> where T : class
-    { 
+    {
+        static string baseUrl => Program.ApiBaseUrl ?? "http://127.0.0.1:3000/api";
         static private async Task<T> SendRequestAsync(string url, HttpMethod method, string body = null)
         {
-            string baseUrl = "http://localhost:3000/api";
+            
             using (HttpClient client = new HttpClient())
             {
                 try
