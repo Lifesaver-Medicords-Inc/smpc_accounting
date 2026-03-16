@@ -11,7 +11,7 @@ namespace smpc_accounting_app.Models
         public int id { get; set; }
         public string journal_name { get; set; }
         public string journal_description { get; set; }
-        public string doc_no { get; set; }
+        public int doc_no { get; set; }
         public string period { get; set; }
         public string period_from { get; set; }
         public string period_to { get; set; }

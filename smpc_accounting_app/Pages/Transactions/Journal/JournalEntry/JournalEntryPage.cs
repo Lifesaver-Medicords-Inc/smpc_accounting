@@ -71,6 +71,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_content,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );

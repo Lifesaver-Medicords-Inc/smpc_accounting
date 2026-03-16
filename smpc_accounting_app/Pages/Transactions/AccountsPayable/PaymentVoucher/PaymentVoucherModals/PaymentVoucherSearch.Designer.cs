@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.PaymentVoucherModals
 {
     partial class PaymentVoucherSearch
     {
@@ -30,6 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_pv_search = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -134,6 +135,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             this.transaction_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.transaction_amount.DataPropertyName = "transaction_amount";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.transaction_amount.DefaultCellStyle = dataGridViewCellStyle2;
             this.transaction_amount.HeaderText = "TRANSACTION AMOUNT";
             this.transaction_amount.Name = "transaction_amount";
             this.transaction_amount.ReadOnly = true;
@@ -152,6 +155,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgv_pv_search);
             this.Controls.Add(this.txt_search);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "PaymentVoucherSearch";
             this.Text = "PaymentVoucherSearch";
             this.Load += new System.EventHandler(this.PaymentVoucherSearch_Load);

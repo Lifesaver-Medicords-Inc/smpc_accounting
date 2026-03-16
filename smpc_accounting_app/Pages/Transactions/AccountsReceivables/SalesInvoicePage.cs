@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
 {
    
     public partial class SalesInvoicePage : UserControl

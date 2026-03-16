@@ -12,10 +12,12 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice;
+using smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt.PaymentReceiptModals;
 using smpc_accounting_app.Services;
 using smpc_accounting_app.Printing;
 using Microsoft.Reporting.WinForms;
 using System.IO;
+using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt
 {
@@ -44,6 +46,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
             _currencyCode = CacheData.CompanySetup.currency_code;
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "open_amount", "amount_applied", "twas_applied", "balance" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_main, "doc_no", "SI");
             Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_cash_amount, txt_transaction_amount, txt_unapplied_amount, txt_check_amount, txt_overpayment_amount, txt_transfer_amount });
         }
 
@@ -54,7 +57,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             foreach (var colName in editableColumns)
             {
                 if (dgv_main.Columns.Contains(colName))
-                    dgv_main.Columns[colName].ReadOnly = !isEdit;
+                {
+                    var column = dgv_main.Columns[colName];
+
+                    column.ReadOnly = !isEdit;
+
+                    // Toggle background color based on readonly state
+                    column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
+                }
             }
         }
 
@@ -68,18 +78,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             SetEditableColumns(enable);
 
             // buttons
-            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] editButtons = { "btn_save", "btn_cancel", "btn_customer" };
             string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_main,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_customer", "txt_customer_code",
+            Helpers.SetChildControlsEnabled(new[] { pnl_main }, !enable, new string[] { "txt_customer", "txt_customer_code",
                 "txt_transaction_amount", "txt_unapplied_amount", "txt_doc_no", "txt_doc_date", "txt_currency", "txt_check_type",
-                "txt_overpayment_amount", "check_overpayment" });
+                "txt_overpayment_amount", "check_overpayment", "dtp_doc_date" });
         }
 
         private void ChangeRecord(int step)
@@ -398,6 +409,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             _prTable = Helpers.ToDataTable(_prdata.payment_receipt);
 
             Helpers.BindControls(new Panel[] { pnl_main }, _prTable, _currentPRIndex);
+
+            // Format txt_doc_no with PR prefix and 8 digit number
+            if (!string.IsNullOrEmpty(txt_doc_no.Text))
+            {
+                if (int.TryParse(txt_doc_no.Text, out int number))
+                {
+                    txt_doc_no.Text = "PR" + number.ToString("D8");
+                }
+            }
 
             //Disable auto column generation before setting the data source
             dgv_main.AutoGenerateColumns = false;

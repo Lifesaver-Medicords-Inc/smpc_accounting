@@ -13,7 +13,7 @@ using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Services;
 using smpc_accounting_app.Shared;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVoucherModals
 {
     public partial class APVoucherInvoice : Form
     {
@@ -32,6 +32,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             // Center the modal relative to its parent form
             this.StartPosition = FormStartPosition.CenterParent;
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ir_search, new[] { "line_amount" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_ir_search, "receipt_no", "IR");
 
             dgv_ir_search.AutoGenerateColumns = false;
             InitializeSearchBox();

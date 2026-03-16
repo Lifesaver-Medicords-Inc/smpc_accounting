@@ -17,7 +17,7 @@ namespace smpc_accounting_app.Models
         public string tax_code { get; set; }
         public int tax_code_id { get; set; }
         public string invoice_due { get; set; }
-        public string doc_no { get; set; }
+        public int doc_no { get; set; }
         public string doc_date { get; set; }
         public string invoice_type { get; set; }
         public float net_amount { get; set; }

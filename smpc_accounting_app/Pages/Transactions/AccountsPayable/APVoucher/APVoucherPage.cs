@@ -15,6 +15,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVoucherModals;
 using smpc_accounting_app.Printing;
 using Microsoft.Reporting.WinForms;
 using System.IO;
@@ -43,6 +44,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
             Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_transaction_amount });
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "line_amount" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_main, "receipt_no", "IR");
         }
 
         private void SetEditMode(bool enable, bool isNewMode = false)
@@ -54,16 +56,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             btn_supplier.Enabled = enable;
 
             // buttons
-            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] editButtons = { "btn_save", "btn_cancel", "btn_supplier" };
             string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_main,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier_code",
+            Helpers.SetChildControlsEnabled(new[] { pnl_main }, !enable, new string[] { "txt_doc_no", "txt_supplier_code",
                 "txt_currency","txt_supplier", "txt_transaction_amount", "dtp_doc_date" });
         }
 

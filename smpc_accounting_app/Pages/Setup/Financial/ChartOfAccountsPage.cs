@@ -45,6 +45,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_content,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );

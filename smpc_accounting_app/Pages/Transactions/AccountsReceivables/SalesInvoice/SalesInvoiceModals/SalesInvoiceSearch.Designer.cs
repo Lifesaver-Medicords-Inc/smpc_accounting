@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals
 {
     partial class SalesInvoiceSearch
     {
@@ -31,7 +31,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_si_search = new System.Windows.Forms.DataGridView();
-            this.txt_search = new System.Windows.Forms.TextBox();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,6 +40,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.posting_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_search = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_si_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,13 +72,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.dgv_si_search.Size = new System.Drawing.Size(802, 389);
             this.dgv_si_search.TabIndex = 8;
             this.dgv_si_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_si_search_CellClick);
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 9;
             // 
             // id
             // 
@@ -155,6 +148,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.posting_date.Name = "posting_date";
             this.posting_date.ReadOnly = true;
             // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 9;
+            // 
             // SalesInvoiceSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,6 +162,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgv_si_search);
             this.Controls.Add(this.txt_search);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "SalesInvoiceSearch";
             this.Text = "SalesInvoiceSearch";
             this.Load += new System.EventHandler(this.SalesInvoiceSearch_Load);

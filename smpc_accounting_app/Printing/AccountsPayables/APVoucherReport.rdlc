@@ -229,7 +229,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!doc_no.Value, "DataSet1")</Value>
+                        <Value>="AP" &amp; Format(First(Fields!doc_no.Value, "DataSet1"), "00000000")</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>
@@ -526,7 +526,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value>=Fields!receipt_no.Value</Value>
+                                          <Value>="IR" &amp; Format(Fields!receipt_no.Value, "00000000")</Value>
                                           <Style />
                                         </TextRun>
                                       </TextRuns>

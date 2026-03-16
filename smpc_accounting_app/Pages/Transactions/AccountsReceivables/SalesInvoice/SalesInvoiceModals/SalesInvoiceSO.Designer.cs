@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals
 {
     partial class SalesInvoiceSO
     {
@@ -31,9 +31,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_main_search = new System.Windows.Forms.DataGridView();
-            this.txt_search = new System.Windows.Forms.TextBox();
-            this.btn_ok = new System.Windows.Forms.Button();
-            this.btn_cancel = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.sales_order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,6 +39,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.customer_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sales_person = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.total_sales = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_search = new System.Windows.Forms.TextBox();
+            this.btn_ok = new System.Windows.Forms.Button();
+            this.btn_cancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_main_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,33 +71,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.dgv_main_search.Name = "dgv_main_search";
             this.dgv_main_search.Size = new System.Drawing.Size(802, 328);
             this.dgv_main_search.TabIndex = 9;
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 10;
-            // 
-            // btn_ok
-            // 
-            this.btn_ok.Location = new System.Drawing.Point(590, 399);
-            this.btn_ok.Name = "btn_ok";
-            this.btn_ok.Size = new System.Drawing.Size(75, 23);
-            this.btn_ok.TabIndex = 15;
-            this.btn_ok.Text = "OK";
-            this.btn_ok.UseVisualStyleBackColor = true;
-            this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
-            // 
-            // btn_cancel
-            // 
-            this.btn_cancel.Location = new System.Drawing.Point(699, 399);
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_cancel.TabIndex = 14;
-            this.btn_cancel.Text = "Cancel";
-            this.btn_cancel.UseVisualStyleBackColor = true;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // id
             // 
@@ -164,6 +137,33 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.total_sales.HeaderText = "TOTAL SALES";
             this.total_sales.Name = "total_sales";
             // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 10;
+            // 
+            // btn_ok
+            // 
+            this.btn_ok.Location = new System.Drawing.Point(590, 399);
+            this.btn_ok.Name = "btn_ok";
+            this.btn_ok.Size = new System.Drawing.Size(75, 23);
+            this.btn_ok.TabIndex = 15;
+            this.btn_ok.Text = "OK";
+            this.btn_ok.UseVisualStyleBackColor = true;
+            this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
+            // 
+            // btn_cancel
+            // 
+            this.btn_cancel.Location = new System.Drawing.Point(699, 399);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+            this.btn_cancel.TabIndex = 14;
+            this.btn_cancel.Text = "Cancel";
+            this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            // 
             // SalesInvoiceSO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,6 +173,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.dgv_main_search);
             this.Controls.Add(this.txt_search);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "SalesInvoiceSO";
             this.Text = "SalesInvoiceSO";
             this.Load += new System.EventHandler(this.SalesInvoiceSO_Load);

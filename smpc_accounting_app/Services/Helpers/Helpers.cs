@@ -105,12 +105,14 @@ namespace smpc_accounting_app.Services.Helpers
 
         public static class DataGridViewFormatter
         {
+            private static readonly Dictionary<DataGridView, string[]> _moneyColumns
+                = new Dictionary<DataGridView, string[]>();
+
             public static void DataGridViewDecimalFormat(DataGridView dgv, IEnumerable<string> moneyColumns)
             {
                 if (dgv == null) return;
 
-                var cols = moneyColumns.ToArray();
-                dgv.Tag = cols;
+                _moneyColumns[dgv] = moneyColumns.ToArray();
 
                 dgv.DataBindingComplete -= Dgv_DataBindingComplete;
                 dgv.DataBindingComplete += Dgv_DataBindingComplete;
@@ -125,19 +127,15 @@ namespace smpc_accounting_app.Services.Helpers
             private static void Dgv_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
             {
                 var dgv = sender as DataGridView;
-                if (dgv == null) return;
+                if (dgv == null || !_moneyColumns.ContainsKey(dgv)) return;
 
-                var cols = dgv.Tag as string[];
-                if (cols == null) return;
+                var cols = _moneyColumns[dgv];
 
                 foreach (var colName in cols)
                 {
                     if (!dgv.Columns.Contains(colName)) continue;
 
-                    // Align right
-                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
-                    // Format as currency
+                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                     dgv.Columns[colName].DefaultCellStyle.Format = "C2";
                     dgv.Columns[colName].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("en-PH");
                 }
@@ -146,9 +144,7 @@ namespace smpc_accounting_app.Services.Helpers
             private static void Dgv_CurrentCellDirtyStateChanged(object sender, EventArgs e)
             {
                 var dgv = sender as DataGridView;
-                if (dgv == null) return;
-
-                if (dgv.IsCurrentCellDirty)
+                if (dgv?.IsCurrentCellDirty == true)
                     dgv.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
 
@@ -156,11 +152,11 @@ namespace smpc_accounting_app.Services.Helpers
             {
                 var dgv = sender as DataGridView;
                 if (dgv == null || e.RowIndex < 0 || e.ColumnIndex < 0) return;
+                if (!_moneyColumns.ContainsKey(dgv)) return;
 
-                var cols = dgv.Tag as string[];
-                if (cols == null) return;
-
+                var cols = _moneyColumns[dgv];
                 var columnName = dgv.Columns[e.ColumnIndex].Name;
+
                 if (!cols.Contains(columnName)) return;
 
                 var cell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -168,18 +164,69 @@ namespace smpc_accounting_app.Services.Helpers
 
                 string rawValue = cell.Value.ToString().Trim();
 
-                decimal moneyValue;
-
-                // Try currency parsing
-                if (!decimal.TryParse(rawValue, NumberStyles.Currency, CultureInfo.GetCultureInfo("en-PH"), out moneyValue))
+                if (!decimal.TryParse(rawValue, NumberStyles.Currency,
+                    CultureInfo.GetCultureInfo("en-PH"), out decimal moneyValue))
                 {
-                    // fallback: remove ₱ and commas
                     var cleaned = rawValue.Replace("₱", "").Replace(",", "").Trim();
-                    if (!decimal.TryParse(cleaned, NumberStyles.Number | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out moneyValue))
+
+                    if (!decimal.TryParse(cleaned, NumberStyles.Number | NumberStyles.AllowDecimalPoint,
+                        CultureInfo.InvariantCulture, out moneyValue))
                         moneyValue = 0m;
                 }
 
                 cell.Value = moneyValue;
+            }
+        }
+
+        public static class DataGridViewDocumentFormatter
+        {
+            private static readonly Dictionary<DataGridView, Tuple<string, string, int>> _docConfigs
+                = new Dictionary<DataGridView, Tuple<string, string, int>>();
+
+            public static void DataGridViewDocumentFormat(DataGridView dgv, string columnName, string prefix, int digits = 8)
+            {
+                if (dgv == null) return;
+
+                _docConfigs[dgv] = new Tuple<string, string, int>(columnName, prefix, digits);
+
+                dgv.DataBindingComplete -= Dgv_DataBindingComplete;
+                dgv.DataBindingComplete += Dgv_DataBindingComplete;
+
+                dgv.CellFormatting -= Dgv_CellFormatting;
+                dgv.CellFormatting += Dgv_CellFormatting;
+            }
+
+            private static void Dgv_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+            {
+                var dgv = sender as DataGridView;
+                if (dgv == null || !_docConfigs.ContainsKey(dgv)) return;
+
+                var tag = _docConfigs[dgv];
+
+                if (!dgv.Columns.Contains(tag.Item1)) return;
+
+                dgv.Columns[tag.Item1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+
+            private static void Dgv_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+            {
+                var dgv = sender as DataGridView;
+                if (dgv == null || !_docConfigs.ContainsKey(dgv)) return;
+
+                var tag = _docConfigs[dgv];
+
+                string columnName = tag.Item1;
+                string prefix = tag.Item2;
+                int digits = tag.Item3;
+
+                if (dgv.Columns[e.ColumnIndex].Name != columnName) return;
+                if (e.Value == null) return;
+
+                if (int.TryParse(e.Value.ToString(), out int number))
+                {
+                    e.Value = prefix + number.ToString($"D{digits}");
+                    e.FormattingApplied = true;
+                }
             }
         }
 
@@ -270,7 +317,7 @@ namespace smpc_accounting_app.Services.Helpers
             return txtSearch;
         }
 
-        public static void SetChildControlsEnabled(Control[] parents, bool enable, string[] excludeNames)
+        public static void SetChildControlsEnabled(Control[] parents, bool readOnly, string[] excludeNames)
         {
             foreach (Control parent in parents)
             {
@@ -280,38 +327,51 @@ namespace smpc_accounting_app.Services.Helpers
                     if (excludeNames != null && excludeNames.Contains(control.Name))
                         continue;
 
-                    // Affect controls of these types
-                    if (control is TextBox || control is ComboBox || control is CheckBox || control is DateTimePicker)
-                        control.Enabled = enable;
+                    if (control is TextBox textBox)
+                        textBox.ReadOnly = readOnly;
+
+                    else if (control is ComboBox comboBox)
+                        comboBox.Enabled = !readOnly;
+
+                    else if (control is DateTimePicker datePicker)
+                        datePicker.Enabled = !readOnly; // No true ReadOnly, fallback behavior
+
+                    else if (control is CheckBox checkBox)
+                        checkBox.AutoCheck = !readOnly; // Prevent user from changing value
 
                     // Recurse into child containers
                     if (control.HasChildren)
-                        SetChildControlsEnabled(new Control[] { control }, enable, excludeNames);
+                        SetChildControlsEnabled(new Control[] { control }, readOnly, excludeNames);
                 }
             }
         }
 
-        public static void SetChildControlsEnabledInclude(Control[] parents, bool enable, string[] includeNames)
+        public static void SetChildControlsEnabledInclude(Control[] parents, bool readOnly, string[] includeNames)
         {
             foreach (Control parent in parents)
             {
                 foreach (Control control in parent.Controls)
                 {
-                    // If includeNames is provided, only affect controls inside it
                     bool shouldAffect = includeNames == null || includeNames.Contains(control.Name);
 
-                    if (shouldAffect &&
-                        (control is TextBox ||
-                         control is ComboBox ||
-                         control is CheckBox ||
-                         control is DateTimePicker))
+                    if (shouldAffect)
                     {
-                        control.Enabled = enable;
+                        if (control is TextBox textBox)
+                            textBox.ReadOnly = readOnly;
+
+                        else if (control is ComboBox comboBox)
+                            comboBox.DropDownStyle = readOnly ? ComboBoxStyle.DropDownList : ComboBoxStyle.DropDown;
+
+                        else if (control is DateTimePicker datePicker)
+                            datePicker.Enabled = !readOnly;
+
+                        else if (control is CheckBox checkBox)
+                            checkBox.AutoCheck = !readOnly;
                     }
 
                     // Recurse into child containers
                     if (control.HasChildren)
-                        SetChildControlsEnabled(new Control[] { control }, enable, includeNames);
+                        SetChildControlsEnabledInclude(new Control[] { control }, readOnly, includeNames);
                 }
             }
         }
@@ -684,10 +744,11 @@ namespace smpc_accounting_app.Services.Helpers
                 {
                     string tag = textBox.Tag?.ToString() ?? "";
                     bool isMoney = tag.IndexOf("MONEY", StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool isDocument = tag.IndexOf("DOCUMENT", StringComparison.OrdinalIgnoreCase) >= 0;
 
                     if (isMoney)
                     {
-                        //Try exact stored value (from AccessibleDescription)
+                        // MONEY: try exact stored value first
                         if (!string.IsNullOrWhiteSpace(textBox.AccessibleDescription) &&
                             decimal.TryParse(textBox.AccessibleDescription, out decimal exactVal))
                         {
@@ -695,7 +756,7 @@ namespace smpc_accounting_app.Services.Helpers
                         }
                         else
                         {
-                            //Fallback parse formatted currency
+                            // fallback parse formatted currency
                             if (decimal.TryParse(
                                 textBox.Text,
                                 NumberStyles.Currency,
@@ -706,8 +767,26 @@ namespace smpc_accounting_app.Services.Helpers
                             }
                             else
                             {
-                                value = 0m; // fallback safety
+                                value = 0m;
                             }
+                        }
+                    }
+                    else if (isDocument)
+                    {
+                        // DOCUMENT: get numeric value from AccessibleDescription
+                        if (!string.IsNullOrWhiteSpace(textBox.AccessibleDescription) &&
+                            int.TryParse(textBox.AccessibleDescription, out int docVal))
+                        {
+                            value = docVal;
+                        }
+                        else
+                        {
+                            // fallback: remove prefix and parse numeric part
+                            string numericPart = new string(textBox.Text.Where(char.IsDigit).ToArray());
+                            if (int.TryParse(numericPart, out int fallbackVal))
+                                value = fallbackVal;
+                            else
+                                value = 0;
                         }
                     }
                     else
@@ -715,7 +794,6 @@ namespace smpc_accounting_app.Services.Helpers
                         value = textBox.Text;
                     }
                 }
-
                 else if (control is ComboBox comboBox)
                 {
                     if (comboBox.Tag?.ToString() == "DYNAMIC")
@@ -723,7 +801,6 @@ namespace smpc_accounting_app.Services.Helpers
                     else
                         value = comboBox.Text;
                 }
-
                 else if (control is DateTimePicker dateTimePicker)
                 {
                     value = dateTimePicker.Value.ToString("MM/dd/yyyy");
@@ -1005,28 +1082,51 @@ namespace smpc_accounting_app.Services.Helpers
             }
         }
 
-        public static void SetButtonVisibility(ToolStrip toolStrip, IEnumerable<string> visibleButtons, IEnumerable<string> hiddenButtons)
+        public static void SetButtonVisibility(ToolStrip toolStrip, Control parentControl, IEnumerable<string> visibleButtons, IEnumerable<string> hiddenButtons)
         {
-            if (toolStrip == null) return;
+            if (toolStrip == null && parentControl == null) return;
 
-            // Make visible buttons visible
+            var allControls = new List<Control>();
+
+            if (parentControl != null)
+                allControls.AddRange(GetAllControls(parentControl));
+
+            // ToolStrip buttons
+            var toolStripButtons = toolStrip?.Items
+                .OfType<ToolStripButton>()
+                .ToDictionary(b => b.Name, b => b);
+
+            // Show buttons
             foreach (var buttonName in visibleButtons ?? Enumerable.Empty<string>())
             {
-                var btn = toolStrip.Items
-                                   .OfType<ToolStripButton>()
-                                   .FirstOrDefault(b => b.Name == buttonName);
-                if (btn != null)
-                    btn.Visible = true;
+                if (toolStripButtons != null && toolStripButtons.TryGetValue(buttonName, out var tsBtn))
+                    tsBtn.Visible = true;
+
+                var ctrl = allControls.FirstOrDefault(c => c.Name == buttonName);
+                if (ctrl != null)
+                    ctrl.Visible = true;
             }
 
-            // Make hidden buttons invisible
+            // Hide buttons
             foreach (var buttonName in hiddenButtons ?? Enumerable.Empty<string>())
             {
-                var btn = toolStrip.Items
-                                   .OfType<ToolStripButton>()
-                                   .FirstOrDefault(b => b.Name == buttonName);
-                if (btn != null)
-                    btn.Visible = false;
+                if (toolStripButtons != null && toolStripButtons.TryGetValue(buttonName, out var tsBtn))
+                    tsBtn.Visible = false;
+
+                var ctrl = allControls.FirstOrDefault(c => c.Name == buttonName);
+                if (ctrl != null)
+                    ctrl.Visible = false;
+            }
+        }
+
+        private static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                yield return c;
+
+                foreach (var child in GetAllControls(c))
+                    yield return child;
             }
         }
 
@@ -1359,42 +1459,64 @@ namespace smpc_accounting_app.Services.Helpers
                             string column_name = col_name.ToString();
                             Console.WriteLine(column_name);
 
-                            // Check if the control is a TextBox
-                            if (control is TextBox textBox && textBox.Name.Replace("txt_", "") == column_name)
+                            // Check if the control is a TextBox
+                            if (control is TextBox textBox && textBox.Name.Replace("txt_", "") == column_name)
                             {
                                 string key = textBox.Name.Replace("txt_", "");
                                 object rawValue = dt.Rows[selectedIndex][column_name];
 
+                                // MONEY FORMAT
                                 if (textBox.Tag?.ToString().Contains("MONEY") == true)
                                 {
                                     if (decimal.TryParse(rawValue.ToString(), out decimal moneyVal))
                                     {
                                         textBox.Text = moneyVal.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
-                                        textBox.AccessibleDescription = moneyVal.ToString(); // Store full precise value
-                                    }
+                                        textBox.AccessibleDescription = moneyVal.ToString(); // Store precise value
+                                    }
                                     else
                                     {
                                         textBox.Text = "₱0.00";
                                         textBox.AccessibleDescription = "0";
                                     }
                                 }
+
+                                // DOCUMENT FORMAT
+                                else if (textBox.Tag?.ToString().StartsWith("DOCUMENT") == true)
+                                {
+                                    string tag = textBox.Tag.ToString();   // e.g. "DOCUMENTAV REQUIRED"
+
+                                    // Remove "DOCUMENT" and split by space, take first part
+                                    string prefix = tag.Substring("DOCUMENT".Length).Split(' ')[0]; // "AV"
+
+                                    if (int.TryParse(rawValue?.ToString(), out int docNumber))
+                                    {
+                                        textBox.Text = prefix + docNumber.ToString("D8");
+                                        textBox.AccessibleDescription = docNumber.ToString(); // Store real value
+                                    }
+                                    else
+                                    {
+                                        textBox.Text = prefix + "00000000";
+                                        textBox.AccessibleDescription = "0"; // fallback real value
+                                    }
+                                }
+
+                                // MULTI TAG
                                 else if (textBox.Tag is List<int> ids && ids.Count > 0)
                                 {
-                                    // If you're still handling MULTI-tagged list items here (you may want to adjust this based on how you store MULTI values)
-                                    textBox.Text = string.Join(", ", ids);
+                                    textBox.Text = string.Join(", ", ids);
                                 }
+
+                                // DEFAULT
                                 else
                                 {
-                                    //to hand outofbound rows
-                                    if (selectedIndex < 0 || selectedIndex >= dt.Rows.Count)
+                                    if (selectedIndex < 0 || selectedIndex >= dt.Rows.Count)
                                     {
                                         Console.WriteLine("IndexOutOfRangeException selectedIndex");
                                         return;
                                     }
-                                    textBox.Text = (string)dt.Rows[selectedIndex][column_name].ToString();
-                                    //textBox.Text = rawValue?.ToString() ?? "";
 
-                                }
+                                    textBox.Text = rawValue?.ToString() ?? "";
+                                }
                             }
 
                             // Check if the control is a Combobox

@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables
 {
     partial class SalesInvoicePage
     {

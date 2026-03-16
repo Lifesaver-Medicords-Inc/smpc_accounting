@@ -11,7 +11,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt.PaymentReceiptModals
 {
     public partial class PaymentReceiptSearch : Form
     {
@@ -29,6 +29,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.StartPosition = FormStartPosition.CenterParent;
 
             dgv_pr_search.AutoGenerateColumns = false;
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_pr_search, "doc_no", "PR");
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_pr_search, new[] { "transaction_amount" });
             InitializeSearchBox();
         }
 

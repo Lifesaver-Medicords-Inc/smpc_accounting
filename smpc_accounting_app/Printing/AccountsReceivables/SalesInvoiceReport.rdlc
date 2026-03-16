@@ -729,7 +729,11 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!reference_doc_po.Value, "DataSet1")</Value>
+                        <Value>=IIf(
+IsNothing(First(Fields!reference_doc_po.Value, "DataSet1")) Or First(Fields!reference_doc_po.Value, "DataSet1") = "", 
+    "", 
+    "PO" &amp; Format(First(Fields!reference_doc_po.Value, "DataSet1"), "00000000")
+)</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>
@@ -2836,7 +2840,7 @@
               <Top>0.12116in</Top>
               <Left>0.12294in</Left>
               <Height>0.32283in</Height>
-              <Width>1.4299in</Width>
+              <Width>1.63331in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2887,7 +2891,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!doc_no.Value, "DataSet1")</Value>
+                      <Value>="SI" &amp; Format(First(Fields!doc_no.Value, "DataSet1"), "00000000")</Value>
                       <Style>
                         <FontSize>12pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2900,7 +2904,7 @@
               <Top>1.33645cm</Top>
               <Left>1.61692cm</Left>
               <Height>0.81999cm</Height>
-              <Width>2.32729cm</Width>
+              <Width>2.84395cm</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -2917,7 +2921,7 @@
           <Top>0.24222in</Top>
           <Left>5.72171in</Left>
           <Height>0.94274in</Height>
-          <Width>1.67027in</Width>
+          <Width>1.7657in</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>

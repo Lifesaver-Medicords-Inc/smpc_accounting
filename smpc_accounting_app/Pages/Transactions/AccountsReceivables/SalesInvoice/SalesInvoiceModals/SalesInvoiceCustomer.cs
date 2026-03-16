@@ -12,7 +12,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Shared;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals
 {
     public partial class SalesInvoiceCustomer : Form
     {

@@ -12,7 +12,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Shared;
               
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals
 {
     public partial class SalesInvoiceSO : Form
     {
@@ -43,6 +43,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
             _customerID = customerId;
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main_search, new[] { "total_sales" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_main_search, "so_number", "SO");
         }
 
         private void InitializeSearchBox()

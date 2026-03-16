@@ -15,7 +15,7 @@ namespace smpc_accounting_app.Models
         public string currency { get; set; }
         public string tax_code { get; set; }
         public int tax_code_id { get; set; }
-        public string doc_no { get; set; }
+        public int doc_no { get; set; }
         public string doc_date { get; set; }
         public float transaction_amount { get; set; }
         public string prepared_by { get; set; }
@@ -26,7 +26,7 @@ namespace smpc_accounting_app.Models
         public int id { get; set; }
         public int ap_voucher_id { get; set; }
         public int invoice_receipt_id { get; set; }
-        public string receipt_no { get; set; }
+        public int receipt_no { get; set; }
         public string ir_due_date { get; set; }
         public string ir_doc_date { get; set; }
         public float twas_amount { get; set; }

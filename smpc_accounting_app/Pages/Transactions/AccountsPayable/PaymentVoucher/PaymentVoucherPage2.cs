@@ -14,6 +14,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.PaymentVoucherModals;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 {
@@ -41,6 +42,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
             Helpers.TextboxFormatter.TextboxDecimalFormat(new[] { txt_cash_amount, txt_check_amount, txt_transfer_amount, txt_transaction_amount, txt_overpayment_amount, txt_unapplied_amount });
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_main, new[] { "trans_amount", "open_amount", "amount_applied", "twas_applied", "balance" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_main, "doc_no", "AV");
         }
 
         private void SetEditMode(bool enable, bool isNewMode = false)
@@ -57,16 +59,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             btn_supplier.Enabled = enable;
 
             // buttons
-            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] editButtons = { "btn_save", "btn_cancel", "btn_supplier", "btn_apv" };
             string[] navButtons = { "btn_new", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_main,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier", "txt_supplier_code", "txt_currency",
+            Helpers.SetChildControlsEnabled(new[] { pnl_main }, !enable, new string[] { "txt_doc_no", "txt_supplier", "txt_supplier_code", "txt_currency",
                 "txt_transaction_amount", "dtp_doc_date", "txt_reference_apv", "txt_overpayment_amount", "txt_unapplied_amount" });
         }
 
@@ -364,6 +367,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
             Helpers.BindControls(new Panel[] { pnl_main }, _pvTable, _currentPVIndex);
 
+            // Format txt_doc_no with PV prefix and 8 digit number
+            if (!string.IsNullOrEmpty(txt_doc_no.Text))
+            {
+                if (int.TryParse(txt_doc_no.Text, out int number))
+                {
+                    txt_doc_no.Text = "PV" + number.ToString("D8");
+                }
+            }
+
             //Disable auto column generation before setting the data source
             dgv_main.AutoGenerateColumns = false;
 
@@ -498,6 +510,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             Helpers.HandleNumericColumns(dgv_main, e, new[] { "amount_applied" }, '.');
         }
 
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
+        }
+
         private void dgv_main_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dgv_main.IsCurrentCellDirty)
@@ -581,14 +601,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
                 UpdateUnappliedAmount();
             }
-        }
-
-        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-            // Prevent default crash dialog
-            e.ThrowException = false;
-
-            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
         }
 
         private void txt_check_amount_TextChanged(object sender, EventArgs e)
@@ -705,7 +717,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
             if (dgv_main.Columns["amount_applied"] != null)
             {
-                dgv_main.Columns["amount_applied"].ReadOnly = !enableEditing;
+                var column = dgv_main.Columns["amount_applied"];
+
+                column.ReadOnly = !enableEditing;
+
+                // Change background color based on readonly state
+                column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
             }
 
             //If ALL payment types are cleared

@@ -14,6 +14,7 @@ using smpc_accounting_app.Shared;
 using smpc_accounting_app.Printing;
 using Microsoft.Reporting.WinForms;
 using System.IO;
+using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
 {
@@ -66,7 +67,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             foreach (var colName in editableColumns)
             {
                 if (dgv_main.Columns.Contains(colName))
-                    dgv_main.Columns[colName].ReadOnly = !isEdit;
+                {
+                    var column = dgv_main.Columns[colName];
+
+                    column.ReadOnly = !isEdit;
+
+                    // Toggle background color based on readonly state
+                    column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
+                }
             }
         }
 
@@ -81,16 +89,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             SetEditableColumns(enable);
 
             // buttons
-            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] editButtons = { "btn_save", "btn_cancel", "btn_customer", "btn_ref_doc" };
             string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_main,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabledInclude(_panels, enable, new string[] { "txt_reference_po", "cmb_currency" });
+            Helpers.SetChildControlsEnabledInclude(_panels, !enable, new string[] { "txt_reference_po", "cmb_currency" });
 
             if (enable)
             {
@@ -150,6 +159,21 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             {
                 MessageBox.Show("RDLC file not found:\n" + reportPath);
                 return;
+            }
+
+            var dataset2 = _currentDetails;
+            SalesInvoice2Model dataset1 =  _salesInvoice[_currentSIIndex];
+
+            // Format reference_doc_so the same way as in ShowCurrentRecord()
+            if (!string.IsNullOrWhiteSpace(txt_reference_doc_so.Text))
+            {
+                var rawPOs = txt_reference_doc_so.Text;
+
+                dataset1.reference_doc_so = string.Join(", ", rawPOs);
+            }
+            else
+            {
+                dataset1.reference_doc_so = string.Empty;
             }
 
             var dataSources = new List<ReportDataSource>()
@@ -222,6 +246,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
                 // Compute totals first
                 ComputeFooterAmounts();
+
+                if (!string.IsNullOrWhiteSpace(txt_reference_doc_so.AccessibleDescription))
+                {
+                    txt_reference_doc_so.Text = txt_reference_doc_so.AccessibleDescription;
+                }
 
                 // VALIDATION moved here
                 decimal totalAmountDue = decimal.TryParse(txt_total_amount_due.AccessibleDescription, out var totalDue) ? totalDue : 0;
@@ -365,6 +394,25 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
             Helpers.BindControls(_panels, _siTable, _currentSIIndex);
 
+            // Format txt_reference_doc_so from raw AccessibleDescription
+            if (!string.IsNullOrWhiteSpace(txt_reference_doc_so.Text))
+            {
+                var rawPOs = txt_reference_doc_so.Text.Split(',')
+                                .Select(p => p.Trim())
+                                .Where(p => !string.IsNullOrEmpty(p))
+                                .ToList();
+
+                var formattedPOs = rawPOs.Select(p =>
+                {
+                    if (int.TryParse(p, out int poNumber))
+                        return "SO" + poNumber.ToString("D8");
+                    else
+                        return "SO00000000";
+                }).ToList();
+
+                txt_reference_doc_so.Text = string.Join(", ", formattedPOs);
+            }
+
             //Disable auto column generation before setting the data source
             dgv_main.AutoGenerateColumns = false;
 
@@ -494,17 +542,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             using (var modal = new SalesInvoiceSO(supplierId))
             {
                 // Convert current dgv_main rows → DataTable
-                modal.ExistingSOs = Helpers.ToDataTable(
-                    Helpers.DatagridviewMapper.BuildModelsFromData<SalesOrderDetailsViewModel>(dgv_main)
-                );
+                modal.ExistingSOs = Helpers.ToDataTable(Helpers.DatagridviewMapper.BuildModelsFromData<SalesOrderDetailsViewModel>(dgv_main));
 
                 if (modal.ShowDialog(this) == DialogResult.OK &&
                     modal.SelectedSOs != null &&
                     modal.SelectedSOs.Rows.Count > 0)
                 {
+                    //Bind SelectedRows to dgv_main
                     foreach (DataRow apvRow in modal.SelectedSOs.Rows)
                     {
-
                         int newRowIndex = dgv_main.Rows.Add();
                         var targetRow = dgv_main.Rows[newRowIndex];
 
@@ -545,11 +591,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                     //Set Reference PO textbox
                     if (modal.SelectedSOLabels != null && modal.SelectedSOLabels.Any())
                     {
-                        txt_reference_doc_so.Text = string.Join(", ", modal.SelectedSOLabels);
+                        // Format each PO with prefix + 8 digits
+                        var formattedPOs = modal.SelectedSOLabels.Select(po =>
+                        {
+                            if (int.TryParse(po, out int poNumber))
+                                return "SO" + poNumber.ToString("D8"); // e.g., SO00000012
+                            else
+                                return "SO00000000"; // fallback for invalid numbers
+                        }).ToList();
+
+                        txt_reference_doc_so.Text = string.Join(", ", formattedPOs);
+                        txt_reference_doc_so.AccessibleDescription = string.Join(", ", modal.SelectedSOLabels);
                     }
                     else
                     {
                         txt_reference_doc_so.Text = string.Empty;
+                        txt_reference_doc_so.AccessibleDescription = string.Empty;
                     }
 
                     //Set Sales Person textbox

@@ -52,7 +52,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             foreach (var colName in editableColumns)
             {
                 if (dgv_main.Columns.Contains(colName))
-                    dgv_main.Columns[colName].ReadOnly = !isEdit;
+                {
+                    var column = dgv_main.Columns[colName];
+
+                    column.ReadOnly = !isEdit;
+
+                    // Toggle background color based on readonly state
+                    column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
+                }
             }
         }
 
@@ -61,21 +68,23 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             _isNewMode = isNewMode;
             _isEditing = enable;
 
-            SetEditableColumns(enable);
             btn_reference_po.Enabled = enable;
             btn_supplier.Enabled = enable;
 
+            SetEditableColumns(enable);
+
             // buttons
-            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] editButtons = { "btn_save", "btn_cancel", "btn_supplier", "btn_reference_po" };
             string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_main,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier_code", 
+            Helpers.SetChildControlsEnabled(new[] { pnl_main }, !enable, new string[] { "txt_doc_no", "txt_supplier_code", 
                 "txt_payment_term", "txt_currency","txt_supplier", "txt_invoice_type", "txt_type", "txt_ap_voucher",
                 "txt_twas_amount", "txt_net_amount", "dtp_doc_date", "txt_reference_po" });
         }
@@ -404,6 +413,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
             Helpers.BindControls(new Panel[] { pnl_main }, _irTable, _currentIRIndex);
 
+            // Format txt_doc_no with IR prefix and 8 digit number
+            if (!string.IsNullOrEmpty(txt_doc_no.Text))
+            {
+                if (int.TryParse(txt_doc_no.Text, out int number))
+                {
+                    txt_doc_no.Text = "IR" + number.ToString("D8");
+                }
+            }
+
             //Disable auto column generation before setting the data source
             dgv_main.AutoGenerateColumns = false;
 
@@ -468,7 +486,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     txt_type.Text = row["type"]?.ToString();
                     txt_supplier_address.Text = row["supplier_address"]?.ToString();
                     txt_currency.Text = _companySetup.currency_code;
-
                     txt_reference_po.Text = string.Empty;
 
                     dgv_main.DataSource = null;
@@ -533,6 +550,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             Helpers.HandleNumericColumns(dgv_main, e, new[] { "discount" }, '.');
         }
 
+        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Prevent default crash dialog
+            e.ThrowException = false;
+
+            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
+        }
+
         private void dgv_main_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dgv_main.IsCurrentCellDirty)
@@ -571,17 +596,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
                 decimal lineAmount = discount <= 0 ? totalCost : totalCost - discount;
                 dgRow.Cells[lineAmountCol].Value = Math.Max(Helpers.ZeroIfNearZero(lineAmount), 0);
-            }
 
-            //Re-assign binding list as datasource
-            if (_currentDetails != null)
-            {
-                dgv_main.DataSource = null;
-                dgv_main.DataSource = _currentDetails;
-            }
-
-            if (_isNewMode)
-            {
                 // Update net amount
                 UpdateNetAmount();
             }
@@ -694,14 +709,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             {
                 UpdateNetAmount();
             }
-        }
-
-        private void dgv_main_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-            // Prevent default crash dialog
-            e.ThrowException = false;
-
-            Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
         }
     }
 }

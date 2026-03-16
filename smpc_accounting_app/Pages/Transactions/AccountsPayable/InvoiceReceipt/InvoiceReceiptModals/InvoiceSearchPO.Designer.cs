@@ -120,6 +120,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.Controls.Add(this.flow_main);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.treev_main);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "InvoiceSearchPO";
             this.Text = "InvoiceSearchPO";
             this.Load += new System.EventHandler(this.InvoiceSearchPO_Load);

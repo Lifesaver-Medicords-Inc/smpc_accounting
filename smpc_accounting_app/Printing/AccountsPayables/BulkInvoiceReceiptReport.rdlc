@@ -349,7 +349,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!doc_no.Value, "DataSet1")</Value>
+                        <Value>="IR" &amp; Format(First(Fields!doc_no.Value, "DataSet1"), "00000000")</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>
@@ -1437,7 +1437,7 @@
                     <DataSetName>DataSet2</DataSetName>
                     <Left>0.02124in</Left>
                     <Height>0.5in</Height>
-                    <Width>7.34386in</Width>
+                    <Width>7.34389in</Width>
                     <Style>
                       <Border>
                         <Style>None</Style>
@@ -1449,7 +1449,7 @@
                 <Top>0.11018in</Top>
                 <Left>0.15966in</Left>
                 <Height>4.57973in</Height>
-                <Width>7.3651in</Width>
+                <Width>7.36513in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -1460,7 +1460,7 @@
             <KeepTogether>true</KeepTogether>
             <Top>2.12087in</Top>
             <Height>4.81869in</Height>
-            <Width>7.52476in</Width>
+            <Width>7.52479in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1473,7 +1473,7 @@
         <Top>0.17313in</Top>
         <Left>0.23762in</Left>
         <Height>7.08626in</Height>
-        <Width>7.52476in</Width>
+        <Width>7.52479in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1856,7 +1856,6 @@
             </Textbox>
           </ReportItems>
           <KeepTogether>true</KeepTogether>
-          <Top>0in</Top>
           <Left>0.62397in</Left>
           <Height>0.5423in</Height>
           <Width>7.05688in</Width>

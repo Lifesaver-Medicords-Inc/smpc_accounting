@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentReceipt.PaymentReceiptModals
 {
     partial class PaymentReceiptSearch
     {
@@ -162,6 +162,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgv_pr_search);
             this.Controls.Add(this.txt_search);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "PaymentReceiptSearch";
             this.Text = "PaymentReceiptSearch";
             this.Load += new System.EventHandler(this.PaymentReceiptSearch_Load);

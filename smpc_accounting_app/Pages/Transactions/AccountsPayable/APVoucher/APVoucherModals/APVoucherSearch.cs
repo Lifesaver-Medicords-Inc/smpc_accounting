@@ -11,7 +11,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVoucherModals
 {
     public partial class APVoucherSearch : Form
     {
@@ -30,6 +30,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
             dgv_av_search.AutoGenerateColumns = false;
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_av_search, new[] { "transaction_amount" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_av_search, "doc_no", "AV");
             InitializeSearchBox();
         }
 

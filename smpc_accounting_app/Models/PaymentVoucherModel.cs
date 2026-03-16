@@ -16,7 +16,7 @@ namespace smpc_accounting_app.Models
         public string currency { get; set; }
         public float transaction_amount { get; set; }
         public float unapplied_amount { get; set; }
-        public string doc_no { get; set; }
+        public int doc_no { get; set; }
         public string doc_date { get; set; }
         public string remarks { get; set; }
         public float cash_amount { get; set; }

@@ -12,7 +12,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Shared;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.PaymentVoucherModals
 {
     public partial class PaymentVoucherSearchAPV : Form
     {
@@ -39,6 +39,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             dgv_apv_search.AutoGenerateColumns = false;
             InitializeSearchBox();
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_apv_search, new[] { "transaction_amount" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_apv_search, "doc_no", "AV");
             _supplierID = supplierId;
         }
 

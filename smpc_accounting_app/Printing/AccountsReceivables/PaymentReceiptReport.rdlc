@@ -593,7 +593,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!doc_no.Value, "DataSet1")</Value>
+                        <Value>="PR" &amp; Format(First(Fields!doc_no.Value, "DataSet1"), "00000000")</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>
@@ -986,7 +986,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value>=Fields!doc_no.Value</Value>
+                                          <Value>="SI" &amp; Format(Fields!doc_no.Value, "00000000")</Value>
                                           <Style />
                                         </TextRun>
                                       </TextRuns>

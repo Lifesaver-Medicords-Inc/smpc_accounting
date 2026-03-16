@@ -11,7 +11,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt.BulkInvoiceReceiptModals
 {
     public partial class BulkInvoiceSearch : Form
     {
@@ -28,6 +28,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             this.StartPosition = FormStartPosition.CenterParent;
 
             dgv_ir_search.AutoGenerateColumns = false;
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_ir_search, "doc_no", "IR");
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ir_search, new[] { "net_amount" });
             InitializeSearchBox();
         }

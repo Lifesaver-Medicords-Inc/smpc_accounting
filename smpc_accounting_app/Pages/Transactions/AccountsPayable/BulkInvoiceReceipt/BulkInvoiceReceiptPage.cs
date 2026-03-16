@@ -13,6 +13,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals;
+using smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt.BulkInvoiceReceiptModals;
 using smpc_accounting_app.Printing;
 using Microsoft.Reporting.WinForms;
 using System.IO;
@@ -54,7 +55,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             foreach (var colName in editableColumns)
             {
                 if (dgv_main.Columns.Contains(colName))
-                    dgv_main.Columns[colName].ReadOnly = !isEdit;
+                {
+                    var column = dgv_main.Columns[colName];
+
+                    column.ReadOnly = !isEdit;
+
+                    // Toggle background color based on readonly state
+                    column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
+                }
             }
         }
 
@@ -69,16 +77,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             btn_supplier.Enabled = enable;
 
             // buttons
-            string[] editButtons = { "btn_save", "btn_cancel" };
+            string[] editButtons = { "btn_save", "btn_cancel", "btn_supplier" };
             string[] navButtons = { "btn_new", "btn_print", "btn_edit", "btn_delete", "btn_next", "btn_prev", "btn_search" };
 
             Helpers.SetButtonVisibility(
                 toolStrip1,
+                pnl_main,
                 visibleButtons: enable ? editButtons : navButtons,
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabled(new[] { pnl_main }, enable, new string[] { "txt_doc_no", "txt_supplier_code",
+            Helpers.SetChildControlsEnabled(new[] { pnl_main }, !enable, new string[] { "txt_doc_no", "txt_supplier_code",
                 "txt_payment_term", "txt_currency","txt_supplier", "txt_invoice_type", "txt_type", "txt_ap_voucher",
                 "txt_twas_amount", "txt_net_amount", "dtp_doc_date" });
         }
@@ -424,6 +433,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             _birTable = Helpers.ToDataTable(_birdata.bulk_invoice_receipt);
 
             Helpers.BindControls(new Panel[] { pnl_main }, _birTable, _currentBIRIndex);
+
+            // Format txt_doc_no with IR prefix and 8 digit number
+            if (!string.IsNullOrEmpty(txt_doc_no.Text))
+            {
+                if (int.TryParse(txt_doc_no.Text, out int number))
+                {
+                    txt_doc_no.Text = "IR" + number.ToString("D8");
+                }
+            }
 
             //Disable auto column generation before setting the data source
             dgv_main.AutoGenerateColumns = false;

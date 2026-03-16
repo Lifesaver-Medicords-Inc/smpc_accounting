@@ -25,6 +25,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         private PurchaseOrderInvoiceList _podata;
         private List<PurchaseOrderInvoiceModel> _parentdata;
         private List<PurchaseOrderDetailsInvoiceModel> _childdata;
+        public DataTable ExistingPOs { get; set; }
 
         public InvoiceSearchPO(int supplierId)
         {

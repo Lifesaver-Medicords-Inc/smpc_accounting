@@ -20,7 +20,7 @@ namespace smpc_accounting_app.Models
         public float base_rate { get; set; }
         public string currency { get; set; }
         public float exchange_rate { get; set; }
-        public string doc_no { get; set; }
+        public int doc_no { get; set; }
         public string doc_date { get; set; }
         public string posting_date { get; set; }
         public string reference_doc_dr { get; set; }

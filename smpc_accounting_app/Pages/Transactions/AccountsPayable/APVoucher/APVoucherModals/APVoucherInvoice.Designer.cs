@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
+namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVoucherModals
 {
     partial class APVoucherInvoice
     {
@@ -31,7 +31,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_ir_search = new System.Windows.Forms.DataGridView();
-            this.txt_search = new System.Windows.Forms.TextBox();
             this.invoice_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receipt_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,6 +38,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.twas_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receipt_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_search = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ir_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,13 +68,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.dgv_ir_search.Size = new System.Drawing.Size(802, 389);
             this.dgv_ir_search.TabIndex = 8;
             this.dgv_ir_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_ir_search_CellClick);
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 9;
             // 
             // invoice_receipt_id
             // 
@@ -134,6 +127,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.receipt_type.Name = "receipt_type";
             this.receipt_type.ReadOnly = true;
             // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 9;
+            // 
             // APVoucherInvoice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -141,6 +141,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgv_ir_search);
             this.Controls.Add(this.txt_search);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "APVoucherInvoice";
             this.Text = "APVoucherInvoice";
             this.Load += new System.EventHandler(this.APVoucherInvoice_Load);

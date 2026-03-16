@@ -30,7 +30,18 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesInvoicePage2));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -107,7 +118,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.dgv_main = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sales_order_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -322,63 +333,63 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_customer
             // 
-            this.txt_customer.Enabled = false;
             this.txt_customer.Location = new System.Drawing.Point(179, 14);
             this.txt_customer.Name = "txt_customer";
+            this.txt_customer.ReadOnly = true;
             this.txt_customer.Size = new System.Drawing.Size(289, 20);
             this.txt_customer.TabIndex = 275;
             this.txt_customer.Tag = "REQUIRED";
             // 
             // txt_customer_code
             // 
-            this.txt_customer_code.Enabled = false;
             this.txt_customer_code.Location = new System.Drawing.Point(179, 35);
             this.txt_customer_code.Name = "txt_customer_code";
+            this.txt_customer_code.ReadOnly = true;
             this.txt_customer_code.Size = new System.Drawing.Size(289, 20);
             this.txt_customer_code.TabIndex = 276;
             this.txt_customer_code.Tag = "REQUIRED";
             // 
             // txt_payment_term
             // 
-            this.txt_payment_term.Enabled = false;
             this.txt_payment_term.Location = new System.Drawing.Point(179, 56);
             this.txt_payment_term.Name = "txt_payment_term";
+            this.txt_payment_term.ReadOnly = true;
             this.txt_payment_term.Size = new System.Drawing.Size(289, 20);
             this.txt_payment_term.TabIndex = 278;
             this.txt_payment_term.Tag = "REQUIRED";
             // 
             // txt_doc_no
             // 
-            this.txt_doc_no.Enabled = false;
             this.txt_doc_no.Location = new System.Drawing.Point(1038, 18);
             this.txt_doc_no.Name = "txt_doc_no";
+            this.txt_doc_no.ReadOnly = true;
             this.txt_doc_no.Size = new System.Drawing.Size(289, 20);
             this.txt_doc_no.TabIndex = 282;
-            this.txt_doc_no.Tag = "";
+            this.txt_doc_no.Tag = "DOCUMENTSI";
             // 
             // txt_reference_po
             // 
-            this.txt_reference_po.Enabled = false;
             this.txt_reference_po.Location = new System.Drawing.Point(1038, 123);
             this.txt_reference_po.Name = "txt_reference_po";
+            this.txt_reference_po.ReadOnly = true;
             this.txt_reference_po.Size = new System.Drawing.Size(289, 20);
             this.txt_reference_po.TabIndex = 285;
-            this.txt_reference_po.Tag = "";
+            this.txt_reference_po.Tag = "DOCUMENTPO";
             // 
             // txt_sales_person
             // 
-            this.txt_sales_person.Enabled = false;
             this.txt_sales_person.Location = new System.Drawing.Point(1038, 144);
             this.txt_sales_person.Name = "txt_sales_person";
+            this.txt_sales_person.ReadOnly = true;
             this.txt_sales_person.Size = new System.Drawing.Size(289, 20);
             this.txt_sales_person.TabIndex = 286;
             this.txt_sales_person.Tag = "REQUIRED";
             // 
             // txt_customer_address
             // 
-            this.txt_customer_address.Enabled = false;
             this.txt_customer_address.Location = new System.Drawing.Point(179, 190);
             this.txt_customer_address.Name = "txt_customer_address";
+            this.txt_customer_address.ReadOnly = true;
             this.txt_customer_address.Size = new System.Drawing.Size(496, 20);
             this.txt_customer_address.TabIndex = 289;
             this.txt_customer_address.Tag = "REQUIRED";
@@ -397,12 +408,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.btn_customer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_customer.BackgroundImage")));
             this.btn_customer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_customer.Enabled = false;
             this.btn_customer.Location = new System.Drawing.Point(474, 14);
             this.btn_customer.Name = "btn_customer";
             this.btn_customer.Size = new System.Drawing.Size(30, 23);
             this.btn_customer.TabIndex = 293;
             this.btn_customer.UseVisualStyleBackColor = true;
+            this.btn_customer.Visible = false;
             this.btn_customer.Click += new System.EventHandler(this.btn_customer_Click);
             // 
             // label17
@@ -475,9 +486,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_reference_doc_dr
             // 
-            this.txt_reference_doc_dr.Enabled = false;
             this.txt_reference_doc_dr.Location = new System.Drawing.Point(1038, 81);
             this.txt_reference_doc_dr.Name = "txt_reference_doc_dr";
+            this.txt_reference_doc_dr.ReadOnly = true;
             this.txt_reference_doc_dr.Size = new System.Drawing.Size(289, 20);
             this.txt_reference_doc_dr.TabIndex = 304;
             this.txt_reference_doc_dr.Tag = "REQUIRED";
@@ -493,9 +504,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_journal
             // 
-            this.txt_journal.Enabled = false;
             this.txt_journal.Location = new System.Drawing.Point(179, 98);
             this.txt_journal.Name = "txt_journal";
+            this.txt_journal.ReadOnly = true;
             this.txt_journal.Size = new System.Drawing.Size(289, 20);
             this.txt_journal.TabIndex = 306;
             this.txt_journal.Tag = "REQUIRED";
@@ -512,9 +523,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_reference_doc_so
             // 
-            this.txt_reference_doc_so.Enabled = false;
             this.txt_reference_doc_so.Location = new System.Drawing.Point(1038, 102);
             this.txt_reference_doc_so.Name = "txt_reference_doc_so";
+            this.txt_reference_doc_so.ReadOnly = true;
             this.txt_reference_doc_so.Size = new System.Drawing.Size(289, 20);
             this.txt_reference_doc_so.TabIndex = 308;
             this.txt_reference_doc_so.Tag = "REQUIRED";
@@ -523,19 +534,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.btn_ref_doc.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_ref_doc.BackgroundImage")));
             this.btn_ref_doc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_ref_doc.Enabled = false;
             this.btn_ref_doc.Location = new System.Drawing.Point(1333, 93);
             this.btn_ref_doc.Name = "btn_ref_doc";
             this.btn_ref_doc.Size = new System.Drawing.Size(30, 23);
             this.btn_ref_doc.TabIndex = 309;
             this.btn_ref_doc.UseVisualStyleBackColor = true;
+            this.btn_ref_doc.Visible = false;
             this.btn_ref_doc.Click += new System.EventHandler(this.btn_ref_doc_Click);
             // 
             // txt_tax_code
             // 
-            this.txt_tax_code.Enabled = false;
             this.txt_tax_code.Location = new System.Drawing.Point(179, 77);
             this.txt_tax_code.Name = "txt_tax_code";
+            this.txt_tax_code.ReadOnly = true;
             this.txt_tax_code.Size = new System.Drawing.Size(289, 20);
             this.txt_tax_code.TabIndex = 310;
             this.txt_tax_code.Tag = "REQUIRED";
@@ -569,18 +580,18 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_base_rate
             // 
-            this.txt_base_rate.Enabled = false;
             this.txt_base_rate.Location = new System.Drawing.Point(619, 17);
             this.txt_base_rate.Name = "txt_base_rate";
+            this.txt_base_rate.ReadOnly = true;
             this.txt_base_rate.Size = new System.Drawing.Size(289, 20);
             this.txt_base_rate.TabIndex = 314;
             this.txt_base_rate.Tag = "REQUIRED";
             // 
             // txt_exchange_rate
             // 
-            this.txt_exchange_rate.Enabled = false;
             this.txt_exchange_rate.Location = new System.Drawing.Point(619, 59);
             this.txt_exchange_rate.Name = "txt_exchange_rate";
+            this.txt_exchange_rate.ReadOnly = true;
             this.txt_exchange_rate.Size = new System.Drawing.Size(289, 20);
             this.txt_exchange_rate.TabIndex = 316;
             this.txt_exchange_rate.Tag = "REQUIRED";
@@ -638,9 +649,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_tin
             // 
-            this.txt_tin.Enabled = false;
             this.txt_tin.Location = new System.Drawing.Point(619, 80);
             this.txt_tin.Name = "txt_tin";
+            this.txt_tin.ReadOnly = true;
             this.txt_tin.Size = new System.Drawing.Size(289, 20);
             this.txt_tin.TabIndex = 321;
             this.txt_tin.Tag = "REQUIRED";
@@ -658,9 +669,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             // txt_overpayment_amount
             // 
-            this.txt_overpayment_amount.Enabled = false;
             this.txt_overpayment_amount.Location = new System.Drawing.Point(179, 119);
             this.txt_overpayment_amount.Name = "txt_overpayment_amount";
+            this.txt_overpayment_amount.ReadOnly = true;
             this.txt_overpayment_amount.Size = new System.Drawing.Size(289, 20);
             this.txt_overpayment_amount.TabIndex = 319;
             this.txt_overpayment_amount.Tag = "MONEY";
@@ -906,18 +917,18 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
+            this.id,
             this.item_id,
             this.sales_order_details_id,
             this.item_code,
@@ -937,16 +948,20 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.dgv_main.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_main_DataError);
             this.dgv_main.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_main_EditingControlShowing);
             // 
-            // dataGridViewTextBoxColumn1
+            // id
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Visible = false;
+            this.id.DataPropertyName = "id";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.id.DefaultCellStyle = dataGridViewCellStyle2;
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.Visible = false;
             // 
             // item_id
             // 
             this.item_id.DataPropertyName = "item_id";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.item_id.DefaultCellStyle = dataGridViewCellStyle3;
             this.item_id.HeaderText = "ITEM ID";
             this.item_id.Name = "item_id";
             this.item_id.ReadOnly = true;
@@ -955,6 +970,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // sales_order_details_id
             // 
             this.sales_order_details_id.DataPropertyName = "sales_order_details_id";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.sales_order_details_id.DefaultCellStyle = dataGridViewCellStyle4;
             this.sales_order_details_id.HeaderText = "SOD ID";
             this.sales_order_details_id.Name = "sales_order_details_id";
             this.sales_order_details_id.ReadOnly = true;
@@ -964,6 +981,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.item_code.DataPropertyName = "item_code";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.item_code.DefaultCellStyle = dataGridViewCellStyle5;
             this.item_code.HeaderText = "ITEM CODE";
             this.item_code.MinimumWidth = 200;
             this.item_code.Name = "item_code";
@@ -973,6 +992,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.item_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.item_description.DataPropertyName = "item_description";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            this.item_description.DefaultCellStyle = dataGridViewCellStyle6;
             this.item_description.HeaderText = "DESCRIPTION";
             this.item_description.Name = "item_description";
             this.item_description.ReadOnly = true;
@@ -981,6 +1002,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.item_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.item_qty.DataPropertyName = "item_qty";
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.item_qty.DefaultCellStyle = dataGridViewCellStyle7;
             this.item_qty.HeaderText = "#";
             this.item_qty.MinimumWidth = 80;
             this.item_qty.Name = "item_qty";
@@ -991,6 +1014,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.item_uom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.item_uom.DataPropertyName = "item_uom";
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            this.item_uom.DefaultCellStyle = dataGridViewCellStyle8;
             this.item_uom.HeaderText = "UOM";
             this.item_uom.MinimumWidth = 80;
             this.item_uom.Name = "item_uom";
@@ -1001,6 +1026,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.unit_price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.unit_price.DataPropertyName = "unit_price";
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
+            this.unit_price.DefaultCellStyle = dataGridViewCellStyle9;
             this.unit_price.HeaderText = "UNIT PRICE";
             this.unit_price.Name = "unit_price";
             this.unit_price.ReadOnly = true;
@@ -1009,6 +1036,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.discount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.discount.DataPropertyName = "discount";
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Gainsboro;
+            this.discount.DefaultCellStyle = dataGridViewCellStyle10;
             this.discount.HeaderText = "DISCOUNT";
             this.discount.Name = "discount";
             this.discount.ReadOnly = true;
@@ -1017,6 +1046,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.total_cost.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.total_cost.DataPropertyName = "total_cost";
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Gainsboro;
+            this.total_cost.DefaultCellStyle = dataGridViewCellStyle11;
             this.total_cost.HeaderText = "TOTAL COST";
             this.total_cost.MinimumWidth = 180;
             this.total_cost.Name = "total_cost";
@@ -1026,6 +1057,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.date_deliver.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.date_deliver.DataPropertyName = "date_deliver";
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Gainsboro;
+            this.date_deliver.DefaultCellStyle = dataGridViewCellStyle12;
             this.date_deliver.HeaderText = "DATE DELIVERED";
             this.date_deliver.Name = "date_deliver";
             this.date_deliver.ReadOnly = true;
@@ -1132,7 +1165,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private System.Windows.Forms.ComboBox cmb_currency;
         private System.Windows.Forms.TextBox txt_overpayment_amount;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.TextBox txt_tin;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn sales_order_details_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
@@ -1143,7 +1178,5 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private System.Windows.Forms.DataGridViewTextBoxColumn discount;
         private System.Windows.Forms.DataGridViewTextBoxColumn total_cost;
         private System.Windows.Forms.DataGridViewTextBoxColumn date_deliver;
-        private System.Windows.Forms.TextBox txt_tin;
-        private System.Windows.Forms.Label label29;
     }
 }

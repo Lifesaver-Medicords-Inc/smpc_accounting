@@ -11,7 +11,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
 
-namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
+namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals
 {
     public partial class SalesInvoiceSearch : Form
     {
@@ -29,6 +29,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.StartPosition = FormStartPosition.CenterParent;
 
             dgv_si_search.AutoGenerateColumns = false;
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_si_search, "doc_no", "SI");
             InitializeSearchBox();
         }
 
