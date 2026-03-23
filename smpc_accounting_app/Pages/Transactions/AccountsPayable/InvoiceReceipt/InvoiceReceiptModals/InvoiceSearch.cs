@@ -79,8 +79,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         {
             InvoiceReceipt = await invoiceReceiptService.GetAsModel();
 
-            InvoiceReceipt.invoice_receipt.Reverse();
-
             // Convert journal entry list to DataTable using helper
             irTable = Helpers.ToDataTable(InvoiceReceipt.invoice_receipt);
 

@@ -10,60 +10,151 @@ using System.Windows.Forms;
 using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
+using smpc_accounting_app.Services;
+using smpc_accounting_app.Shared;
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceReceipt.BulkInvoiceReceiptModals
 {
     public partial class BulkInvoiceSearch : Form
     {
         public string SelectedBIRId { get; private set; } = null;
-        private string placeHolderText = "Bulk Invoice Receipt Search...";
-        private BulkInvoiceReceiptList BulkInvoiceReceipt;
-        readonly BulkInvoiceReceiptService bulkinvoiceReceiptService = new BulkInvoiceReceiptService();
-        private DataTable birTable;
+
+        private string _placeHolderText = "Bulk Invoice Receipt Search...";
+        private string _lastSearchText = "";
+
+        // Cursor = id of the last record in the current page
+        private int? _currentCursor = null;
+        private bool _hasNext = false;
+        private bool _isLoading = false;
+        private const int _maxRows = 200;
+
+        private DataTable _birTable;
+        private System.Windows.Forms.Timer _searchDebounceTimer;
+        private System.Windows.Forms.TextBox _txt_search;
+
+        GeneralService<BulkInvoiceReceiptModel> bulkInvoiceSearchService;
+
         public BulkInvoiceSearch()
         {
             InitializeComponent();
 
-            // Center the modal relative to its parent form
             this.StartPosition = FormStartPosition.CenterParent;
 
             dgv_ir_search.AutoGenerateColumns = false;
             Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_ir_search, "doc_no", "IR");
             Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ir_search, new[] { "net_amount" });
+
             InitializeSearchBox();
+            InitializeDebounceTimer();
+
+            dgv_ir_search.Scroll += dgv_ir_search_Scroll;
         }
 
         private void InitializeSearchBox()
         {
-            txt_search = Helpers.CreateSearchBox(placeHolderText, txt_search_TextChanged);
-            this.Controls.Add(txt_search);
+            _txt_search = Helpers.CreateSearchBox(_placeHolderText, txt_search_TextChanged);
+            this.Controls.Add(_txt_search);
         }
 
+        private void InitializeDebounceTimer()
+        {
+            _searchDebounceTimer = new System.Windows.Forms.Timer();
+            _searchDebounceTimer.Interval = 400;
+            _searchDebounceTimer.Tick += async (s, e) =>
+            {
+                _searchDebounceTimer.Stop();
+                await ResetAndSearch();
+            };
+        }
+
+        // ─── Keystroke → debounce → server search ────────────────────────────────
         private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            if (birTable == null || birTable.Rows.Count == 0)
-                return;
-
-            string searchText = txt_search.Text.Trim();
-
-            if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
-            {
-                dgv_ir_search.DataSource = birTable;
-            }
-            else
-            {
-                var searchedData = Helpers.FilterDataTable(birTable, searchText,
-                    "supplier", "supplier_code", "tax_code", "invoice_due", "doc_no", "doc_date", "net_amount");
-                dgv_ir_search.DataSource = searchedData;
-            }
+            _searchDebounceTimer.Stop();
+            _searchDebounceTimer.Start();
         }
 
-        private async void BulkInvoiceSearch_Load(object sender, EventArgs e)
+        // ─── Reset cursor + table, then fetch first page of new search ───────────
+        private async Task ResetAndSearch()
         {
+            string searchText = _txt_search.Text.Trim().Replace(" ", "_");
+
+            if (searchText == _placeHolderText)
+                searchText = "";
+
+            if (searchText == _lastSearchText)
+                return;
+
+            _lastSearchText = searchText;
+
+            _currentCursor = null;
+            _hasNext = false;
+
+            dgv_ir_search.DataSource = null;
+            _birTable = _birTable != null ? _birTable.Clone() : null;
+
+            await LoadNextPage();
+        }
+
+        // ─── Scroll: trigger next page when near the bottom ──────────────────────
+        private async void dgv_ir_search_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation != ScrollOrientation.VerticalScroll)
+                return;
+
+            int lastVisible = dgv_ir_search.FirstDisplayedScrollingRowIndex
+                              + dgv_ir_search.DisplayedRowCount(false);
+
+            bool nearBottom = lastVisible >= dgv_ir_search.Rows.Count - 3;
+
+            if (nearBottom && _hasNext && !_isLoading)
+                await LoadNextPage();
+        }
+
+        // ─── Core loader: passes cursor (last id) + search term to the API ───────
+        private async Task LoadNextPage()
+        {
+            if (_isLoading) return;
+            _isLoading = true;
+
             try
             {
                 Helpers.Loading.ShowLoading(dgv_ir_search, "Fetching data...");
-                await BulkInvoiceReceipts();
+
+                bulkInvoiceSearchService = new GeneralService<BulkInvoiceReceiptModel>(
+                    ApiEndPoints.BULK_INVOICE_RECEIPT_SEARCH);
+
+                // Pass cursor (last record id of previous page) and current search term
+                var result = await bulkInvoiceSearchService.GetAsListSearch(
+                    id: _currentCursor,
+                    search: _lastSearchText);
+
+                var newRecords = result.Data;
+                _hasNext = result.Pagination?.has_next ?? false;
+
+                if (newRecords == null || newRecords.Count == 0)
+                {
+                    if (_birTable == null || _birTable.Rows.Count == 0)
+                        Helpers.ShowDialogMessage("error", "No bulk invoice receipts found.");
+
+                    return;
+                }
+
+                // Advance cursor to the id of the last record in this batch
+                _currentCursor = newRecords.LastOrDefault()?.id;
+
+                // First page: build table from scratch. Subsequent pages: append rows.
+                if (_birTable == null || _birTable.Rows.Count == 0)
+                {
+                    _birTable = Helpers.ToDataTable(newRecords);
+                    dgv_ir_search.DataSource = _birTable; // bind once
+                }
+                else if (_birTable.Rows.Count < _maxRows)
+                {
+                    var tempTable = Helpers.ToDataTable(newRecords);
+                    foreach (DataRow row in tempTable.Rows)
+                        _birTable.ImportRow(row);
+                }
             }
             catch (Exception ex)
             {
@@ -71,46 +162,47 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             }
             finally
             {
+                _isLoading = false;
                 Helpers.Loading.HideLoading(dgv_ir_search);
             }
         }
 
-        private async Task BulkInvoiceReceipts()
+        // ─── Initial load on form open ────────────────────────────────────────────
+        private async void BulkInvoiceSearch_Load(object sender, EventArgs e)
         {
-            BulkInvoiceReceipt = await bulkinvoiceReceiptService.GetAsModel();
-
-            BulkInvoiceReceipt.bulk_invoice_receipt.Reverse();
-
-            // Convert journal entry list to DataTable using helper
-            birTable = Helpers.ToDataTable(BulkInvoiceReceipt.bulk_invoice_receipt);
-
-            if (birTable?.Rows.Count > 0)
+            try
             {
-                dgv_ir_search.DataSource = birTable;
+                await LoadNextPage();
             }
-            else
+            catch (Exception ex)
             {
-                dgv_ir_search.DataSource = null;
-                Helpers.ShowDialogMessage("error", "No bulk invoice receipt found.");
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 
+        // ─── Row click: return selected record id to parent ───────────────────────
         private void dgv_ir_search_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-                return;
+            if (e.RowIndex < 0) return;
 
             var row = dgv_ir_search.Rows[e.RowIndex];
-
-            // Always get the id value from the row, regardless of which column was clicked
             var idValue = row.Cells["id"].Value;
 
             if (idValue != null)
             {
                 SelectedBIRId = idValue.ToString();
-
-                this.DialogResult = DialogResult.OK; // close the modal with OK
+                this.DialogResult = DialogResult.OK;
                 this.Close();
+            }
+        }
+
+        private void BulkInvoiceSearch_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_searchDebounceTimer != null)
+            {
+                _searchDebounceTimer.Stop();
+                _searchDebounceTimer.Dispose();
+                _searchDebounceTimer = null;
             }
         }
     }

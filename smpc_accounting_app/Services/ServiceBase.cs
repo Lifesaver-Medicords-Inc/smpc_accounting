@@ -51,6 +51,44 @@ namespace smpc_accounting_app.Services
             }
         }
 
+        public virtual async Task<PaginatedResult<T>> GetAsModelPaginated(int? id = null)
+        {
+            try
+            {
+                var endpoint = id.HasValue ? $"{url}/{id}" : $"{url}/";
+                var response = await ApiService<ApiResponseModel<T>>.Get(endpoint);
+                return new PaginatedResult<T>
+                {
+                    Data = response.data,
+                    Pagination = response.pagination
+                };
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public virtual async Task<PaginatedResult<List<T>>> GetAsListSearch(int? id = null, string search = "")
+        {
+            try
+            {
+                var idSegment = id.HasValue ? id.ToString() : "";
+                var searchSegment = !string.IsNullOrWhiteSpace(search) ? search : "";
+                var endpoint = $"{url}/{idSegment}/{searchSegment}";
+                var response = await ApiService<ApiResponseModel<List<T>>>.Get(endpoint);
+                return new PaginatedResult<List<T>>
+                {
+                    Data = response.data ?? new List<T>(),
+                    Pagination = response.pagination
+                };
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public virtual async Task<List<T>> GetAsList()
         {
             try

@@ -37,6 +37,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private bool _isNewMode = false;
         private string _userName;
         private bool _isEditing;
+        private int? _nextCursor = null;
+        private int? _currentCursor = null;
+        private Stack<int?> _cursorHistory = new Stack<int?>(); // for going back
+        private bool _hasNext = false;
 
         public BulkInvoiceReceiptPage()
         {
@@ -92,14 +96,32 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 "txt_twas_amount", "txt_net_amount", "dtp_doc_date" });
         }
 
-        private void ChangeRecord(int step)
+        private async void ChangeRecord(int step)
         {
             if (_bulkInvoiceReceipts == null || !_bulkInvoiceReceipts.Any()) return;
 
             int newIndex = _currentBIRIndex + step;
+
             if (newIndex >= 0 && newIndex < _bulkInvoiceReceipts.Count)
             {
+                // Normal navigation within current page
                 _currentBIRIndex = newIndex;
+                ShowCurrentRecord();
+            }
+            else if (step > 0 && _hasNext)
+            {
+                // Moving forward — push current cursor to history before advancing
+                _cursorHistory.Push(_currentCursor);
+                _currentCursor = _nextCursor;
+                _currentBIRIndex = 0;
+                await LoadBulkInvoiceReceipts(_currentCursor);
+            }
+            else if (step < 0 && _cursorHistory.Count > 0)
+            {
+                // Moving backward — pop previous cursor from history
+                _currentCursor = _cursorHistory.Pop();
+                await LoadBulkInvoiceReceipts(_currentCursor);
+                _currentBIRIndex = _bulkInvoiceReceipts.Count - 1;
                 ShowCurrentRecord();
             }
         }
@@ -280,6 +302,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                 Helpers.ShowDialogMessage("success", "Bulk Invoice Receipt created successfully.");
 
                 SetEditMode(false);
+                _currentCursor = null;
                 await LoadBulkInvoiceReceipts();
             }
             catch (Exception ex)
@@ -299,18 +322,16 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         {
             SetEditMode(false);
 
-            // If no records exist, clear everything
             if (_bulkInvoiceReceipts == null || !_bulkInvoiceReceipts.Any())
             {
                 ClearBulkInvoiceReceiptUI();
                 return;
             }
 
-            // Return to the previous record index if available
-            if (_previousBIRIndex >= 0 && _bulkInvoiceReceipts != null && _bulkInvoiceReceipts.Count > 0)
+            if (_previousBIRIndex >= 0)
             {
                 _currentBIRIndex = _previousBIRIndex;
-                await LoadBulkInvoiceReceipts();
+                await LoadBulkInvoiceReceipts(_currentCursor);
             }
             else
             {
@@ -342,6 +363,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             _bulkInvoiceReceipts = new List<BulkInvoiceReceiptModel>();
             _currentBIRIndex = -1;
             _previousBIRIndex = -1;
+            _nextCursor = null;
+            _currentCursor = null;
+            _cursorHistory.Clear();
+            _hasNext = false;
 
             // Clear panel fields
             Helpers.ResetControls(new Panel[] { pnl_main });
@@ -375,45 +400,34 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             cmb_tax_code.Text = "";
         }
 
-        private async Task LoadBulkInvoiceReceipts()
+        private async Task LoadBulkInvoiceReceipts(int? cursor = null)
         {
-            // save current index before reload
-            int oldIndex = _currentBIRIndex;
+            var data = await bulkInvoiceReceiptService.GetAsModelPaginated(cursor);
 
-            //fill this declared value by the bulk invoice receipt data
-            _birdata = await bulkInvoiceReceiptService.GetAsModel();
+            _birdata = data.Data;
+            _hasNext = data.Pagination?.has_next ?? false;
+            _nextCursor = _birdata?.bulk_invoice_receipt?.LastOrDefault()?.id;
 
             generalServiceChartOfAccounts = new GeneralService<ChartOfAccountsModel>(ApiEndPoints.CHART_OF_ACCOUNT_SETUP);
             _coadata = await generalServiceChartOfAccounts.GetAsList();
 
-            // Populate datagridview combo box posting reference
             if (_coadata != null && _coadata.Count > 0)
             {
-                var postingRefColumn =
-                    (DataGridViewComboBoxColumn)dgv_main.Columns["cmb_account_code"];
-
+                var postingRefColumn = (DataGridViewComboBoxColumn)dgv_main.Columns["cmb_account_code"];
                 postingRefColumn.DataSource = _coadata;
                 postingRefColumn.ValueMember = "id";
                 postingRefColumn.DisplayMember = "code";
                 postingRefColumn.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
                 postingRefColumn.FlatStyle = FlatStyle.Flat;
-
-                // THIS allows null values
                 postingRefColumn.DefaultCellStyle.NullValue = "";
             }
 
-            // Reverse order so newest records appear first
-            _birdata.bulk_invoice_receipt.Reverse();
-
             if (_birdata != null && _birdata.bulk_invoice_receipt != null && _birdata.bulk_invoice_receipt.Count > 0)
             {
-                //set this variable to the parent of the bulk invoice receipt
                 _bulkInvoiceReceipts = _birdata.bulk_invoice_receipt;
 
-                // restore old index if valid, otherwise fallback to 0
-                if (oldIndex >= 0 && oldIndex < _bulkInvoiceReceipts.Count)
-                    _currentBIRIndex = oldIndex;
-                else
+                // Only reset to 0 if _currentBIRIndex is out of range
+                if (_currentBIRIndex < 0 || _currentBIRIndex >= _bulkInvoiceReceipts.Count)
                     _currentBIRIndex = 0;
 
                 ShowCurrentRecord();
@@ -505,8 +519,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             }
 
             //Enable/disable navigation buttons
-            btn_prev.Enabled = _currentBIRIndex > 0;
-            btn_next.Enabled = _currentBIRIndex < _bulkInvoiceReceipts.Count - 1;
+            bool isFirstRecord = _currentBIRIndex == 0 && _cursorHistory.Count == 0;
+            bool isLastRecord = _currentBIRIndex == _bulkInvoiceReceipts.Count - 1 && !_hasNext;
+
+            btn_prev.Enabled = !isFirstRecord;
+            btn_next.Enabled = !isLastRecord;
         }
 
         private void btn_supplier_Click(object sender, EventArgs e)

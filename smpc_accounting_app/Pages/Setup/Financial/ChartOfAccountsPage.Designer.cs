@@ -274,7 +274,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.pnl_content.Controls.Add(this.txt_name);
             this.pnl_content.Controls.Add(this.label2);
             this.pnl_content.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_content.Enabled = false;
             this.pnl_content.Location = new System.Drawing.Point(0, 72);
             this.pnl_content.Name = "pnl_content";
             this.pnl_content.Size = new System.Drawing.Size(1400, 156);
@@ -284,6 +283,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.cmb_group.BackColor = System.Drawing.Color.White;
             this.cmb_group.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_group.Enabled = false;
             this.cmb_group.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_group.FormattingEnabled = true;
             this.cmb_group.Location = new System.Drawing.Point(67, 94);
@@ -310,6 +310,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.cmb_account_class.BackColor = System.Drawing.Color.White;
             this.cmb_account_class.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_account_class.Enabled = false;
             this.cmb_account_class.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_account_class.FormattingEnabled = true;
             this.cmb_account_class.Location = new System.Drawing.Point(67, 71);
@@ -364,6 +365,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.txt_code.Location = new System.Drawing.Point(67, 28);
             this.txt_code.Name = "txt_code";
+            this.txt_code.ReadOnly = true;
             this.txt_code.Size = new System.Drawing.Size(289, 20);
             this.txt_code.TabIndex = 59;
             this.txt_code.Tag = "REQUIRED";
@@ -373,6 +375,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.txt_name.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txt_name.Location = new System.Drawing.Point(67, 49);
             this.txt_name.Name = "txt_name";
+            this.txt_name.ReadOnly = true;
             this.txt_name.Size = new System.Drawing.Size(289, 20);
             this.txt_name.TabIndex = 61;
             this.txt_name.Tag = "REQUIRED";
@@ -413,7 +416,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.label5.TabIndex = 5;
             this.label5.Text = "SEARCH";
             // 
-            // ChartOfAccounts
+            // ChartOfAccountsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -422,7 +425,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.Controls.Add(this.pnl_content);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.panel1);
-            this.Name = "ChartOfAccounts";
+            this.Name = "ChartOfAccountsPage";
             this.Size = new System.Drawing.Size(1400, 950);
             this.Load += new System.EventHandler(this.ChartOfAccounts_Load);
             this.toolStrip1.ResumeLayout(false);

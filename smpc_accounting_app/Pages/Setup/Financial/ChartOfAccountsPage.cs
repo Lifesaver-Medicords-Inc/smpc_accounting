@@ -50,7 +50,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            pnl_content.Enabled = enable;
+            Helpers.SetChildControlsEnabled(new[] { pnl_content }, !enable, new string[] { });
         }
 
         private void btn_new_Click(object sender, EventArgs e)
@@ -442,6 +442,9 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
         private void cmb_account_class_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!_isEditMode)
+                return;
+
             if (cmb_account_class.SelectedItem == null)
                 return;
 
@@ -482,6 +485,9 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
         private void cmb_group_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!_isEditMode)
+                return;
+
             // GROUP CLEARED
             if (cmb_group.SelectedItem == null)
             {

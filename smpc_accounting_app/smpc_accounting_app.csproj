@@ -653,6 +653,7 @@
     <None Include="Properties\DataSources\smpc_accounting_app.Models.ApVoucherViewModel.datasource" />
     <None Include="Properties\DataSources\smpc_accounting_app.Models.BulkInvoiceReceiptDetailsModel.datasource" />
     <None Include="Properties\DataSources\smpc_accounting_app.Models.BulkInvoiceReceiptModel.datasource" />
+    <None Include="Properties\DataSources\smpc_accounting_app.Models.ChartGroup.datasource" />
     <None Include="Properties\DataSources\smpc_accounting_app.Models.InvoiceReceiptDetailsModel.datasource" />
     <None Include="Properties\DataSources\smpc_accounting_app.Models.InvoiceReceiptModel.datasource" />
     <None Include="Properties\DataSources\smpc_accounting_app.Models.PaymentReceiptDetailsModel.datasource" />

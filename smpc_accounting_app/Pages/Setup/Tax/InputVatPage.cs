@@ -48,7 +48,14 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             foreach (var colName in editableColumns)
             {
                 if (dgv_tax_details.Columns.Contains(colName))
-                    dgv_tax_details.Columns[colName].ReadOnly = !isEdit;
+                {
+                    var column = dgv_tax_details.Columns[colName];
+
+                    column.ReadOnly = !isEdit;
+
+                    // Toggle background color based on readonly state
+                    column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
+                }
             }
         }
 
@@ -70,7 +77,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            pnl_content.Enabled = enable;
+            Helpers.SetChildControlsEnabled(new[] { pnl_content }, !enable, new string[] {  });
         }
 
         private void btn_new_Click(object sender, EventArgs e)
@@ -581,6 +588,9 @@ namespace smpc_accounting_app.Pages.Setup.Tax
 
         private void UpdateCoaComboState()
         {
+            if (!_isEditMode)
+                return;
+
             bool hasSales = cmb_coa_sales.SelectedIndex != -1 && !string.IsNullOrWhiteSpace(cmb_coa_sales.Text);
             bool hasPurchase = cmb_coa_purchase.SelectedIndex != -1 && !string.IsNullOrWhiteSpace(cmb_coa_purchase.Text);
 

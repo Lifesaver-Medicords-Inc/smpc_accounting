@@ -19,14 +19,25 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private bool _isNewMode = false;
         private bool _isEditMode = false;
         private DataTable _cldata;
-        private string placeHolderText = "Chart Class Search...";
+        private string _placeHolderText = "Chart Class Search...";
+
+        // Cursor = id of the last record in the current page
+        private int? _currentCursor = null;
+        private bool _hasNext = false;
+        private bool _isLoading = false;
+        private const int _maxRows = 200;
+        private string _lastSearchText = "";
+        private System.Windows.Forms.Timer _searchDebounceTimer;
 
         public ChartClassPage()
         {
             InitializeComponent();
 
             Helpers.AllowOnlyNumbers(txt_code, '-');
-            Helpers.Placeholder.SetPlaceholder(txt_search, placeHolderText);
+            Helpers.Placeholder.SetPlaceholder(txt_search, _placeHolderText);
+
+            InitializeDebounceTimer();
+            dgv_list.AutoGenerateColumns = false;
         }
 
         private void SetEditMode(bool enable, bool isNewMode = false)
@@ -45,7 +56,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            pnl_content.Enabled = enable;
+            Helpers.SetChildControlsEnabled(new[] { pnl_content }, !enable, new string[] { });
         }
 
         private void btn_new_Click(object sender, EventArgs e)
@@ -151,6 +162,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                         return;
                     }
 
+                    ClearPaginationStatus();
+
                     Helpers.ShowDialogMessage("success", "Chart Class created successfully.");
                 }
                 else
@@ -169,11 +182,24 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                         return;
                     }
 
+                    ClearPaginationStatus();
+
                     Helpers.ShowDialogMessage("success", "Chart Class updated successfully.");
                 }
 
                 SetEditMode(false);
                 await GetChartClass();
+
+                // Only append if the updated row is not already in _cldata
+                bool alreadyExists = _cldata.Select($"id = {chartClassPayload.id}").Length > 0;
+                if (!alreadyExists)
+                {
+                    var updatedTable = Helpers.ToDataTable(new List<ChartClassModel> { chartClassPayload });
+                    foreach (DataRow row in updatedTable.Rows)
+                        _cldata.ImportRow(row);
+                }
+
+
                 LoadSelectedChartClass();
             }
             catch (Exception ex)
@@ -218,6 +244,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                     Helpers.ShowDialogMessage("error", "Chart of Account not Deleted.");
                     return;
                 }
+
+                ClearPaginationStatus();
 
                 Helpers.ShowDialogMessage("success", "Chart Class deleted successfully.");
             }
@@ -292,20 +320,106 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             cmb_type.SelectedIndex = -1; // default (no selection)
         }
 
+        private void InitializeDebounceTimer()
+        {
+            _searchDebounceTimer = new System.Windows.Forms.Timer();
+            _searchDebounceTimer.Interval = 400;
+            _searchDebounceTimer.Tick += async (s, e) =>
+            {
+                _searchDebounceTimer.Stop();
+                await ResetAndSearch();
+            };
+        }
+
+        private async Task ResetAndSearch()
+        {
+            string searchText = txt_search.Text.Trim().Replace(" ", "_");
+
+            if (searchText == _placeHolderText)
+                searchText = "";
+
+            if (searchText == _lastSearchText)
+                return;
+
+            _lastSearchText = searchText;
+
+            _currentCursor = null;
+            _hasNext = false;
+
+            dgv_list.DataSource = null;
+            _cldata = _cldata != null ? _cldata.Clone() : null;
+
+            await GetChartClass();
+        }
+
+        private async void dgv_list_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation != ScrollOrientation.VerticalScroll)
+                return;
+
+            int lastVisible = dgv_list.FirstDisplayedScrollingRowIndex
+                              + dgv_list.DisplayedRowCount(false);
+
+            bool nearBottom = lastVisible >= dgv_list.Rows.Count - 3;
+
+            if (nearBottom && _hasNext && !_isLoading)
+                await GetChartClass();
+        }
+
         private async Task GetChartClass()
         {
-            _cldata = await chartClassServices.GetAsDatatable();
+            if (_isLoading) return;
+            _isLoading = true;
 
-            if (_cldata != null)
+            try
             {
-                dgv_list.AutoGenerateColumns = false;
+                // Pass cursor (last record id of previous page) and current search term
+                var result = await chartClassServices.GetAsListSearch(
+                    id: _currentCursor,
+                    search: _lastSearchText);
 
-                dgv_list.DataSource = _cldata;
+                var newRecords = result.Data;
+                _hasNext = result.Pagination?.has_next ?? false;
+
+                if (newRecords == null || newRecords.Count == 0)
+                {
+                    if (_cldata == null || _cldata.Rows.Count == 0)
+                        Helpers.ShowDialogMessage("error", "No chart class found.");
+
+                    return;
+                }
+
+                // Advance cursor to the id of the last record in this batch
+                _currentCursor = newRecords.LastOrDefault()?.id;
+
+                // First page: build table from scratch. Subsequent pages: append rows.
+                if (_cldata == null || _cldata.Rows.Count == 0)
+                {
+                    _cldata = Helpers.ToDataTable(newRecords);
+                    dgv_list.DataSource = _cldata; // bind once
+                }
+                else if (_cldata.Rows.Count < _maxRows)
+                {
+                    var tempTable = Helpers.ToDataTable(newRecords);
+                    foreach (DataRow row in tempTable.Rows)
+                        _cldata.ImportRow(row);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                dgv_list.DataSource = null;
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+
+        private void ClearPaginationStatus()
+        {
+            _currentCursor = null;
+            _lastSearchText = "";
+            _cldata.Rows.Clear();
         }
 
         private void LoadSelectedChartClass()
@@ -334,20 +448,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
         private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            if (_cldata == null || _cldata.Rows.Count == 0)
-                return;
-
-            string searchText = txt_search.Text.Trim();
-
-            if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
-            {
-                dgv_list.DataSource = _cldata;
-            }
-            else
-            {
-                var searchedData = Helpers.FilterDataTable(_cldata, searchText, "code", "name", "type");
-                dgv_list.DataSource = searchedData;
-            }
+            _searchDebounceTimer.Stop();
+            _searchDebounceTimer.Start();
         }
 
         private void dgv_list_CellClick(object sender, DataGridViewCellEventArgs e)

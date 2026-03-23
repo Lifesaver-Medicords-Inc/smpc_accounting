@@ -29,9 +29,15 @@ namespace smpc_accounting_app.Pages.Setup.Tax
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputVatPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label6 = new System.Windows.Forms.Label();
             this.txt_id = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,12 +49,6 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.cmb_coa_purchase = new System.Windows.Forms.ComboBox();
             this.cmb_coa_sales = new System.Windows.Forms.ComboBox();
             this.dgv_tax_details = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tax_code_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.valid_from = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.valid_to = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tax_rate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.valid_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label10 = new System.Windows.Forms.Label();
             this.txt_remarks = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -82,6 +82,12 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txt_search = new System.Windows.Forms.TextBox();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tax_code_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valid_from = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valid_to = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tax_rate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valid_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3.SuspendLayout();
             this.pnl_content.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tax_details)).BeginInit();
@@ -136,6 +142,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             // 
             this.txt_code.Location = new System.Drawing.Point(119, 22);
             this.txt_code.Name = "txt_code";
+            this.txt_code.ReadOnly = true;
             this.txt_code.Size = new System.Drawing.Size(235, 20);
             this.txt_code.TabIndex = 59;
             this.txt_code.Tag = "REQUIRED";
@@ -168,7 +175,6 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.pnl_content.Controls.Add(this.txt_tax_desc);
             this.pnl_content.Controls.Add(this.label2);
             this.pnl_content.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_content.Enabled = false;
             this.pnl_content.Location = new System.Drawing.Point(0, 28);
             this.pnl_content.Name = "pnl_content";
             this.pnl_content.Size = new System.Drawing.Size(1090, 283);
@@ -177,6 +183,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             // chk_input_tax_creditable
             // 
             this.chk_input_tax_creditable.AutoSize = true;
+            this.chk_input_tax_creditable.Enabled = false;
             this.chk_input_tax_creditable.Location = new System.Drawing.Point(119, 69);
             this.chk_input_tax_creditable.Name = "chk_input_tax_creditable";
             this.chk_input_tax_creditable.Size = new System.Drawing.Size(153, 17);
@@ -188,6 +195,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             // 
             this.cmb_coa_purchase.BackColor = System.Drawing.Color.White;
             this.cmb_coa_purchase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_coa_purchase.Enabled = false;
             this.cmb_coa_purchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_coa_purchase.FormattingEnabled = true;
             this.cmb_coa_purchase.Location = new System.Drawing.Point(213, 119);
@@ -205,6 +213,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             // 
             this.cmb_coa_sales.BackColor = System.Drawing.Color.White;
             this.cmb_coa_sales.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_coa_sales.Enabled = false;
             this.cmb_coa_sales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_coa_sales.FormattingEnabled = true;
             this.cmb_coa_sales.Location = new System.Drawing.Point(213, 96);
@@ -221,14 +230,14 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             // dgv_tax_details
             // 
             this.dgv_tax_details.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_tax_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_tax_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
             this.dgv_tax_details.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_tax_details.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -242,54 +251,6 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.dgv_tax_details.Size = new System.Drawing.Size(520, 204);
             this.dgv_tax_details.TabIndex = 73;
             this.dgv_tax_details.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_tax_details_EditingControlShowing);
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            // 
-            // tax_code_id
-            // 
-            this.tax_code_id.DataPropertyName = "tax_code_id";
-            this.tax_code_id.HeaderText = "TAX CODE ID";
-            this.tax_code_id.Name = "tax_code_id";
-            this.tax_code_id.ReadOnly = true;
-            this.tax_code_id.Visible = false;
-            // 
-            // valid_from
-            // 
-            this.valid_from.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.valid_from.DataPropertyName = "valid_from";
-            this.valid_from.HeaderText = "VALID FROM";
-            this.valid_from.Name = "valid_from";
-            this.valid_from.ReadOnly = true;
-            // 
-            // valid_to
-            // 
-            this.valid_to.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.valid_to.DataPropertyName = "valid_to";
-            this.valid_to.HeaderText = "VALID TO";
-            this.valid_to.Name = "valid_to";
-            this.valid_to.ReadOnly = true;
-            // 
-            // tax_rate
-            // 
-            this.tax_rate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.tax_rate.DataPropertyName = "tax_rate";
-            this.tax_rate.HeaderText = "TAX RATE (%)";
-            this.tax_rate.Name = "tax_rate";
-            this.tax_rate.ReadOnly = true;
-            // 
-            // valid_status
-            // 
-            this.valid_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.valid_status.DataPropertyName = "valid_status";
-            this.valid_status.HeaderText = "STATUS";
-            this.valid_status.Name = "valid_status";
-            this.valid_status.ReadOnly = true;
             // 
             // label10
             // 
@@ -305,6 +266,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.txt_remarks.Location = new System.Drawing.Point(77, 166);
             this.txt_remarks.Multiline = true;
             this.txt_remarks.Name = "txt_remarks";
+            this.txt_remarks.ReadOnly = true;
             this.txt_remarks.Size = new System.Drawing.Size(371, 107);
             this.txt_remarks.TabIndex = 70;
             // 
@@ -331,6 +293,7 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.txt_tax_desc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txt_tax_desc.Location = new System.Drawing.Point(119, 43);
             this.txt_tax_desc.Name = "txt_tax_desc";
+            this.txt_tax_desc.ReadOnly = true;
             this.txt_tax_desc.Size = new System.Drawing.Size(235, 20);
             this.txt_tax_desc.TabIndex = 61;
             this.txt_tax_desc.Tag = "REQUIRED";
@@ -470,14 +433,14 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.dgv_tax_code_list.AllowUserToDeleteRows = false;
             this.dgv_tax_code_list.AllowUserToResizeColumns = false;
             this.dgv_tax_code_list.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_tax_code_list.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_tax_code_list.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle32;
             this.dgv_tax_code_list.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_tax_code_list.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.view_id,
@@ -618,6 +581,66 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             this.txt_search.Size = new System.Drawing.Size(180, 20);
             this.txt_search.TabIndex = 6;
             this.txt_search.TextChanged += new System.EventHandler(this.txt_search_TextChanged);
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            dataGridViewCellStyle26.BackColor = System.Drawing.Color.Gainsboro;
+            this.id.DefaultCellStyle = dataGridViewCellStyle26;
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            // 
+            // tax_code_id
+            // 
+            this.tax_code_id.DataPropertyName = "tax_code_id";
+            dataGridViewCellStyle27.BackColor = System.Drawing.Color.Gainsboro;
+            this.tax_code_id.DefaultCellStyle = dataGridViewCellStyle27;
+            this.tax_code_id.HeaderText = "TAX CODE ID";
+            this.tax_code_id.Name = "tax_code_id";
+            this.tax_code_id.ReadOnly = true;
+            this.tax_code_id.Visible = false;
+            // 
+            // valid_from
+            // 
+            this.valid_from.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.valid_from.DataPropertyName = "valid_from";
+            dataGridViewCellStyle28.BackColor = System.Drawing.Color.Gainsboro;
+            this.valid_from.DefaultCellStyle = dataGridViewCellStyle28;
+            this.valid_from.HeaderText = "VALID FROM";
+            this.valid_from.Name = "valid_from";
+            this.valid_from.ReadOnly = true;
+            // 
+            // valid_to
+            // 
+            this.valid_to.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.valid_to.DataPropertyName = "valid_to";
+            dataGridViewCellStyle29.BackColor = System.Drawing.Color.Gainsboro;
+            this.valid_to.DefaultCellStyle = dataGridViewCellStyle29;
+            this.valid_to.HeaderText = "VALID TO";
+            this.valid_to.Name = "valid_to";
+            this.valid_to.ReadOnly = true;
+            // 
+            // tax_rate
+            // 
+            this.tax_rate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.tax_rate.DataPropertyName = "tax_rate";
+            dataGridViewCellStyle30.BackColor = System.Drawing.Color.Gainsboro;
+            this.tax_rate.DefaultCellStyle = dataGridViewCellStyle30;
+            this.tax_rate.HeaderText = "TAX RATE (%)";
+            this.tax_rate.Name = "tax_rate";
+            this.tax_rate.ReadOnly = true;
+            // 
+            // valid_status
+            // 
+            this.valid_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.valid_status.DataPropertyName = "valid_status";
+            dataGridViewCellStyle31.BackColor = System.Drawing.Color.Gainsboro;
+            this.valid_status.DefaultCellStyle = dataGridViewCellStyle31;
+            this.valid_status.HeaderText = "STATUS";
+            this.valid_status.Name = "valid_status";
+            this.valid_status.ReadOnly = true;
             // 
             // InputVatPage
             // 

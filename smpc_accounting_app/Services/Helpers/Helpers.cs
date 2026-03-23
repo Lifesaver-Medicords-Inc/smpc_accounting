@@ -337,7 +337,7 @@ namespace smpc_accounting_app.Services.Helpers
                         datePicker.Enabled = !readOnly; // No true ReadOnly, fallback behavior
 
                     else if (control is CheckBox checkBox)
-                        checkBox.AutoCheck = !readOnly; // Prevent user from changing value
+                        checkBox.Enabled = !readOnly; // Prevent user from changing value
 
                     // Recurse into child containers
                     if (control.HasChildren)
