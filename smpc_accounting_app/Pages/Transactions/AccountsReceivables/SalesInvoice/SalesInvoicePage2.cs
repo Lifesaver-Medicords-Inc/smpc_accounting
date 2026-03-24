@@ -362,9 +362,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             //fill this declared value by the sales invoice data
             _sidata = await salesInvoiceService.GetAsModel();
 
-            // Reverse order so newest records appear first
-            _sidata.sales_invoice2.Reverse();
-
             if (_sidata != null && _sidata.sales_invoice2 != null && _sidata.sales_invoice2.Count > 0)
             {
                 //set this variable to the parent of the sales invoice

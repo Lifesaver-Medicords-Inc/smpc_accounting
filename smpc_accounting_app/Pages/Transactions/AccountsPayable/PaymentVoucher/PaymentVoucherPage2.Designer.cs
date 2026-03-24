@@ -50,6 +50,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgv_main = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ap_voucher_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trans_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.open_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amount_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.twas_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label11 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -104,15 +113,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.label7 = new System.Windows.Forms.Label();
             this.txt_doc_no = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ap_voucher_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.due_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.trans_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.open_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amount_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.twas_applied = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_main)).BeginInit();
@@ -258,6 +258,95 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.dgv_main.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_main_DataError);
             this.dgv_main.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_main_EditingControlShowing);
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // ap_voucher_details_id
+            // 
+            this.ap_voucher_details_id.DataPropertyName = "ap_voucher_details_id";
+            this.ap_voucher_details_id.HeaderText = "AVD";
+            this.ap_voucher_details_id.Name = "ap_voucher_details_id";
+            this.ap_voucher_details_id.ReadOnly = true;
+            this.ap_voucher_details_id.Visible = false;
+            // 
+            // doc_no
+            // 
+            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.doc_no.DataPropertyName = "doc_no";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.doc_no.DefaultCellStyle = dataGridViewCellStyle3;
+            this.doc_no.HeaderText = "DOC NO.";
+            this.doc_no.MinimumWidth = 200;
+            this.doc_no.Name = "doc_no";
+            this.doc_no.ReadOnly = true;
+            // 
+            // due_date
+            // 
+            this.due_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.due_date.DataPropertyName = "due_date";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.due_date.DefaultCellStyle = dataGridViewCellStyle4;
+            this.due_date.HeaderText = "DUE DATE";
+            this.due_date.Name = "due_date";
+            this.due_date.ReadOnly = true;
+            // 
+            // trans_amount
+            // 
+            this.trans_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.trans_amount.DataPropertyName = "trans_amount";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.trans_amount.DefaultCellStyle = dataGridViewCellStyle5;
+            this.trans_amount.HeaderText = "TRANS AMOUNT";
+            this.trans_amount.Name = "trans_amount";
+            this.trans_amount.ReadOnly = true;
+            // 
+            // open_amount
+            // 
+            this.open_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.open_amount.DataPropertyName = "open_amount";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            this.open_amount.DefaultCellStyle = dataGridViewCellStyle6;
+            this.open_amount.HeaderText = "OPEN AMOUNT";
+            this.open_amount.MinimumWidth = 180;
+            this.open_amount.Name = "open_amount";
+            this.open_amount.ReadOnly = true;
+            // 
+            // amount_applied
+            // 
+            this.amount_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.amount_applied.DataPropertyName = "amount_applied";
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.amount_applied.DefaultCellStyle = dataGridViewCellStyle7;
+            this.amount_applied.HeaderText = "AMOUNT APPLIED";
+            this.amount_applied.Name = "amount_applied";
+            this.amount_applied.ReadOnly = true;
+            // 
+            // twas_applied
+            // 
+            this.twas_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.twas_applied.DataPropertyName = "twas_applied";
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            this.twas_applied.DefaultCellStyle = dataGridViewCellStyle8;
+            this.twas_applied.HeaderText = "TWAS APPLIED";
+            this.twas_applied.Name = "twas_applied";
+            this.twas_applied.ReadOnly = true;
+            // 
+            // balance
+            // 
+            this.balance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.balance.DataPropertyName = "balance";
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
+            this.balance.DefaultCellStyle = dataGridViewCellStyle9;
+            this.balance.HeaderText = "BALANCE";
+            this.balance.Name = "balance";
+            this.balance.ReadOnly = true;
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -314,6 +403,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_supplier
             // 
+            this.txt_supplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_supplier.Location = new System.Drawing.Point(184, 14);
             this.txt_supplier.Name = "txt_supplier";
             this.txt_supplier.ReadOnly = true;
@@ -323,6 +413,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_supplier_code
             // 
+            this.txt_supplier_code.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_supplier_code.Location = new System.Drawing.Point(184, 35);
             this.txt_supplier_code.Name = "txt_supplier_code";
             this.txt_supplier_code.ReadOnly = true;
@@ -332,6 +423,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_reference_apv
             // 
+            this.txt_reference_apv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_reference_apv.Location = new System.Drawing.Point(184, 56);
             this.txt_reference_apv.Name = "txt_reference_apv";
             this.txt_reference_apv.ReadOnly = true;
@@ -341,6 +433,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_currency
             // 
+            this.txt_currency.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_currency.Location = new System.Drawing.Point(184, 77);
             this.txt_currency.Name = "txt_currency";
             this.txt_currency.ReadOnly = true;
@@ -350,6 +443,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_transaction_amount
             // 
+            this.txt_transaction_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transaction_amount.Location = new System.Drawing.Point(184, 98);
             this.txt_transaction_amount.Name = "txt_transaction_amount";
             this.txt_transaction_amount.ReadOnly = true;
@@ -359,6 +453,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_remarks
             // 
+            this.txt_remarks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_remarks.Location = new System.Drawing.Point(184, 152);
             this.txt_remarks.Name = "txt_remarks";
             this.txt_remarks.ReadOnly = true;
@@ -441,6 +536,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_unapplied_amount
             // 
+            this.txt_unapplied_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_unapplied_amount.Location = new System.Drawing.Point(929, 56);
             this.txt_unapplied_amount.Name = "txt_unapplied_amount";
             this.txt_unapplied_amount.ReadOnly = true;
@@ -459,6 +555,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_overpayment_amount
             // 
+            this.txt_overpayment_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_overpayment_amount.Location = new System.Drawing.Point(184, 119);
             this.txt_overpayment_amount.Name = "txt_overpayment_amount";
             this.txt_overpayment_amount.ReadOnly = true;
@@ -529,6 +626,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_ref_doc_no
             // 
+            this.txt_ref_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_ref_doc_no.Location = new System.Drawing.Point(1003, 304);
             this.txt_ref_doc_no.Name = "txt_ref_doc_no";
             this.txt_ref_doc_no.ReadOnly = true;
@@ -547,6 +645,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_transfer_account_no
             // 
+            this.txt_transfer_account_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_account_no.Location = new System.Drawing.Point(1003, 283);
             this.txt_transfer_account_no.Name = "txt_transfer_account_no";
             this.txt_transfer_account_no.ReadOnly = true;
@@ -565,6 +664,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_transfer_bank
             // 
+            this.txt_transfer_bank.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_bank.Location = new System.Drawing.Point(1003, 262);
             this.txt_transfer_bank.Name = "txt_transfer_bank";
             this.txt_transfer_bank.ReadOnly = true;
@@ -583,6 +683,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_transfer_type
             // 
+            this.txt_transfer_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_type.Location = new System.Drawing.Point(1003, 241);
             this.txt_transfer_type.Name = "txt_transfer_type";
             this.txt_transfer_type.ReadOnly = true;
@@ -601,6 +702,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_transfer_amount
             // 
+            this.txt_transfer_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_amount.Location = new System.Drawing.Point(1003, 220);
             this.txt_transfer_amount.Name = "txt_transfer_amount";
             this.txt_transfer_amount.ReadOnly = true;
@@ -629,6 +731,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_ref_check_no
             // 
+            this.txt_ref_check_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_ref_check_no.Location = new System.Drawing.Point(184, 304);
             this.txt_ref_check_no.Name = "txt_ref_check_no";
             this.txt_ref_check_no.ReadOnly = true;
@@ -647,6 +750,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_check_account_no
             // 
+            this.txt_check_account_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_check_account_no.Location = new System.Drawing.Point(184, 283);
             this.txt_check_account_no.Name = "txt_check_account_no";
             this.txt_check_account_no.ReadOnly = true;
@@ -674,6 +778,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_check_amount
             // 
+            this.txt_check_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_check_amount.Location = new System.Drawing.Point(184, 241);
             this.txt_check_amount.Name = "txt_check_amount";
             this.txt_check_amount.ReadOnly = true;
@@ -693,6 +798,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_cash_amount
             // 
+            this.txt_cash_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_cash_amount.Location = new System.Drawing.Point(184, 220);
             this.txt_cash_amount.Name = "txt_cash_amount";
             this.txt_cash_amount.ReadOnly = true;
@@ -811,6 +917,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // 
             // txt_doc_no
             // 
+            this.txt_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_doc_no.Location = new System.Drawing.Point(929, 14);
             this.txt_doc_no.Name = "txt_doc_no";
             this.txt_doc_no.ReadOnly = true;
@@ -826,95 +933,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.label6.Size = new System.Drawing.Size(55, 13);
             this.label6.TabIndex = 294;
             this.label6.Text = "DOC NO :";
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Visible = false;
-            // 
-            // ap_voucher_details_id
-            // 
-            this.ap_voucher_details_id.DataPropertyName = "ap_voucher_details_id";
-            this.ap_voucher_details_id.HeaderText = "AVD";
-            this.ap_voucher_details_id.Name = "ap_voucher_details_id";
-            this.ap_voucher_details_id.ReadOnly = true;
-            this.ap_voucher_details_id.Visible = false;
-            // 
-            // doc_no
-            // 
-            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.doc_no.DataPropertyName = "doc_no";
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
-            this.doc_no.DefaultCellStyle = dataGridViewCellStyle3;
-            this.doc_no.HeaderText = "DOC NO.";
-            this.doc_no.MinimumWidth = 200;
-            this.doc_no.Name = "doc_no";
-            this.doc_no.ReadOnly = true;
-            // 
-            // due_date
-            // 
-            this.due_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.due_date.DataPropertyName = "due_date";
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
-            this.due_date.DefaultCellStyle = dataGridViewCellStyle4;
-            this.due_date.HeaderText = "DUE DATE";
-            this.due_date.Name = "due_date";
-            this.due_date.ReadOnly = true;
-            // 
-            // trans_amount
-            // 
-            this.trans_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.trans_amount.DataPropertyName = "trans_amount";
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
-            this.trans_amount.DefaultCellStyle = dataGridViewCellStyle5;
-            this.trans_amount.HeaderText = "TRANS AMOUNT";
-            this.trans_amount.Name = "trans_amount";
-            this.trans_amount.ReadOnly = true;
-            // 
-            // open_amount
-            // 
-            this.open_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.open_amount.DataPropertyName = "open_amount";
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
-            this.open_amount.DefaultCellStyle = dataGridViewCellStyle6;
-            this.open_amount.HeaderText = "OPEN AMOUNT";
-            this.open_amount.MinimumWidth = 180;
-            this.open_amount.Name = "open_amount";
-            this.open_amount.ReadOnly = true;
-            // 
-            // amount_applied
-            // 
-            this.amount_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.amount_applied.DataPropertyName = "amount_applied";
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
-            this.amount_applied.DefaultCellStyle = dataGridViewCellStyle7;
-            this.amount_applied.HeaderText = "AMOUNT APPLIED";
-            this.amount_applied.Name = "amount_applied";
-            this.amount_applied.ReadOnly = true;
-            // 
-            // twas_applied
-            // 
-            this.twas_applied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.twas_applied.DataPropertyName = "twas_applied";
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
-            this.twas_applied.DefaultCellStyle = dataGridViewCellStyle8;
-            this.twas_applied.HeaderText = "TWAS APPLIED";
-            this.twas_applied.Name = "twas_applied";
-            this.twas_applied.ReadOnly = true;
-            // 
-            // balance
-            // 
-            this.balance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.balance.DataPropertyName = "balance";
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
-            this.balance.DefaultCellStyle = dataGridViewCellStyle9;
-            this.balance.HeaderText = "BALANCE";
-            this.balance.Name = "balance";
-            this.balance.ReadOnly = true;
             // 
             // PaymentVoucherPage2
             // 

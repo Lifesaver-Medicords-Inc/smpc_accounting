@@ -77,21 +77,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
         private async Task SalesInvoices()
         {
-            SalesInvoice = await salesInvoiceService.GetAsModel();
-
-            SalesInvoice.sales_invoice2.Reverse();
-
-            // Convert journal entry list to DataTable using helper
-            siTable = Helpers.ToDataTable(SalesInvoice.sales_invoice2);
-
-            if (siTable?.Rows.Count > 0)
+            try
             {
-                dgv_si_search.DataSource = siTable;
+                SalesInvoice = await salesInvoiceService.GetAsModel();
+
+                // Convert journal entry list to DataTable using helper
+                siTable = Helpers.ToDataTable(SalesInvoice.sales_invoice2);
+
+                if (siTable?.Rows.Count > 0)
+                {
+                    dgv_si_search.DataSource = siTable;
+                }
+                else
+                {
+                    dgv_si_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No sales invoice found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_si_search.DataSource = null;
-                Helpers.ShowDialogMessage("error", "No sales invoice found.");
+                Helpers.ShowDialogMessage("error", "No Sales Invoice found.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

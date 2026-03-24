@@ -1,5 +1,5 @@
 ﻿
-namespace smpc_accounting_app.Pages.Transactions.Journal.JournalEntry
+namespace smpc_accounting_app.Pages.Transactions.Journal.JournalEntry.JournalEntryModals
 {
     partial class JournalEntrySearch
     {

@@ -30,7 +30,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_customer_search = new System.Windows.Forms.DataGridView();
+            this.txt_search = new System.Windows.Forms.TextBox();
             this.customer_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,7 +50,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.payment_term = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer_address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.overpayment_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txt_search = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customer_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,10 +82,19 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.dgv_customer_search.TabIndex = 9;
             this.dgv_customer_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_customer_search_CellClick);
             // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 10;
+            // 
             // customer_id
             // 
             this.customer_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.customer_id.DataPropertyName = "customer_id";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.customer_id.DefaultCellStyle = dataGridViewCellStyle2;
             this.customer_id.HeaderText = "CUSTOMER ID";
             this.customer_id.Name = "customer_id";
             this.customer_id.ReadOnly = true;
@@ -87,6 +105,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.customer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.customer.DataPropertyName = "customer";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.customer.DefaultCellStyle = dataGridViewCellStyle3;
             this.customer.HeaderText = "CUSTOMER";
             this.customer.Name = "customer";
             this.customer.ReadOnly = true;
@@ -95,6 +115,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.customer_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.customer_code.DataPropertyName = "customer_code";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.customer_code.DefaultCellStyle = dataGridViewCellStyle4;
             this.customer_code.HeaderText = "CUSTOMER CODE";
             this.customer_code.Name = "customer_code";
             this.customer_code.ReadOnly = true;
@@ -103,6 +125,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.tax_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.tax_code.DataPropertyName = "tax_code";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.tax_code.DefaultCellStyle = dataGridViewCellStyle5;
             this.tax_code.HeaderText = "TAX CODE";
             this.tax_code.Name = "tax_code";
             this.tax_code.ReadOnly = true;
@@ -110,6 +134,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // tax
             // 
             this.tax.DataPropertyName = "tax";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            this.tax.DefaultCellStyle = dataGridViewCellStyle6;
             this.tax.HeaderText = "TAX";
             this.tax.Name = "tax";
             this.tax.ReadOnly = true;
@@ -119,6 +145,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.tin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.tin.DataPropertyName = "tin";
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.tin.DefaultCellStyle = dataGridViewCellStyle7;
             this.tin.HeaderText = "TIN";
             this.tin.Name = "tin";
             this.tin.ReadOnly = true;
@@ -127,6 +155,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.payment_term.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.payment_term.DataPropertyName = "payment_term";
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            this.payment_term.DefaultCellStyle = dataGridViewCellStyle8;
             this.payment_term.HeaderText = "PAYMENT TERM";
             this.payment_term.MinimumWidth = 150;
             this.payment_term.Name = "payment_term";
@@ -136,6 +166,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.customer_address.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.customer_address.DataPropertyName = "customer_address";
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
+            this.customer_address.DefaultCellStyle = dataGridViewCellStyle9;
             this.customer_address.HeaderText = "ADDRESS";
             this.customer_address.Name = "customer_address";
             this.customer_address.ReadOnly = true;
@@ -144,16 +176,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             // 
             this.overpayment_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.overpayment_amount.DataPropertyName = "overpayment_amount";
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Gainsboro;
+            this.overpayment_amount.DefaultCellStyle = dataGridViewCellStyle10;
             this.overpayment_amount.HeaderText = "OVERPAYMENT AMOUNT";
             this.overpayment_amount.Name = "overpayment_amount";
             this.overpayment_amount.ReadOnly = true;
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 10;
             // 
             // SalesInvoiceCustomer
             // 

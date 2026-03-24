@@ -30,7 +30,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_suplier_search = new System.Windows.Forms.DataGridView();
+            this.txt_search = new System.Windows.Forms.TextBox();
             this.supplier_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,7 +47,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier_address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.overpayment_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txt_search = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_suplier_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,6 +78,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.dgv_suplier_search.TabIndex = 8;
             this.dgv_suplier_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_suplier_search_CellClick);
             // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 9;
+            // 
             // supplier_id
             // 
             this.supplier_id.DataPropertyName = "supplier_id";
@@ -82,6 +96,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.supplier.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.supplier.DataPropertyName = "supplier";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.supplier.DefaultCellStyle = dataGridViewCellStyle2;
             this.supplier.HeaderText = "SUPPLIER";
             this.supplier.Name = "supplier";
             this.supplier.ReadOnly = true;
@@ -90,6 +106,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.supplier_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.supplier_code.DataPropertyName = "supplier_code";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.supplier_code.DefaultCellStyle = dataGridViewCellStyle3;
             this.supplier_code.HeaderText = "SUPPLIER CODE";
             this.supplier_code.Name = "supplier_code";
             this.supplier_code.ReadOnly = true;
@@ -98,6 +116,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.invoice_type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.invoice_type.DataPropertyName = "invoice_type";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.invoice_type.DefaultCellStyle = dataGridViewCellStyle4;
             this.invoice_type.HeaderText = "INVOICE TYPE";
             this.invoice_type.Name = "invoice_type";
             this.invoice_type.ReadOnly = true;
@@ -106,6 +126,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.payment_term.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.payment_term.DataPropertyName = "payment_term";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.payment_term.DefaultCellStyle = dataGridViewCellStyle5;
             this.payment_term.HeaderText = "PAYMENT TERM";
             this.payment_term.MinimumWidth = 150;
             this.payment_term.Name = "payment_term";
@@ -115,6 +137,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.type.DataPropertyName = "type";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            this.type.DefaultCellStyle = dataGridViewCellStyle6;
             this.type.HeaderText = "TYPE";
             this.type.Name = "type";
             this.type.ReadOnly = true;
@@ -123,6 +147,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.supplier_address.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.supplier_address.DataPropertyName = "supplier_address";
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.supplier_address.DefaultCellStyle = dataGridViewCellStyle7;
             this.supplier_address.HeaderText = "SUPPLIER ADDRESS";
             this.supplier_address.Name = "supplier_address";
             this.supplier_address.ReadOnly = true;
@@ -131,16 +157,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             // 
             this.overpayment_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.overpayment_amount.DataPropertyName = "overpayment_amount";
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            this.overpayment_amount.DefaultCellStyle = dataGridViewCellStyle8;
             this.overpayment_amount.HeaderText = "OVERPAYMENT AMOUNT";
             this.overpayment_amount.Name = "overpayment_amount";
             this.overpayment_amount.ReadOnly = true;
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 9;
             // 
             // InvoiceSearchSupplier
             // 

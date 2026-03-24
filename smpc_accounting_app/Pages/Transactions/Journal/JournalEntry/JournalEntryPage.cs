@@ -13,7 +13,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using System.Globalization;
 using smpc_accounting_app.Shared;
-using smpc_accounting_app.Pages.Transactions.Journal.JournalEntry;
+using smpc_accounting_app.Pages.Transactions.Journal.JournalEntry.JournalEntryModals;
 
 namespace smpc_accounting_app.Pages.Transactions.Journal
 {
@@ -598,9 +598,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 // THIS allows null values
                 postingRefColumn.DefaultCellStyle.NullValue = "";
             }
-
-            // Reverse order so newest records appear first
-            _jedata.journal_entry.Reverse();
 
             if (_jedata != null && _jedata.journal_entry != null && _jedata.journal_entry.Count > 0)
             {

@@ -83,38 +83,49 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
 
         private async Task InvoiceReceipts()
         {
-            generalServiceInvoiceView = new GeneralService<InvoiceViewModel>(ApiEndPoints.AP_VOUCHER_INVOICE + SupplierId);
-            InvoiceReceipt = await generalServiceInvoiceView.GetAsList();
-            InvoiceReceipt.Reverse();
-
-            // Convert journal entry list to DataTable using helper
-            irTable = Helpers.ToDataTable(InvoiceReceipt);
-
-            // If there are existing IRs, exclude them
-            if (ExistingIRs != null && ExistingIRs.Rows.Count > 0)
+            try
             {
-                var usedIds = ExistingIRs.AsEnumerable()
-                    .Where(r => r["invoice_receipt_id"] != DBNull.Value)
-                    .Select(r => Convert.ToInt32(r["invoice_receipt_id"]))
-                    .ToHashSet();
+                generalServiceInvoiceView = new GeneralService<InvoiceViewModel>(ApiEndPoints.AP_VOUCHER_INVOICE + SupplierId);
+                InvoiceReceipt = await generalServiceInvoiceView.GetAsList();
+                InvoiceReceipt.Reverse();
 
-                var filteredRows = irTable.AsEnumerable()
-                    .Where(r => !usedIds.Contains(Convert.ToInt32(r["invoice_receipt_id"])));
+                // Convert journal entry list to DataTable using helper
+                irTable = Helpers.ToDataTable(InvoiceReceipt);
 
-                irTable = filteredRows.Any()
-                    ? filteredRows.CopyToDataTable()
-                    : irTable.Clone(); // empty table with same structure
+                // If there are existing IRs, exclude them
+                if (ExistingIRs != null && ExistingIRs.Rows.Count > 0)
+                {
+                    var usedIds = ExistingIRs.AsEnumerable()
+                        .Where(r => r["invoice_receipt_id"] != DBNull.Value)
+                        .Select(r => Convert.ToInt32(r["invoice_receipt_id"]))
+                        .ToHashSet();
+
+                    var filteredRows = irTable.AsEnumerable()
+                        .Where(r => !usedIds.Contains(Convert.ToInt32(r["invoice_receipt_id"])));
+
+                    irTable = filteredRows.Any()
+                        ? filteredRows.CopyToDataTable()
+                        : irTable.Clone(); // empty table with same structure
+                }
+
+                if (irTable?.Rows.Count > 0)
+                {
+                    dgv_ir_search.DataSource = irTable;
+                }
+                else
+                {
+                    dgv_ir_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No invoice receipt found.");
+                    this.Close();
+                }
             }
-
-            if (irTable?.Rows.Count > 0)
+            catch (NullReferenceException)
             {
-                dgv_ir_search.DataSource = irTable;
-            }
-            else
-            {
-                dgv_ir_search.DataSource = null;
                 Helpers.ShowDialogMessage("error", "No invoice receipt found.");
-                this.Close();
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

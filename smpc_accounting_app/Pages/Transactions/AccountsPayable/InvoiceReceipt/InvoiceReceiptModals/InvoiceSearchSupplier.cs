@@ -17,9 +17,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
     public partial class InvoiceSearchSupplier : Form
     {
         public DataTable SelectedSupplier { get; private set; } = null;
-        private string placeHolderText = "Supplier Search...";
+        private string _placeHolderText = "Supplier Search...";
         GeneralService<SupplierTradeViewModel> serviceSetup;
-        private DataTable supplierTable;
+        private DataTable _supplierTable;
 
         public InvoiceSearchSupplier()
         {
@@ -35,24 +35,24 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
 
         private void InitializeSearchBox()
         {
-            txt_search = Helpers.CreateSearchBox(placeHolderText, txt_search_TextChanged);
+            txt_search = Helpers.CreateSearchBox(_placeHolderText, txt_search_TextChanged);
             this.Controls.Add(txt_search);
         }
 
         private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            if (supplierTable == null || supplierTable.Rows.Count == 0)
+            if (_supplierTable == null || _supplierTable.Rows.Count == 0)
                 return;
 
             string searchText = txt_search.Text.Trim();
 
-            if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
+            if (string.IsNullOrEmpty(searchText) || searchText == _placeHolderText)
             {
-                dgv_suplier_search.DataSource = supplierTable;
+                dgv_suplier_search.DataSource = _supplierTable;
             }
             else
             {
-                var searchedData = Helpers.FilterDataTable(supplierTable, searchText, 
+                var searchedData = Helpers.FilterDataTable(_supplierTable, searchText, 
                     "supplier_code", "supplier", "invoice_type", "payment_term", "type", "overpayment_amount", "supplier_address");
                 dgv_suplier_search.DataSource = searchedData;
             }
@@ -77,19 +77,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
 
         private async Task LoadSupplier()
         {
-            serviceSetup = new GeneralService<SupplierTradeViewModel>(ApiEndPoints.INVOICE_RECEIPT_SUPPLIER);
-            var data = await serviceSetup.GetAsDatatable();
-
-            supplierTable = data;
-
-            if (supplierTable?.Rows.Count > 0)
+            try
             {
-                dgv_suplier_search.DataSource = supplierTable;
+                serviceSetup = new GeneralService<SupplierTradeViewModel>(ApiEndPoints.INVOICE_RECEIPT_SUPPLIER);
+                var data = await serviceSetup.GetAsDatatable();
+
+                _supplierTable = data;
+
+                if (_supplierTable?.Rows.Count > 0)
+                {
+                    dgv_suplier_search.DataSource = _supplierTable;
+                }
+                else
+                {
+                    dgv_suplier_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No supplier found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_suplier_search.DataSource = null;
                 Helpers.ShowDialogMessage("error", "No supplier found.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

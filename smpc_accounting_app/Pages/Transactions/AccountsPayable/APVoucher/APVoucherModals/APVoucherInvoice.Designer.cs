@@ -30,7 +30,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv_ir_search = new System.Windows.Forms.DataGridView();
+            this.txt_search = new System.Windows.Forms.TextBox();
             this.invoice_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receipt_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,7 +45,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             this.twas_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.line_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receipt_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txt_search = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ir_search)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,6 +75,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             this.dgv_ir_search.TabIndex = 8;
             this.dgv_ir_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_ir_search_CellClick);
             // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(350, 215);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(100, 20);
+            this.txt_search.TabIndex = 9;
+            // 
             // invoice_receipt_id
             // 
             this.invoice_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -83,6 +96,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             this.receipt_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.receipt_no.DataPropertyName = "receipt_no";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.receipt_no.DefaultCellStyle = dataGridViewCellStyle2;
             this.receipt_no.HeaderText = "RECEIPT NO";
             this.receipt_no.Name = "receipt_no";
             this.receipt_no.ReadOnly = true;
@@ -91,6 +106,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             this.ir_doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ir_doc_date.DataPropertyName = "ir_doc_date";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.ir_doc_date.DefaultCellStyle = dataGridViewCellStyle3;
             this.ir_doc_date.HeaderText = "DOC DATE";
             this.ir_doc_date.Name = "ir_doc_date";
             this.ir_doc_date.ReadOnly = true;
@@ -98,6 +115,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // ir_due_date
             // 
             this.ir_due_date.DataPropertyName = "ir_due_date";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.ir_due_date.DefaultCellStyle = dataGridViewCellStyle4;
             this.ir_due_date.HeaderText = "DUE DATE";
             this.ir_due_date.Name = "ir_due_date";
             this.ir_due_date.ReadOnly = true;
@@ -106,6 +125,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // twas_amount
             // 
             this.twas_amount.DataPropertyName = "twas_amount";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.twas_amount.DefaultCellStyle = dataGridViewCellStyle5;
             this.twas_amount.HeaderText = "TWAS AMOUNT";
             this.twas_amount.Name = "twas_amount";
             this.twas_amount.ReadOnly = true;
@@ -115,6 +136,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             this.line_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.line_amount.DataPropertyName = "line_amount";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            this.line_amount.DefaultCellStyle = dataGridViewCellStyle6;
             this.line_amount.HeaderText = "AMOUNT";
             this.line_amount.Name = "line_amount";
             this.line_amount.ReadOnly = true;
@@ -123,16 +146,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             this.receipt_type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.receipt_type.DataPropertyName = "receipt_type";
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.receipt_type.DefaultCellStyle = dataGridViewCellStyle7;
             this.receipt_type.HeaderText = "RECEIPT TYPE";
             this.receipt_type.Name = "receipt_type";
             this.receipt_type.ReadOnly = true;
-            // 
-            // txt_search
-            // 
-            this.txt_search.Location = new System.Drawing.Point(350, 215);
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(100, 20);
-            this.txt_search.TabIndex = 9;
             // 
             // APVoucherInvoice
             // 

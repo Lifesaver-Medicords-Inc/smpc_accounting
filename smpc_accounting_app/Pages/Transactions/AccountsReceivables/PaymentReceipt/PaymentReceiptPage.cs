@@ -378,9 +378,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             //fill this declared value by the payment receipt data
             _prdata = await paymentReceiptService.GetAsModel();
 
-            // Reverse order so newest records appear first
-            _prdata.payment_receipt.Reverse();
-
             if (_prdata != null && _prdata.payment_receipt != null && _prdata.payment_receipt.Count > 0)
             {
                 //set this variable to the parent of the payment receipt

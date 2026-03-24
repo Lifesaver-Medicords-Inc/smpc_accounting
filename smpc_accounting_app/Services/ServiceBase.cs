@@ -55,7 +55,9 @@ namespace smpc_accounting_app.Services
         {
             try
             {
-                var endpoint = id.HasValue ? $"{url}/{id}" : $"{url}/";
+                var queryString = id.HasValue ? $"?id={id}" : "";
+                var endpoint = $"{url}{queryString}";
+
                 var response = await ApiService<ApiResponseModel<T>>.Get(endpoint);
                 return new PaginatedResult<T>
                 {
@@ -73,9 +75,13 @@ namespace smpc_accounting_app.Services
         {
             try
             {
-                var idSegment = id.HasValue ? id.ToString() : "";
-                var searchSegment = !string.IsNullOrWhiteSpace(search) ? search : "";
-                var endpoint = $"{url}/{idSegment}/{searchSegment}";
+                var queryParams = new List<string>();
+                if (id.HasValue) queryParams.Add($"id={id}");
+                if (!string.IsNullOrWhiteSpace(search)) queryParams.Add($"search={Uri.EscapeDataString(search)}");
+
+                var queryString = queryParams.Count > 0 ? "?" + string.Join("&", queryParams) : "";
+                var endpoint = $"{url}{queryString}";
+
                 var response = await ApiService<ApiResponseModel<List<T>>>.Get(endpoint);
                 return new PaginatedResult<List<T>>
                 {

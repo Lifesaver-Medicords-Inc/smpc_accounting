@@ -78,21 +78,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
 
         private async Task PaymentReceipts()
         {
-            PaymentReceipt = await paymentReceiptService.GetAsModel();
-
-            PaymentReceipt.payment_receipt.Reverse();
-
-            // Convert journal entry list to DataTable using helper
-            prTable = Helpers.ToDataTable(PaymentReceipt.payment_receipt);
-
-            if (prTable?.Rows.Count > 0)
+            try
             {
-                dgv_pr_search.DataSource = prTable;
+                PaymentReceipt = await paymentReceiptService.GetAsModel();
+
+                // Convert journal entry list to DataTable using helper
+                prTable = Helpers.ToDataTable(PaymentReceipt.payment_receipt);
+
+                if (prTable?.Rows.Count > 0)
+                {
+                    dgv_pr_search.DataSource = prTable;
+                }
+                else
+                {
+                    dgv_pr_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No payment receipt found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_pr_search.DataSource = null;
                 Helpers.ShowDialogMessage("error", "No payment receipt found.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

@@ -315,9 +315,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             //fill this declared value by the ap voucher data
             _avdata = await apVoucherService.GetAsModel();
 
-            // Reverse order so newest records appear first
-            _avdata.ap_voucher.Reverse();
-
             if (_avdata != null && _avdata.ap_voucher != null && _avdata.ap_voucher.Count > 0)
             {
                 //set this variable to the parent of the ap voucher

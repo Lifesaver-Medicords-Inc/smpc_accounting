@@ -133,6 +133,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.
                 Helpers.ShowDialogMessage("error", "No AP Voucher found.");
                 this.Close();
             }
+            catch (NullReferenceException)
+            {
+                Helpers.ShowDialogMessage("error", "No AP Voucher found.");
+            }
             catch (Exception)
             {
                 // Catch real unexpected errors

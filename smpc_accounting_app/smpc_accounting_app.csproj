@@ -389,10 +389,10 @@
     <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryPage.Designer.cs">
       <DependentUpon>JournalEntryPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntrySearch.cs">
+    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryModals\JournalEntrySearch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntrySearch.Designer.cs">
+    <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryModals\JournalEntrySearch.Designer.cs">
       <DependentUpon>JournalEntrySearch.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\Journal\JournalVoucher.cs">
@@ -614,7 +614,7 @@
     <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry\JournalEntryPage.resx">
       <DependentUpon>JournalEntryPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry\JournalEntrySearch.resx">
+    <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry\JournalEntryModals\JournalEntrySearch.resx">
       <DependentUpon>JournalEntrySearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\Journal\JournalVoucher.resx">

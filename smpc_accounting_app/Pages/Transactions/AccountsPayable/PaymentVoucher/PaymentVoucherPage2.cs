@@ -335,9 +335,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             //fill this declared value by the payment voucher data
             _pvdata = await paymentVoucherService.GetAsModel();
 
-            // Reverse order so newest records appear first
-            _pvdata.payment_voucher.Reverse();
-
             if (_pvdata != null && _pvdata.payment_voucher != null && _pvdata.payment_voucher.Count > 0)
             {
                 //set this variable to the parent of the payment voucher

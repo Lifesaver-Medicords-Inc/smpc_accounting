@@ -78,19 +78,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
         private async Task LoadCustomer()
         {
-            serviceSetup = new GeneralService<CustomerViewModel>(ApiEndPoints.CUSTOMER_VIEW);
-            var data = await serviceSetup.GetAsDatatable();
-
-            customerTable = data;
-
-            if (customerTable?.Rows.Count > 0)
+            try
             {
-                dgv_customer_search.DataSource = customerTable;
+                serviceSetup = new GeneralService<CustomerViewModel>(ApiEndPoints.CUSTOMER_VIEW);
+                var data = await serviceSetup.GetAsDatatable();
+
+                customerTable = data;
+
+                if (customerTable?.Rows.Count > 0)
+                {
+                    dgv_customer_search.DataSource = customerTable;
+                }
+                else
+                {
+                    dgv_customer_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No customer found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_customer_search.DataSource = null;
-                Helpers.ShowDialogMessage("error", "No customer found.");
+                Helpers.ShowDialogMessage("error", "No customer found");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

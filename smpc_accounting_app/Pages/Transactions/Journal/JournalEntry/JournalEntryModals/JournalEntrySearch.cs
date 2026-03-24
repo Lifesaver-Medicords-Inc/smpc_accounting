@@ -11,7 +11,7 @@ using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Transactions;
 using smpc_accounting_app.Services.Helpers;
 
-namespace smpc_accounting_app.Pages.Transactions.Journal.JournalEntry
+namespace smpc_accounting_app.Pages.Transactions.Journal.JournalEntry.JournalEntryModals
 {
     public partial class JournalEntrySearch : Form
     {
@@ -74,21 +74,30 @@ namespace smpc_accounting_app.Pages.Transactions.Journal.JournalEntry
 
         private async Task JournalEntries()
         {
-            JournalEntry = await journalEntryService.GetAsModel();
-
-            JournalEntry.journal_entry.Reverse();
-
-            // Convert journal entry list to DataTable using helper
-            jeTable = Helpers.ToDataTable(JournalEntry.journal_entry);
-
-            if (jeTable?.Rows.Count > 0)
+            try
             {
-                dgv_je_search.DataSource = jeTable;
+                JournalEntry = await journalEntryService.GetAsModel();
+
+                // Convert journal entry list to DataTable using helper
+                jeTable = Helpers.ToDataTable(JournalEntry.journal_entry);
+
+                if (jeTable?.Rows.Count > 0)
+                {
+                    dgv_je_search.DataSource = jeTable;
+                }
+                else
+                {
+                    dgv_je_search.DataSource = null;
+                    Helpers.ShowDialogMessage("info", "No journal entry found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_je_search.DataSource = null;
-                Helpers.ShowDialogMessage("info", "No journal entry found.");
+                Helpers.ShowDialogMessage("error", "No journal entry found.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

@@ -144,6 +144,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 Helpers.ShowDialogMessage("error", "No Sales Order found.");
                 this.Close();
             }
+            catch (NullReferenceException)
+            {
+                Helpers.ShowDialogMessage("error", "No Sales Order found.");
+            }
             catch (Exception)
             {
                 // Catch real unexpected errors

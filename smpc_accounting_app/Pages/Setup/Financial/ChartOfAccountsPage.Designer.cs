@@ -30,7 +30,11 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartOfAccountsPage));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
@@ -168,14 +172,14 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.dgv_chart_of_account.AllowUserToDeleteRows = false;
             this.dgv_chart_of_account.AllowUserToResizeColumns = false;
             this.dgv_chart_of_account.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_chart_of_account.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_chart_of_account.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_chart_of_account.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_chart_of_account.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -208,6 +212,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.code.DataPropertyName = "code";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.code.DefaultCellStyle = dataGridViewCellStyle2;
             this.code.HeaderText = "CODE";
             this.code.Name = "code";
             this.code.ReadOnly = true;
@@ -216,6 +222,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.name.DataPropertyName = "name";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.name.DefaultCellStyle = dataGridViewCellStyle3;
             this.name.HeaderText = "NAME";
             this.name.Name = "name";
             this.name.ReadOnly = true;
@@ -224,6 +232,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.account_class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.account_class.DataPropertyName = "account_class";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.account_class.DefaultCellStyle = dataGridViewCellStyle4;
             this.account_class.HeaderText = "CLASS";
             this.account_class.Name = "account_class";
             this.account_class.ReadOnly = true;
@@ -240,6 +250,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.group.DataPropertyName = "group";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.group.DefaultCellStyle = dataGridViewCellStyle5;
             this.group.HeaderText = "GROUP";
             this.group.Name = "group";
             this.group.ReadOnly = true;
@@ -363,6 +375,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             // txt_code
             // 
+            this.txt_code.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_code.Location = new System.Drawing.Point(67, 28);
             this.txt_code.Name = "txt_code";
             this.txt_code.ReadOnly = true;
@@ -373,6 +386,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // txt_name
             // 
             this.txt_name.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txt_name.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_name.Location = new System.Drawing.Point(67, 49);
             this.txt_name.Name = "txt_name";
             this.txt_name.ReadOnly = true;

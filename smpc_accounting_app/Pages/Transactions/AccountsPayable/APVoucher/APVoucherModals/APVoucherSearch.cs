@@ -78,21 +78,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
 
         private async Task APVouchers()
         {
-            APVoucher = await apVoucherService.GetAsModel();
-
-            APVoucher.ap_voucher.Reverse();
-
-            // Convert ap voucher list to DataTable using helper
-           avTable = Helpers.ToDataTable(APVoucher.ap_voucher);
-
-            if (avTable?.Rows.Count > 0)
+            try
             {
-                dgv_av_search.DataSource = avTable;
+                APVoucher = await apVoucherService.GetAsModel();
+
+                // Convert ap voucher list to DataTable using helper
+                avTable = Helpers.ToDataTable(APVoucher.ap_voucher);
+
+                if (avTable?.Rows.Count > 0)
+                {
+                    dgv_av_search.DataSource = avTable;
+                }
+                else
+                {
+                    dgv_av_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No ap voucher found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_av_search.DataSource = null;
-                Helpers.ShowDialogMessage("info", "No ap voucher found.");
+                Helpers.ShowDialogMessage("error", "No ap voucher found.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

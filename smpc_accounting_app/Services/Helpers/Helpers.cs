@@ -328,8 +328,10 @@ namespace smpc_accounting_app.Services.Helpers
                         continue;
 
                     if (control is TextBox textBox)
+                    {
                         textBox.ReadOnly = readOnly;
-
+                        textBox.BackColor = readOnly ? Color.FromArgb(235, 235, 235) : Color.White;
+                    }
                     else if (control is ComboBox comboBox)
                         comboBox.Enabled = !readOnly;
 
@@ -357,8 +359,10 @@ namespace smpc_accounting_app.Services.Helpers
                     if (shouldAffect)
                     {
                         if (control is TextBox textBox)
+                        {
                             textBox.ReadOnly = readOnly;
-
+                            textBox.BackColor = readOnly ? Color.FromArgb(235, 235, 235) : Color.White;
+                        }
                         else if (control is ComboBox comboBox)
                             comboBox.DropDownStyle = readOnly ? ComboBoxStyle.DropDownList : ComboBoxStyle.DropDown;
 

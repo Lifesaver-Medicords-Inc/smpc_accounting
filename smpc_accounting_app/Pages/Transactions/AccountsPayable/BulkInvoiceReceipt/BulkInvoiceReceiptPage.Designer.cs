@@ -30,13 +30,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkInvoiceReceiptPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -312,6 +312,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_other_charges
             // 
+            this.txt_other_charges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_other_charges.Location = new System.Drawing.Point(995, 81);
             this.txt_other_charges.Name = "txt_other_charges";
             this.txt_other_charges.ReadOnly = true;
@@ -429,6 +430,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_remarks
             // 
+            this.txt_remarks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_remarks.Location = new System.Drawing.Point(136, 206);
             this.txt_remarks.Name = "txt_remarks";
             this.txt_remarks.ReadOnly = true;
@@ -438,6 +440,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_type
             // 
+            this.txt_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_type.Location = new System.Drawing.Point(995, 165);
             this.txt_type.Name = "txt_type";
             this.txt_type.ReadOnly = true;
@@ -447,6 +450,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_ap_voucher
             // 
+            this.txt_ap_voucher.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_ap_voucher.Location = new System.Drawing.Point(995, 144);
             this.txt_ap_voucher.Name = "txt_ap_voucher";
             this.txt_ap_voucher.ReadOnly = true;
@@ -456,6 +460,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_twas_amount
             // 
+            this.txt_twas_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_twas_amount.Location = new System.Drawing.Point(995, 123);
             this.txt_twas_amount.Name = "txt_twas_amount";
             this.txt_twas_amount.ReadOnly = true;
@@ -465,6 +470,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_net_amount
             // 
+            this.txt_net_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_net_amount.Location = new System.Drawing.Point(995, 102);
             this.txt_net_amount.Name = "txt_net_amount";
             this.txt_net_amount.ReadOnly = true;
@@ -474,6 +480,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_invoice_type
             // 
+            this.txt_invoice_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_invoice_type.Location = new System.Drawing.Point(995, 60);
             this.txt_invoice_type.Name = "txt_invoice_type";
             this.txt_invoice_type.ReadOnly = true;
@@ -483,6 +490,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_doc_no
             // 
+            this.txt_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_doc_no.Location = new System.Drawing.Point(995, 18);
             this.txt_doc_no.Name = "txt_doc_no";
             this.txt_doc_no.ReadOnly = true;
@@ -492,6 +500,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_currency
             // 
+            this.txt_currency.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_currency.Location = new System.Drawing.Point(136, 98);
             this.txt_currency.Name = "txt_currency";
             this.txt_currency.ReadOnly = true;
@@ -501,6 +510,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_payment_term
             // 
+            this.txt_payment_term.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_payment_term.Location = new System.Drawing.Point(136, 77);
             this.txt_payment_term.Name = "txt_payment_term";
             this.txt_payment_term.ReadOnly = true;
@@ -510,6 +520,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_reference_doc
             // 
+            this.txt_reference_doc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_reference_doc.Location = new System.Drawing.Point(136, 56);
             this.txt_reference_doc.Name = "txt_reference_doc";
             this.txt_reference_doc.ReadOnly = true;
@@ -519,6 +530,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_supplier_code
             // 
+            this.txt_supplier_code.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_supplier_code.Location = new System.Drawing.Point(136, 35);
             this.txt_supplier_code.Name = "txt_supplier_code";
             this.txt_supplier_code.ReadOnly = true;
@@ -528,6 +540,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             // txt_supplier
             // 
+            this.txt_supplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_supplier.Location = new System.Drawing.Point(136, 14);
             this.txt_supplier.Name = "txt_supplier";
             this.txt_supplier.ReadOnly = true;
@@ -675,14 +688,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.dgv_main.AllowUserToAddRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle57.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle57.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle57.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle57.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle57.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle57.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_main.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle57;
             this.dgv_main.ColumnHeadersHeight = 50;
             this.dgv_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_main.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -706,8 +719,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // id
             // 
             this.id.DataPropertyName = "id";
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
-            this.id.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle58.BackColor = System.Drawing.Color.Gainsboro;
+            this.id.DefaultCellStyle = dataGridViewCellStyle58;
             this.id.HeaderText = "ID";
             this.id.Name = "id";
             this.id.Visible = false;
@@ -716,8 +729,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.payment_charge_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.payment_charge_code.DataPropertyName = "payment_charge_code";
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Gainsboro;
-            this.payment_charge_code.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle59.BackColor = System.Drawing.Color.Gainsboro;
+            this.payment_charge_code.DefaultCellStyle = dataGridViewCellStyle59;
             this.payment_charge_code.HeaderText = "PAYMENT CHARGE CODE";
             this.payment_charge_code.MinimumWidth = 200;
             this.payment_charge_code.Name = "payment_charge_code";
@@ -727,8 +740,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.charge_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.charge_description.DataPropertyName = "charge_description";
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Gainsboro;
-            this.charge_description.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle60.BackColor = System.Drawing.Color.Gainsboro;
+            this.charge_description.DefaultCellStyle = dataGridViewCellStyle60;
             this.charge_description.HeaderText = "CHARGE DESCRIPTION";
             this.charge_description.Name = "charge_description";
             this.charge_description.ReadOnly = true;
@@ -736,8 +749,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // cmb_account_code
             // 
             this.cmb_account_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Gainsboro;
-            this.cmb_account_code.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle61.BackColor = System.Drawing.Color.Gainsboro;
+            this.cmb_account_code.DefaultCellStyle = dataGridViewCellStyle61;
             this.cmb_account_code.HeaderText = "ACCOUNT CODE";
             this.cmb_account_code.Name = "cmb_account_code";
             this.cmb_account_code.ReadOnly = true;
@@ -747,8 +760,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.account_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.account_code.DataPropertyName = "account_code";
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.Gainsboro;
-            this.account_code.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle62.BackColor = System.Drawing.Color.Gainsboro;
+            this.account_code.DefaultCellStyle = dataGridViewCellStyle62;
             this.account_code.HeaderText = "ACCOUNT CODE";
             this.account_code.Name = "account_code";
             this.account_code.ReadOnly = true;
@@ -758,8 +771,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             // 
             this.line_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.line_amount.DataPropertyName = "line_amount";
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.Gainsboro;
-            this.line_amount.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle63.BackColor = System.Drawing.Color.Gainsboro;
+            this.line_amount.DefaultCellStyle = dataGridViewCellStyle63;
             this.line_amount.HeaderText = "AMOUNT";
             this.line_amount.MinimumWidth = 180;
             this.line_amount.Name = "line_amount";

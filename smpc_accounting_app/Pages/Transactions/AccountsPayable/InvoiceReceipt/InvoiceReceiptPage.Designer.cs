@@ -208,6 +208,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_other_charges
             // 
+            this.txt_other_charges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_other_charges.Location = new System.Drawing.Point(995, 81);
             this.txt_other_charges.Name = "txt_other_charges";
             this.txt_other_charges.ReadOnly = true;
@@ -347,6 +348,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_remarks
             // 
+            this.txt_remarks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_remarks.Location = new System.Drawing.Point(136, 206);
             this.txt_remarks.Name = "txt_remarks";
             this.txt_remarks.ReadOnly = true;
@@ -356,6 +358,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_type
             // 
+            this.txt_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_type.Location = new System.Drawing.Point(995, 165);
             this.txt_type.Name = "txt_type";
             this.txt_type.ReadOnly = true;
@@ -365,6 +368,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_ap_voucher
             // 
+            this.txt_ap_voucher.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_ap_voucher.Location = new System.Drawing.Point(995, 144);
             this.txt_ap_voucher.Name = "txt_ap_voucher";
             this.txt_ap_voucher.ReadOnly = true;
@@ -374,6 +378,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_twas_amount
             // 
+            this.txt_twas_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_twas_amount.Location = new System.Drawing.Point(995, 123);
             this.txt_twas_amount.Name = "txt_twas_amount";
             this.txt_twas_amount.ReadOnly = true;
@@ -384,6 +389,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_net_amount
             // 
+            this.txt_net_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_net_amount.Location = new System.Drawing.Point(995, 102);
             this.txt_net_amount.Name = "txt_net_amount";
             this.txt_net_amount.ReadOnly = true;
@@ -393,6 +399,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_invoice_type
             // 
+            this.txt_invoice_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_invoice_type.Location = new System.Drawing.Point(995, 60);
             this.txt_invoice_type.Name = "txt_invoice_type";
             this.txt_invoice_type.ReadOnly = true;
@@ -402,6 +409,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_doc_no
             // 
+            this.txt_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_doc_no.Location = new System.Drawing.Point(995, 18);
             this.txt_doc_no.Name = "txt_doc_no";
             this.txt_doc_no.ReadOnly = true;
@@ -411,6 +419,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_currency
             // 
+            this.txt_currency.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_currency.Location = new System.Drawing.Point(136, 98);
             this.txt_currency.Name = "txt_currency";
             this.txt_currency.ReadOnly = true;
@@ -420,6 +429,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_payment_term
             // 
+            this.txt_payment_term.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_payment_term.Location = new System.Drawing.Point(136, 77);
             this.txt_payment_term.Name = "txt_payment_term";
             this.txt_payment_term.ReadOnly = true;
@@ -429,6 +439,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_reference_po
             // 
+            this.txt_reference_po.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_reference_po.Location = new System.Drawing.Point(136, 56);
             this.txt_reference_po.Name = "txt_reference_po";
             this.txt_reference_po.ReadOnly = true;
@@ -438,6 +449,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_supplier_code
             // 
+            this.txt_supplier_code.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_supplier_code.Location = new System.Drawing.Point(136, 35);
             this.txt_supplier_code.Name = "txt_supplier_code";
             this.txt_supplier_code.ReadOnly = true;
@@ -447,6 +459,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             // 
             // txt_supplier
             // 
+            this.txt_supplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_supplier.Location = new System.Drawing.Point(136, 14);
             this.txt_supplier.Name = "txt_supplier";
             this.txt_supplier.ReadOnly = true;

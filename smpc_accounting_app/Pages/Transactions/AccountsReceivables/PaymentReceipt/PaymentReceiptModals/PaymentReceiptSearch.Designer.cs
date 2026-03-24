@@ -30,6 +30,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.dgv_pr_search = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -94,6 +102,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.customer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.customer.DataPropertyName = "customer";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.customer.DefaultCellStyle = dataGridViewCellStyle2;
             this.customer.HeaderText = "CUSTOMER";
             this.customer.Name = "customer";
             this.customer.ReadOnly = true;
@@ -102,6 +112,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.customer_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.customer_code.DataPropertyName = "customer_code";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.customer_code.DefaultCellStyle = dataGridViewCellStyle3;
             this.customer_code.HeaderText = "CUSTOMER CODE";
             this.customer_code.Name = "customer_code";
             this.customer_code.ReadOnly = true;
@@ -110,6 +122,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.reference_cr_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.reference_cr_no.DataPropertyName = "reference_cr_no";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.reference_cr_no.DefaultCellStyle = dataGridViewCellStyle4;
             this.reference_cr_no.HeaderText = "REF CR NO";
             this.reference_cr_no.Name = "reference_cr_no";
             this.reference_cr_no.ReadOnly = true;
@@ -118,6 +132,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.date_collect.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.date_collect.DataPropertyName = "date_collect";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.date_collect.DefaultCellStyle = dataGridViewCellStyle5;
             this.date_collect.HeaderText = "DATE COLLECTED";
             this.date_collect.MinimumWidth = 150;
             this.date_collect.Name = "date_collect";
@@ -127,6 +143,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.reference_or_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.reference_or_no.DataPropertyName = "reference_or_no";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            this.reference_or_no.DefaultCellStyle = dataGridViewCellStyle6;
             this.reference_or_no.HeaderText = "REF OR NO";
             this.reference_or_no.Name = "reference_or_no";
             this.reference_or_no.ReadOnly = true;
@@ -135,6 +153,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_no.DataPropertyName = "doc_no";
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.doc_no.DefaultCellStyle = dataGridViewCellStyle7;
             this.doc_no.HeaderText = "DOC NO";
             this.doc_no.Name = "doc_no";
             this.doc_no.ReadOnly = true;
@@ -143,6 +163,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_date.DataPropertyName = "doc_date";
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            this.doc_date.DefaultCellStyle = dataGridViewCellStyle8;
             this.doc_date.HeaderText = "DOC DATE";
             this.doc_date.Name = "doc_date";
             this.doc_date.ReadOnly = true;
@@ -151,6 +173,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             this.transaction_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.transaction_amount.DataPropertyName = "transaction_amount";
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
+            this.transaction_amount.DefaultCellStyle = dataGridViewCellStyle9;
             this.transaction_amount.HeaderText = "TRANSACTION AMOUNT";
             this.transaction_amount.Name = "transaction_amount";
             this.transaction_amount.ReadOnly = true;

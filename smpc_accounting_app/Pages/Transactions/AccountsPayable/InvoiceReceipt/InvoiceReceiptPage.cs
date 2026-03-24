@@ -381,9 +381,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             //fill this declared value by the invoice receipt data
             _irdata = await invoiceReceiptService.GetAsModel();
 
-            // Reverse order so newest records appear first
-            _irdata.invoice_receipt.Reverse();
-
             if (_irdata != null && _irdata.invoice_receipt != null && _irdata.invoice_receipt.Count > 0)
             {
                 //set this variable to the parent of the invoice receipt

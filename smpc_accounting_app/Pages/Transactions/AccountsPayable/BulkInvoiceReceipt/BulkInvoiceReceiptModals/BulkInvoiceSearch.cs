@@ -156,6 +156,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                         _birTable.ImportRow(row);
                 }
             }
+            catch (NullReferenceException)
+            {
+                Helpers.ShowDialogMessage("error", "No bulk invoice receipts found.");
+            }
             catch (Exception ex)
             {
                 Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");

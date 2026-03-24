@@ -319,6 +319,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_ref_doc_no
             // 
+            this.txt_ref_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_ref_doc_no.Location = new System.Drawing.Point(1056, 254);
             this.txt_ref_doc_no.Name = "txt_ref_doc_no";
             this.txt_ref_doc_no.ReadOnly = true;
@@ -337,6 +338,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_transfer_account_no
             // 
+            this.txt_transfer_account_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_account_no.Location = new System.Drawing.Point(1056, 233);
             this.txt_transfer_account_no.Name = "txt_transfer_account_no";
             this.txt_transfer_account_no.ReadOnly = true;
@@ -355,6 +357,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_transfer_bank
             // 
+            this.txt_transfer_bank.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_bank.Location = new System.Drawing.Point(1056, 212);
             this.txt_transfer_bank.Name = "txt_transfer_bank";
             this.txt_transfer_bank.ReadOnly = true;
@@ -373,6 +376,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_transfer_type
             // 
+            this.txt_transfer_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_type.Location = new System.Drawing.Point(1056, 191);
             this.txt_transfer_type.Name = "txt_transfer_type";
             this.txt_transfer_type.ReadOnly = true;
@@ -391,6 +395,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_transfer_amount
             // 
+            this.txt_transfer_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transfer_amount.Location = new System.Drawing.Point(1056, 170);
             this.txt_transfer_amount.Name = "txt_transfer_amount";
             this.txt_transfer_amount.ReadOnly = true;
@@ -430,6 +435,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_overpayment_amount
             // 
+            this.txt_overpayment_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_overpayment_amount.Location = new System.Drawing.Point(625, 102);
             this.txt_overpayment_amount.Name = "txt_overpayment_amount";
             this.txt_overpayment_amount.ReadOnly = true;
@@ -481,6 +487,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_check_amount
             // 
+            this.txt_check_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_check_amount.Location = new System.Drawing.Point(155, 274);
             this.txt_check_amount.Name = "txt_check_amount";
             this.txt_check_amount.ReadOnly = true;
@@ -509,6 +516,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_check_type
             // 
+            this.txt_check_type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_check_type.Location = new System.Drawing.Point(155, 232);
             this.txt_check_type.Name = "txt_check_type";
             this.txt_check_type.ReadOnly = true;
@@ -527,6 +535,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_check_no
             // 
+            this.txt_check_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_check_no.Location = new System.Drawing.Point(155, 211);
             this.txt_check_no.Name = "txt_check_no";
             this.txt_check_no.ReadOnly = true;
@@ -545,6 +554,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_bank_branch
             // 
+            this.txt_bank_branch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_bank_branch.Location = new System.Drawing.Point(155, 190);
             this.txt_bank_branch.Name = "txt_bank_branch";
             this.txt_bank_branch.ReadOnly = true;
@@ -591,6 +601,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_unapplied_amount
             // 
+            this.txt_unapplied_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_unapplied_amount.Location = new System.Drawing.Point(625, 81);
             this.txt_unapplied_amount.Name = "txt_unapplied_amount";
             this.txt_unapplied_amount.ReadOnly = true;
@@ -600,6 +611,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_transaction_amount
             // 
+            this.txt_transaction_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_transaction_amount.Location = new System.Drawing.Point(625, 60);
             this.txt_transaction_amount.Name = "txt_transaction_amount";
             this.txt_transaction_amount.ReadOnly = true;
@@ -627,6 +639,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_currency
             // 
+            this.txt_currency.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_currency.Location = new System.Drawing.Point(625, 39);
             this.txt_currency.Name = "txt_currency";
             this.txt_currency.ReadOnly = true;
@@ -636,6 +649,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_cash_amount
             // 
+            this.txt_cash_amount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_cash_amount.Location = new System.Drawing.Point(625, 18);
             this.txt_cash_amount.Name = "txt_cash_amount";
             this.txt_cash_amount.ReadOnly = true;
@@ -664,6 +678,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_reference_or
             // 
+            this.txt_reference_or.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_reference_or.Location = new System.Drawing.Point(155, 98);
             this.txt_reference_or.Name = "txt_reference_or";
             this.txt_reference_or.ReadOnly = true;
@@ -763,6 +778,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_doc_no
             // 
+            this.txt_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_doc_no.Location = new System.Drawing.Point(1043, 18);
             this.txt_doc_no.Name = "txt_doc_no";
             this.txt_doc_no.ReadOnly = true;
@@ -772,6 +788,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_reference_cr
             // 
+            this.txt_reference_cr.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_reference_cr.Location = new System.Drawing.Point(155, 56);
             this.txt_reference_cr.Name = "txt_reference_cr";
             this.txt_reference_cr.ReadOnly = true;
@@ -781,6 +798,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_customer_code
             // 
+            this.txt_customer_code.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_customer_code.Location = new System.Drawing.Point(155, 35);
             this.txt_customer_code.Name = "txt_customer_code";
             this.txt_customer_code.ReadOnly = true;
@@ -790,6 +808,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // 
             // txt_customer
             // 
+            this.txt_customer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_customer.Location = new System.Drawing.Point(155, 14);
             this.txt_customer.Name = "txt_customer";
             this.txt_customer.ReadOnly = true;

@@ -66,6 +66,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 RenderPurchaseOrders();
                 PopulatePurchaseOrderTree();
             }
+            catch (NullReferenceException)
+            {
+                Helpers.ShowDialogMessage("error", "No Purchase Order found.");
+            }
             catch (InvalidOperationException)
             {
                 Helpers.ShowDialogMessage("error", "No Purchase Orders found.");
@@ -210,7 +214,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 AutoGenerateColumns = true,
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
-                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    BackColor = Color.Gainsboro
                 }
             };
 
@@ -218,20 +223,32 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             dgv.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "purchase_order_details_id",
-                Visible = false
+                Visible = false,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "based_id",
-                Visible = false
+                Visible = false,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewCheckBoxColumn
             {
                 Name = " ",
                 Width = 30,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
@@ -239,7 +256,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 Name = "item_code",
                 DataPropertyName = "item_code",
                 HeaderText = "Item Code",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
@@ -247,7 +268,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 Name = "item_description",
                 DataPropertyName = "item_description",
                 HeaderText = "Description",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
@@ -256,7 +281,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 DataPropertyName = "order_uom",
                 HeaderText = "UOM",
                 Width = 40,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
@@ -266,6 +295,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 HeaderText = "Qty. Available",
                 Width = 80,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
@@ -274,7 +307,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 DataPropertyName = "req_uom",
                 HeaderText = "Invoice UOM",
                 Width = 80,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
@@ -284,6 +321,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 HeaderText = "Qty. Invoiced",
                 Width = 80,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.Gainsboro
+                }
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn

@@ -78,21 +78,30 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.
 
         private async Task PaymentVouchers()
         {
-            PaymentVoucher = await paymentVoucherService.GetAsModel();
-
-            PaymentVoucher.payment_voucher.Reverse();
-
-            // Convert journal entry list to DataTable using helper
-            pvTable = Helpers.ToDataTable(PaymentVoucher.payment_voucher);
-
-            if (pvTable?.Rows.Count > 0)
+            try
             {
-                dgv_pv_search.DataSource = pvTable;
+                PaymentVoucher = await paymentVoucherService.GetAsModel();
+
+                // Convert journal entry list to DataTable using helper
+                pvTable = Helpers.ToDataTable(PaymentVoucher.payment_voucher);
+
+                if (pvTable?.Rows.Count > 0)
+                {
+                    dgv_pv_search.DataSource = pvTable;
+                }
+                else
+                {
+                    dgv_pv_search.DataSource = null;
+                    Helpers.ShowDialogMessage("error", "No payment voucher found.");
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                dgv_pv_search.DataSource = null;
-                Helpers.ShowDialogMessage("error", "No payment voucher found.");
+                Helpers.ShowDialogMessage("error", "Nopayment voucher found.");
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
             }
         }
 

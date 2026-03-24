@@ -65,6 +65,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
                 Helpers.Loading.ShowLoading(dgv_ir_search, "Fetching data...");
                 await InvoiceReceipts();
             }
+            catch (NullReferenceException)
+            {
+                Helpers.ShowDialogMessage("error", "No Invoice Receipt found.");
+            }
             catch (Exception ex)
             {
                 Helpers.ShowDialogMessage("error", $"Failed to load: {ex.Message}");
