@@ -162,10 +162,23 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
                     if (int.TryParse(searchForm.SelectedBIRId, out int selectedId))
                     {
                         int index = _bulkInvoiceReceipts.FindIndex(r => r.id == selectedId);
+
                         if (index >= 0)
                         {
+                            // Found locally — just navigate
                             _currentBIRIndex = index;
-                            await LoadBulkInvoiceReceipts();
+                            ShowCurrentRecord();
+                        }
+                        else
+                        {
+                            // Push current cursor to history BEFORE clearing,
+                            // so btn_prev can navigate back to where the user was
+                            _cursorHistory.Push(_currentCursor);
+
+                            _currentCursor = null;        // remove the Clear() call
+                            _currentBIRIndex = 0;
+
+                            await LoadBulkInvoiceReceipts(seekId: selectedId);
                         }
                     }
                     else
@@ -400,9 +413,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
             cmb_tax_code.Text = "";
         }
 
-        private async Task LoadBulkInvoiceReceipts(int? cursor = null)
+        private async Task LoadBulkInvoiceReceipts(int? cursor = null, int? seekId = null)
         {
-            var data = await bulkInvoiceReceiptService.GetAsModelPaginated(cursor);
+            var data = await bulkInvoiceReceiptService.GetAsModelPaginated(id: cursor, seekId: seekId);
 
             _birdata = data.Data;
             _hasNext = data.Pagination?.has_next ?? false;

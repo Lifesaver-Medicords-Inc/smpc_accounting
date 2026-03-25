@@ -51,13 +51,20 @@ namespace smpc_accounting_app.Services
             }
         }
 
-        public virtual async Task<PaginatedResult<T>> GetAsModelPaginated(int? id = null)
+        public virtual async Task<PaginatedResult<T>> GetAsModelPaginated(int? id = null, int? seekId = null)
         {
             try
             {
-                var queryString = id.HasValue ? $"?id={id}" : "";
-                var endpoint = $"{url}{queryString}";
+                var queryParams = new List<string>();
 
+                if (id.HasValue)
+                    queryParams.Add($"id={id}");
+
+                if (seekId.HasValue)
+                    queryParams.Add($"seek_id={seekId}");
+
+                var queryString = queryParams.Count > 0 ? $"?{string.Join("&", queryParams)}" : "";
+                var endpoint = $"{url}{queryString}";
                 var response = await ApiService<ApiResponseModel<T>>.Get(endpoint);
                 return new PaginatedResult<T>
                 {
