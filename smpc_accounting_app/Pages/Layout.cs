@@ -196,7 +196,7 @@ namespace smpc_accounting_app
 
         private async Task LoadCurrency()
         {
-            serviceCurrencyRateSetup = new GeneralService<ExchangeRateModel>(ApiEndPoints.CURRENCY_RATE + _currencyCode);
+            serviceCurrencyRateSetup = new GeneralService<ExchangeRateModel>(ApiEndPoints.CURRENCY_RATE + "PHP");
             try
             {
                 CacheData.CurrencyRate = await serviceCurrencyRateSetup.GetAsModel();
