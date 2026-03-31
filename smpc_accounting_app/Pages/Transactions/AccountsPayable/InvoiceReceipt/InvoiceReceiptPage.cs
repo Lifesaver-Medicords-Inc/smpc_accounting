@@ -142,7 +142,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
             }
         }
 
-
         private void btn_print_Click(object sender, EventArgs e)
         {
             if (_currentIRIndex < 0) return;

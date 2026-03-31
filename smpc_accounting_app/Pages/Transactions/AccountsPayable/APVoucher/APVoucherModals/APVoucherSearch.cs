@@ -28,9 +28,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // Center the modal relative to its parent form
             this.StartPosition = FormStartPosition.CenterParent;
 
-            dgv_av_search.AutoGenerateColumns = false;
-            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_av_search, new[] { "transaction_amount" });
-            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_av_search, "doc_no", "AV");
+            dgv_ap_search.AutoGenerateColumns = false;
+            Helpers.DataGridViewFormatter.DataGridViewDecimalFormat(dgv_ap_search, new[] { "transaction_amount" });
+            Helpers.DataGridViewDocumentFormatter.DataGridViewDocumentFormat(dgv_ap_search, "doc_no", "AV");
             InitializeSearchBox();
         }
 
@@ -49,13 +49,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
 
             if (string.IsNullOrEmpty(searchText) || searchText == placeHolderText)
             {
-                dgv_av_search.DataSource = avTable;
+                dgv_ap_search.DataSource = avTable;
             }
             else
             {
                 var searchedData = Helpers.FilterDataTable(avTable, searchText,
                     "supplier", "supplier_code", "currency", "invoice_due", "doc_no", "doc_date", "transaction_amount");
-                dgv_av_search.DataSource = searchedData;
+                dgv_ap_search.DataSource = searchedData;
             }
         }
 
@@ -63,7 +63,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_av_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_ap_search, "Fetching data...");
                 await APVouchers();
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             }
             finally
             {
-                Helpers.Loading.HideLoading(dgv_av_search);
+                Helpers.Loading.HideLoading(dgv_ap_search);
             }
         }
 
@@ -87,11 +87,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
 
                 if (avTable?.Rows.Count > 0)
                 {
-                    dgv_av_search.DataSource = avTable;
+                    dgv_ap_search.DataSource = avTable;
                 }
                 else
                 {
-                    dgv_av_search.DataSource = null;
+                    dgv_ap_search.DataSource = null;
                     Helpers.ShowDialogMessage("error", "No ap voucher found.");
                 }
             }
@@ -110,7 +110,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             if (e.RowIndex < 0)
                 return;
 
-            var row = dgv_av_search.Rows[e.RowIndex];
+            var row = dgv_ap_search.Rows[e.RowIndex];
 
             // Always get the id value from the row, regardless of which column was clicked
             var idValue = row.Cells["id"].Value;

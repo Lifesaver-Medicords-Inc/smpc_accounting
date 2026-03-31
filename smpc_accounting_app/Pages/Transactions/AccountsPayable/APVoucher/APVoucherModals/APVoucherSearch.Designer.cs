@@ -36,7 +36,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgv_av_search = new System.Windows.Forms.DataGridView();
+            this.dgv_ap_search = new System.Windows.Forms.DataGridView();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,13 +45,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             this.doc_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.transaction_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_av_search)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ap_search)).BeginInit();
             this.SuspendLayout();
             // 
-            // dgv_av_search
+            // dgv_ap_search
             // 
-            this.dgv_av_search.AllowUserToAddRows = false;
-            this.dgv_av_search.AllowUserToDeleteRows = false;
+            this.dgv_ap_search.AllowUserToAddRows = false;
+            this.dgv_ap_search.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -59,9 +59,9 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_av_search.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv_av_search.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_av_search.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgv_ap_search.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv_ap_search.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ap_search.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.supplier,
             this.supplier_code,
@@ -69,11 +69,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             this.doc_no,
             this.doc_date,
             this.transaction_amount});
-            this.dgv_av_search.Location = new System.Drawing.Point(-1, 31);
-            this.dgv_av_search.Name = "dgv_av_search";
-            this.dgv_av_search.Size = new System.Drawing.Size(802, 389);
-            this.dgv_av_search.TabIndex = 9;
-            this.dgv_av_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_av_search_CellClick);
+            this.dgv_ap_search.Location = new System.Drawing.Point(-1, 31);
+            this.dgv_ap_search.Name = "dgv_ap_search";
+            this.dgv_ap_search.Size = new System.Drawing.Size(802, 389);
+            this.dgv_ap_search.TabIndex = 9;
+            this.dgv_ap_search.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_av_search_CellClick);
             // 
             // txt_search
             // 
@@ -125,6 +125,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             // doc_no
             // 
+            this.doc_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_no.DataPropertyName = "doc_no";
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
             this.doc_no.DefaultCellStyle = dataGridViewCellStyle5;
@@ -134,6 +135,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             // doc_date
             // 
+            this.doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.doc_date.DataPropertyName = "doc_date";
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
             this.doc_date.DefaultCellStyle = dataGridViewCellStyle6;
@@ -143,6 +145,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             // 
             // transaction_amount
             // 
+            this.transaction_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.transaction_amount.DataPropertyName = "transaction_amount";
             dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
             this.transaction_amount.DefaultCellStyle = dataGridViewCellStyle7;
@@ -155,14 +158,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dgv_av_search);
+            this.Controls.Add(this.dgv_ap_search);
             this.Controls.Add(this.txt_search);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "APVoucherSearch";
             this.Text = "APVoucherSearch";
             this.Load += new System.EventHandler(this.APVoucherSearch_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_av_search)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ap_search)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,7 +173,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher.APVou
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgv_av_search;
+        private System.Windows.Forms.DataGridView dgv_ap_search;
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn supplier;
