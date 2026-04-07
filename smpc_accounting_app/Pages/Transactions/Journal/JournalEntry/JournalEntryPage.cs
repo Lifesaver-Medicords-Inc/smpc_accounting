@@ -50,7 +50,14 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             foreach (var colName in editableColumns)
             {
                 if (dgv_journal_entry.Columns.Contains(colName))
-                    dgv_journal_entry.Columns[colName].ReadOnly = !isEdit;
+                {
+                    var column = dgv_journal_entry.Columns[colName];
+
+                    column.ReadOnly = !isEdit;
+
+                    // Toggle background color based on readonly state
+                    column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
+                }
             }
         }
 
@@ -76,7 +83,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 hiddenButtons: enable ? navButtons : editButtons
             );
 
-            Helpers.SetChildControlsEnabled(new[] { pnl_content }, enable, new string[] { "txt_doc_no", "txt_currency", "txt_search", "txt_period" });
+            Helpers.SetChildControlsEnabled(new[] { pnl_content }, !enable, new string[] { "txt_doc_no", "txt_currency", "txt_search", "txt_period" });
         }
 
         private void ChangeRecord(int step)

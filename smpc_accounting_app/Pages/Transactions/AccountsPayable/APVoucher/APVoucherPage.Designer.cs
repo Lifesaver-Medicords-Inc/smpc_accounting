@@ -214,6 +214,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
             // dgv_main
             // 
             this.dgv_main.AllowUserToAddRows = false;
+            this.dgv_main.AllowUserToDeleteRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;

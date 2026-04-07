@@ -78,7 +78,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 return;
             }
 
-            var confirm = MessageBox.Show($"Are you sure you want to delete this Chart of Account {txt_id.Text}?", 
+            var confirm = MessageBox.Show($"Are you sure you want to delete this Chart of Account {txt_id.Text}?",
                 "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirm != DialogResult.Yes) return;

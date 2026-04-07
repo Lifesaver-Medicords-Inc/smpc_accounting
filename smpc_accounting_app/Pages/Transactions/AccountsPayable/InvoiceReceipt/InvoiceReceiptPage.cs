@@ -409,15 +409,6 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
             Helpers.BindControls(new Panel[] { pnl_main }, _irTable, _currentIRIndex);
 
-            // Format txt_doc_no with IR prefix and 8 digit number
-            if (!string.IsNullOrEmpty(txt_doc_no.Text))
-            {
-                if (int.TryParse(txt_doc_no.Text, out int number))
-                {
-                    txt_doc_no.Text = "IR" + number.ToString("D8");
-                }
-            }
-
             //Disable auto column generation before setting the data source
             dgv_main.AutoGenerateColumns = false;
 

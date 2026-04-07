@@ -30,11 +30,13 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartOfAccountsPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
@@ -42,17 +44,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_cancel = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dgv_chart_of_account = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.account_class = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.class_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.pnl_content = new System.Windows.Forms.Panel();
             this.cmb_group = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -67,13 +58,39 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.panel4 = new System.Windows.Forms.Panel();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.toolStrip1.SuspendLayout();
+            this.dgv_chart_of_account = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.account_class = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.class_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_chart_of_account)).BeginInit();
-            this.panel2.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.pnl_content.SuspendLayout();
             this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_chart_of_account)).BeginInit();
             this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1400, 47);
+            this.panel1.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(238, 25);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Chart Of Account Setup";
             // 
             // toolStrip1
             // 
@@ -89,7 +106,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip1.Size = new System.Drawing.Size(1400, 25);
-            this.toolStrip1.TabIndex = 10;
+            this.toolStrip1.TabIndex = 11;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // btn_new
@@ -147,132 +164,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.btn_cancel.Visible = false;
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1400, 47);
-            this.panel1.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(238, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Chart Of Account Setup";
-            // 
-            // dgv_chart_of_account
-            // 
-            this.dgv_chart_of_account.AllowUserToAddRows = false;
-            this.dgv_chart_of_account.AllowUserToDeleteRows = false;
-            this.dgv_chart_of_account.AllowUserToResizeColumns = false;
-            this.dgv_chart_of_account.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_chart_of_account.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv_chart_of_account.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_chart_of_account.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.id,
-            this.code,
-            this.name,
-            this.account_class,
-            this.class_id,
-            this.group,
-            this.group_id});
-            this.dgv_chart_of_account.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_chart_of_account.Location = new System.Drawing.Point(0, 0);
-            this.dgv_chart_of_account.Name = "dgv_chart_of_account";
-            this.dgv_chart_of_account.ReadOnly = true;
-            this.dgv_chart_of_account.RowHeadersVisible = false;
-            this.dgv_chart_of_account.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_chart_of_account.Size = new System.Drawing.Size(1400, 662);
-            this.dgv_chart_of_account.TabIndex = 3;
-            this.dgv_chart_of_account.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_chart_of_account_CellClick);
-            this.dgv_chart_of_account.SelectionChanged += new System.EventHandler(this.dgv_chart_of_account_SelectionChanged);
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            // 
-            // code
-            // 
-            this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.code.DataPropertyName = "code";
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
-            this.code.DefaultCellStyle = dataGridViewCellStyle2;
-            this.code.HeaderText = "CODE";
-            this.code.Name = "code";
-            this.code.ReadOnly = true;
-            // 
-            // name
-            // 
-            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.name.DataPropertyName = "name";
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
-            this.name.DefaultCellStyle = dataGridViewCellStyle3;
-            this.name.HeaderText = "NAME";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            // 
-            // account_class
-            // 
-            this.account_class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.account_class.DataPropertyName = "account_class";
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
-            this.account_class.DefaultCellStyle = dataGridViewCellStyle4;
-            this.account_class.HeaderText = "CLASS";
-            this.account_class.Name = "account_class";
-            this.account_class.ReadOnly = true;
-            // 
-            // class_id
-            // 
-            this.class_id.DataPropertyName = "class_id";
-            this.class_id.HeaderText = "CLASS ID";
-            this.class_id.Name = "class_id";
-            this.class_id.ReadOnly = true;
-            this.class_id.Visible = false;
-            // 
-            // group
-            // 
-            this.group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.group.DataPropertyName = "group";
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
-            this.group.DefaultCellStyle = dataGridViewCellStyle5;
-            this.group.HeaderText = "GROUP";
-            this.group.Name = "group";
-            this.group.ReadOnly = true;
-            // 
-            // group_id
-            // 
-            this.group_id.DataPropertyName = "group_id";
-            this.group_id.HeaderText = "GROUP ID";
-            this.group_id.Name = "group_id";
-            this.group_id.ReadOnly = true;
-            this.group_id.Visible = false;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.dgv_chart_of_account);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 288);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1400, 662);
-            this.panel2.TabIndex = 6;
-            // 
             // pnl_content
             // 
             this.pnl_content.Controls.Add(this.cmb_group);
@@ -289,7 +180,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.pnl_content.Location = new System.Drawing.Point(0, 72);
             this.pnl_content.Name = "pnl_content";
             this.pnl_content.Size = new System.Drawing.Size(1400, 156);
-            this.pnl_content.TabIndex = 66;
+            this.pnl_content.TabIndex = 67;
             // 
             // cmb_group
             // 
@@ -411,7 +302,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.panel4.Location = new System.Drawing.Point(0, 228);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1400, 60);
-            this.panel4.TabIndex = 67;
+            this.panel4.TabIndex = 68;
             // 
             // txt_search
             // 
@@ -430,11 +321,109 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.label5.TabIndex = 5;
             this.label5.Text = "SEARCH";
             // 
+            // dgv_chart_of_account
+            // 
+            this.dgv_chart_of_account.AllowUserToAddRows = false;
+            this.dgv_chart_of_account.AllowUserToDeleteRows = false;
+            this.dgv_chart_of_account.AllowUserToResizeColumns = false;
+            this.dgv_chart_of_account.AllowUserToResizeRows = false;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_chart_of_account.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            this.dgv_chart_of_account.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_chart_of_account.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.id,
+            this.code,
+            this.name,
+            this.account_class,
+            this.class_id,
+            this.group,
+            this.group_id});
+            this.dgv_chart_of_account.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_chart_of_account.Location = new System.Drawing.Point(0, 288);
+            this.dgv_chart_of_account.Name = "dgv_chart_of_account";
+            this.dgv_chart_of_account.ReadOnly = true;
+            this.dgv_chart_of_account.RowHeadersVisible = false;
+            this.dgv_chart_of_account.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_chart_of_account.Size = new System.Drawing.Size(1400, 662);
+            this.dgv_chart_of_account.TabIndex = 69;
+            this.dgv_chart_of_account.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_chart_of_account_CellClick);
+            this.dgv_chart_of_account.SelectionChanged += new System.EventHandler(this.dgv_chart_of_account_SelectionChanged);
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            // 
+            // code
+            // 
+            this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.code.DataPropertyName = "code";
+            dataGridViewCellStyle22.BackColor = System.Drawing.Color.Gainsboro;
+            this.code.DefaultCellStyle = dataGridViewCellStyle22;
+            this.code.HeaderText = "CODE";
+            this.code.Name = "code";
+            this.code.ReadOnly = true;
+            // 
+            // name
+            // 
+            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.name.DataPropertyName = "name";
+            dataGridViewCellStyle23.BackColor = System.Drawing.Color.Gainsboro;
+            this.name.DefaultCellStyle = dataGridViewCellStyle23;
+            this.name.HeaderText = "NAME";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            // 
+            // account_class
+            // 
+            this.account_class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.account_class.DataPropertyName = "account_class";
+            dataGridViewCellStyle24.BackColor = System.Drawing.Color.Gainsboro;
+            this.account_class.DefaultCellStyle = dataGridViewCellStyle24;
+            this.account_class.HeaderText = "CLASS";
+            this.account_class.Name = "account_class";
+            this.account_class.ReadOnly = true;
+            // 
+            // class_id
+            // 
+            this.class_id.DataPropertyName = "class_id";
+            this.class_id.HeaderText = "CLASS ID";
+            this.class_id.Name = "class_id";
+            this.class_id.ReadOnly = true;
+            this.class_id.Visible = false;
+            // 
+            // group
+            // 
+            this.group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.group.DataPropertyName = "group";
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.Gainsboro;
+            this.group.DefaultCellStyle = dataGridViewCellStyle25;
+            this.group.HeaderText = "GROUP";
+            this.group.Name = "group";
+            this.group.ReadOnly = true;
+            // 
+            // group_id
+            // 
+            this.group_id.DataPropertyName = "group_id";
+            this.group_id.HeaderText = "GROUP ID";
+            this.group_id.Name = "group_id";
+            this.group_id.ReadOnly = true;
+            this.group_id.Visible = false;
+            // 
             // ChartOfAccountsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.dgv_chart_of_account);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.pnl_content);
             this.Controls.Add(this.toolStrip1);
@@ -442,22 +431,22 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.Name = "ChartOfAccountsPage";
             this.Size = new System.Drawing.Size(1400, 950);
             this.Load += new System.EventHandler(this.ChartOfAccounts_Load);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_chart_of_account)).EndInit();
-            this.panel2.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.pnl_content.ResumeLayout(false);
             this.pnl_content.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_chart_of_account)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
+
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStrip toolStrip1;
@@ -466,9 +455,11 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private System.Windows.Forms.ToolStripButton btn_delete;
         private System.Windows.Forms.ToolStripButton btn_print;
         private System.Windows.Forms.ToolStripButton btn_save;
-        private System.Windows.Forms.DataGridView dgv_chart_of_account;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ToolStripButton btn_cancel;
         private System.Windows.Forms.Panel pnl_content;
+        private System.Windows.Forms.ComboBox cmb_group;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cmb_account_class;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txt_id;
         private System.Windows.Forms.Label label3;
@@ -479,10 +470,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ToolStripButton btn_cancel;
-        private System.Windows.Forms.ComboBox cmb_account_class;
-        private System.Windows.Forms.ComboBox cmb_group;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridView dgv_chart_of_account;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn code;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;

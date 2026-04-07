@@ -18,15 +18,15 @@ using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.Sa
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice
 {
-    public partial class SalesInvoicePage2 : UserControl
+    public partial class SalesInvoicePage : UserControl
     {
-        SalesInvoiceService2 salesInvoiceService = new SalesInvoiceService2();
+        SalesInvoiceService salesInvoiceService = new SalesInvoiceService();
         private int _currentSIIndex = -1;
         private int _previousSIIndex = -1;
-        private SalesInvoice2List _sidata;
-        private List<SalesInvoice2Model> _salesInvoice;
+        private SalesInvoiceList _sidata;
+        private List<SalesInvoiceModel> _salesInvoice;
         private DataTable _siTable;
-        private BindingList<SalesInvoiceDetails2Model> _currentDetails;
+        private BindingList<SalesInvoiceDetailsModel> _currentDetails;
         private bool _isNewMode = false;
         private bool _isEditing = false;
         private string _userName;
@@ -40,7 +40,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             { "QTY", new string[] { "item_qty", "item_uom" } },
         };
 
-        public SalesInvoicePage2()
+        public SalesInvoicePage()
         {
             InitializeComponent();
 
@@ -142,7 +142,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             SetEditMode(true, isNewMode: true);
 
             //Clear only the rows, keep columns
-            _currentDetails = new BindingList<SalesInvoiceDetails2Model>();
+            _currentDetails = new BindingList<SalesInvoiceDetailsModel>();
             dgv_main.AutoGenerateColumns = false;
             dgv_main.DataSource = _currentDetails;
             Helpers.ResetControls(new Panel[] { pnl_main, pnl_footer });
@@ -162,7 +162,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             }
 
             var dataset2 = _currentDetails;
-            SalesInvoice2Model dataset1 =  _salesInvoice[_currentSIIndex];
+            SalesInvoiceModel dataset1 =  _salesInvoice[_currentSIIndex];
 
             // Format reference_doc_so the same way as in ShowCurrentRecord()
             if (!string.IsNullOrWhiteSpace(txt_reference_doc_so.Text))
@@ -179,7 +179,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             var dataSources = new List<ReportDataSource>()
             {
                 new ReportDataSource("DataSet2", _currentDetails),
-                new ReportDataSource("DataSet1", new List<SalesInvoice2Model> { _salesInvoice[_currentSIIndex] })
+                new ReportDataSource("DataSet1", new List<SalesInvoiceModel> { _salesInvoice[_currentSIIndex] })
             };
 
             var preview = new PrintPreview(reportPath, dataSources);
@@ -288,11 +288,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
                     return;
 
-                var salesInvoiceParent = Helpers.BuildModelFromPanels<SalesInvoice2Model>(_panels);
+                var salesInvoiceParent = Helpers.BuildModelFromPanels<SalesInvoiceModel>(_panels);
 
                 salesInvoiceParent.prepared_by = _userName;
 
-                var salesInvoiceDetails = Helpers.DatagridviewMapper.BuildModelsFromData<SalesInvoiceDetails2Model>(dgv_main);
+                var salesInvoiceDetails = Helpers.DatagridviewMapper.BuildModelsFromData<SalesInvoiceDetailsModel>(dgv_main);
 
                 //Check if sales invoice details is null or empty
                 if (salesInvoiceDetails == null || salesInvoiceDetails.Count == 0)
@@ -302,10 +302,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 }
 
                 // Wrap everything into Sales Invoice Payload
-                var siPayload = new SalesInvoice2Payload
+                var siPayload = new SalesInvoicePayload
                 {
-                    sales_invoice2 = salesInvoiceParent,
-                    sales_invoice_details2 = salesInvoiceDetails,
+                    sales_invoice = salesInvoiceParent,
+                    sales_invoice_details = salesInvoiceDetails,
                 };
 
                 Helpers.Loading.ShowLoading(dgv_main, "Saving data...");
@@ -362,10 +362,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             //fill this declared value by the sales invoice data
             _sidata = await salesInvoiceService.GetAsModel();
 
-            if (_sidata != null && _sidata.sales_invoice2 != null && _sidata.sales_invoice2.Count > 0)
+            if (_sidata != null && _sidata.sales_invoice != null && _sidata.sales_invoice.Count > 0)
             {
                 //set this variable to the parent of the sales invoice
-                _salesInvoice = _sidata.sales_invoice2;
+                _salesInvoice = _sidata.sales_invoice;
 
                 // restore old index if valid, otherwise fallback to 0
                 if (oldIndex >= 0 && oldIndex < _salesInvoice.Count)
@@ -383,11 +383,11 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
         private void ShowCurrentRecord()
         {
-            if (_currentSIIndex < 0 || _sidata == null || _sidata.sales_invoice2 == null || !_sidata.sales_invoice2.Any())
+            if (_currentSIIndex < 0 || _sidata == null || _sidata.sales_invoice == null || !_sidata.sales_invoice.Any())
                 return;
 
             // Convert sales invoice list to DataTable using helper
-            _siTable = Helpers.ToDataTable(_sidata.sales_invoice2);
+            _siTable = Helpers.ToDataTable(_sidata.sales_invoice);
 
             Helpers.BindControls(_panels, _siTable, _currentSIIndex);
 
@@ -416,10 +416,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             var current = _salesInvoice[_currentSIIndex];
 
             //Bind child details (grids)
-            if (_sidata?.sales_invoice_details2 != null)
+            if (_sidata?.sales_invoice_details != null)
             {
-                _currentDetails = new BindingList<SalesInvoiceDetails2Model>(
-                    _sidata.sales_invoice_details2
+                _currentDetails = new BindingList<SalesInvoiceDetailsModel>(
+                    _sidata.sales_invoice_details
                         .Where(d => d.sales_invoice_id == current.id)
                         .ToList()
                 );
@@ -438,7 +438,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
         private void ClearSalesInvoiceUI()
         {
-            _salesInvoice = new List<SalesInvoice2Model>();
+            _salesInvoice = new List<SalesInvoiceModel>();
             _currentSIIndex = -1;
             _previousSIIndex = -1;
 

@@ -13,13 +13,5 @@ namespace smpc_accounting_app.Services.Setup
     {
 
         public ChartOfAccountsService() : base(ApiEndPoints.CHART_OF_ACCOUNT_SETUP) { }
-
-
-        public async Task <List<ChartOfAccountsModel>> GetChartOfAccountsClassfication(string code)
-        {
-            var response = await ApiService<ApiResponseModel<List<ChartOfAccountsModel>>>.Get(ApiEndPoints.CHART_OF_ACCOUNT_CLASSIFCATION_SETUP + code);
-
-            return response.data;
-        }
     }
 }

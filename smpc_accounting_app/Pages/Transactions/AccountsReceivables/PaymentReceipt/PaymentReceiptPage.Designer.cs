@@ -784,7 +784,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             this.txt_doc_no.ReadOnly = true;
             this.txt_doc_no.Size = new System.Drawing.Size(289, 20);
             this.txt_doc_no.TabIndex = 282;
-            this.txt_doc_no.Tag = "";
+            this.txt_doc_no.Tag = "DOCUMENTPR";
             // 
             // txt_reference_cr
             // 
@@ -873,6 +873,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
             // dgv_main
             // 
             this.dgv_main.AllowUserToAddRows = false;
+            this.dgv_main.AllowUserToDeleteRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;

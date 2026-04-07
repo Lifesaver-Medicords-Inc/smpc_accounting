@@ -181,7 +181,7 @@
     <Compile Include="Models\PurchaseOrderInvoiceModel.cs" />
     <Compile Include="Models\SalesInvoice.cs" />
     <Compile Include="Models\SaleInvoiceList.cs" />
-    <Compile Include="Models\SalesInvoice2Model.cs" />
+    <Compile Include="Models\SalesInvoiceModel.cs" />
     <Compile Include="Models\SalesInvoiceDetails.cs" />
     <Compile Include="Models\SalesInvoiceReceiptView.cs" />
     <Compile Include="Models\SalesOrderDR.cs" />
@@ -250,12 +250,6 @@
     </Compile>
     <Compile Include="Pages\Setup\Others\CurrencyPage.Designer.cs">
       <DependentUpon>CurrencyPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Setup\Tax\ExpandedTaxPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Setup\Tax\ExpandedTaxPage.Designer.cs">
-      <DependentUpon>ExpandedTaxPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setup\Tax\FinalTaxPage.cs">
       <SubType>UserControl</SubType>
@@ -353,11 +347,11 @@
     <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoiceModals\SalesInvoiceCustomer.Designer.cs">
       <DependentUpon>SalesInvoiceCustomer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoicePage2.cs">
+    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoicePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoicePage2.Designer.cs">
-      <DependentUpon>SalesInvoicePage2.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoicePage.Designer.cs">
+      <DependentUpon>SalesInvoicePage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoiceModals\SalesInvoiceSearch.cs">
       <SubType>Form</SubType>
@@ -416,7 +410,6 @@
     <Compile Include="Services\Setup\AuthServices.cs" />
     <Compile Include="Services\Setup\ChartOfAccountsService.cs" />
     <Compile Include="Services\Setup\GeneralLedgerMapperService.cs" />
-    <Compile Include="Services\Setup\ExpandedTaxService.cs" />
     <Compile Include="Services\Setup\CurrencyService.cs" />
     <Compile Include="Services\Setup\BookService.cs" />
     <Compile Include="Services\Setup\TaxSetupService.cs" />
@@ -426,7 +419,7 @@
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
     <Compile Include="Services\Transactions\PaymentReceiptService.cs" />
     <Compile Include="Services\Transactions\PaymentVoucherService.cs" />
-    <Compile Include="Services\Transactions\SalesInvoiceService2.cs" />
+    <Compile Include="Services\Transactions\SalesInvoiceService.cs" />
     <Compile Include="Shared\ApiEndPoints.cs" />
     <Compile Include="Shared\CacheData.cs" />
     <Compile Include="Shared\ChartType.cs" />
@@ -442,12 +435,6 @@
     <Compile Include="Pages\Setup\Financial\ChartClassPage.Designer.cs">
       <DependentUpon>ChartClassPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Setup\Financial\ChartGroupPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Setup\Financial\ChartGroupPage.Designer.cs">
-      <DependentUpon>ChartGroupPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -459,24 +446,6 @@
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.Designer.cs">
       <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentReceipt.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentReceipt.Designer.cs">
-      <DependentUpon>PaymentReceipt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.Designer.cs">
-      <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.Designer.cs">
-      <DependentUpon>SalesInvoicePage.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -491,7 +460,6 @@
     <Compile Include="Services\RoutesService.cs" />
     <Compile Include="Services\Setup\ChartOfAccountService.cs" />
     <Compile Include="Services\Setup\BankService.cs" />
-    <Compile Include="Services\Setup\ChartGroupService.cs" />
     <Compile Include="Services\Setup\ChartClassService.cs" />
     <Compile Include="Shared\ENUM_TAX_CODE.cs" />
     <EmbeddedResource Include="Pages\Components\GetBpiModal.resx">
@@ -512,9 +480,6 @@
     <EmbeddedResource Include="Pages\Setup\Financial\ChartClassPage.resx">
       <DependentUpon>ChartClassPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Setup\Financial\ChartGroupPage.resx">
-      <DependentUpon>ChartGroupPage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Setup\Financial\ChartOfAccountsPage.resx">
       <DependentUpon>ChartOfAccountsPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -529,9 +494,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Setup\Others\CurrencyPage.resx">
       <DependentUpon>CurrencyPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Setup\Tax\ExpandedTaxPage.resx">
-      <DependentUpon>ExpandedTaxPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Setup\Tax\FinalTaxPage.resx">
       <DependentUpon>FinalTaxPage.cs</DependentUpon>
@@ -569,12 +531,6 @@
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.resx">
       <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentReceipt.resx">
-      <DependentUpon>PaymentReceipt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucherPage.resx">
-      <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.resx">
       <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
     </EmbeddedResource>
@@ -593,11 +549,8 @@
     <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoiceModals\SalesInvoiceCustomer.resx">
       <DependentUpon>SalesInvoiceCustomer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoicePage.resx">
+    <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoicePage.resx">
       <DependentUpon>SalesInvoicePage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoicePage2.resx">
-      <DependentUpon>SalesInvoicePage2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsReceivables\SalesInvoice\SalesInvoiceModals\SalesInvoiceSearch.resx">
       <DependentUpon>SalesInvoiceSearch.cs</DependentUpon>

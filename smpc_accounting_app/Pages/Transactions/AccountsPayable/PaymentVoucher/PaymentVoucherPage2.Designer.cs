@@ -225,6 +225,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             // dgv_main
             // 
             this.dgv_main.AllowUserToAddRows = false;
+            this.dgv_main.AllowUserToDeleteRows = false;
             this.dgv_main.AllowUserToResizeColumns = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -923,7 +924,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
             this.txt_doc_no.ReadOnly = true;
             this.txt_doc_no.Size = new System.Drawing.Size(289, 20);
             this.txt_doc_no.TabIndex = 295;
-            this.txt_doc_no.Tag = "";
+            this.txt_doc_no.Tag = "DOCUMENTPV";
             // 
             // label6
             // 

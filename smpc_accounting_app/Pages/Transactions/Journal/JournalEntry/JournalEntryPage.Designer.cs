@@ -30,7 +30,15 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JournalEntryPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -58,18 +66,18 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.txt_journal_name = new System.Windows.Forms.TextBox();
             this.txt_journal_description = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.line_memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.credit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.debit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.posting_ref = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmb_posting_ref = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.account_title = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.posting_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inserted_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.account_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.journal_entry_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgv_journal_entry = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.journal_entry_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.account_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inserted_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.posting_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.account_title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmb_posting_ref = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.posting_ref = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.debit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.credit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.line_memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.pnl_content.SuspendLayout();
@@ -225,9 +233,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             // txt_period
             // 
             this.txt_period.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txt_period.Enabled = false;
+            this.txt_period.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_period.Location = new System.Drawing.Point(158, 71);
             this.txt_period.Name = "txt_period";
+            this.txt_period.ReadOnly = true;
             this.txt_period.Size = new System.Drawing.Size(289, 20);
             this.txt_period.TabIndex = 102;
             this.txt_period.Tag = "";
@@ -260,9 +269,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             // 
             // txt_doc_no
             // 
-            this.txt_doc_no.Enabled = false;
+            this.txt_doc_no.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_doc_no.Location = new System.Drawing.Point(1021, 44);
             this.txt_doc_no.Name = "txt_doc_no";
+            this.txt_doc_no.ReadOnly = true;
             this.txt_doc_no.Size = new System.Drawing.Size(289, 20);
             this.txt_doc_no.TabIndex = 71;
             this.txt_doc_no.Tag = "";
@@ -298,9 +308,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             // 
             // txt_currency
             // 
-            this.txt_currency.Enabled = false;
+            this.txt_currency.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_currency.Location = new System.Drawing.Point(1021, 23);
             this.txt_currency.Name = "txt_currency";
+            this.txt_currency.ReadOnly = true;
             this.txt_currency.Size = new System.Drawing.Size(289, 20);
             this.txt_currency.TabIndex = 67;
             this.txt_currency.Tag = "";
@@ -325,9 +336,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             // 
             // txt_journal_name
             // 
-            this.txt_journal_name.Enabled = false;
+            this.txt_journal_name.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_journal_name.Location = new System.Drawing.Point(158, 29);
             this.txt_journal_name.Name = "txt_journal_name";
+            this.txt_journal_name.ReadOnly = true;
             this.txt_journal_name.Size = new System.Drawing.Size(289, 20);
             this.txt_journal_name.TabIndex = 59;
             this.txt_journal_name.Tag = "REQUIRED";
@@ -335,9 +347,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             // txt_journal_description
             // 
             this.txt_journal_description.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txt_journal_description.Enabled = false;
+            this.txt_journal_description.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txt_journal_description.Location = new System.Drawing.Point(158, 50);
             this.txt_journal_description.Name = "txt_journal_description";
+            this.txt_journal_description.ReadOnly = true;
             this.txt_journal_description.Size = new System.Drawing.Size(289, 20);
             this.txt_journal_description.TabIndex = 61;
             this.txt_journal_description.Tag = "REQUIRED";
@@ -351,109 +364,19 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.label2.TabIndex = 60;
             this.label2.Text = "DESCRIPTION:";
             // 
-            // line_memo
-            // 
-            this.line_memo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.line_memo.DataPropertyName = "line_memo";
-            this.line_memo.HeaderText = "LINE MEMO";
-            this.line_memo.Name = "line_memo";
-            this.line_memo.ReadOnly = true;
-            // 
-            // credit
-            // 
-            this.credit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.credit.DataPropertyName = "credit";
-            this.credit.HeaderText = "CREDIT";
-            this.credit.MinimumWidth = 180;
-            this.credit.Name = "credit";
-            this.credit.ReadOnly = true;
-            // 
-            // debit
-            // 
-            this.debit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.debit.DataPropertyName = "debit";
-            this.debit.HeaderText = "DEBIT";
-            this.debit.Name = "debit";
-            this.debit.ReadOnly = true;
-            // 
-            // posting_ref
-            // 
-            this.posting_ref.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.posting_ref.DataPropertyName = "posting_ref";
-            this.posting_ref.HeaderText = "POSTING REF.";
-            this.posting_ref.Name = "posting_ref";
-            this.posting_ref.ReadOnly = true;
-            this.posting_ref.Visible = false;
-            // 
-            // cmb_posting_ref
-            // 
-            this.cmb_posting_ref.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.cmb_posting_ref.DataPropertyName = "serial_no";
-            this.cmb_posting_ref.HeaderText = "POSTING REF.";
-            this.cmb_posting_ref.MinimumWidth = 180;
-            this.cmb_posting_ref.Name = "cmb_posting_ref";
-            this.cmb_posting_ref.ReadOnly = true;
-            this.cmb_posting_ref.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.cmb_posting_ref.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // account_title
-            // 
-            this.account_title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.account_title.DataPropertyName = "account_title";
-            this.account_title.HeaderText = "ACCT TITLE & EXPLANATION";
-            this.account_title.Name = "account_title";
-            this.account_title.ReadOnly = true;
-            // 
-            // posting_date
-            // 
-            this.posting_date.DataPropertyName = "posting_date";
-            this.posting_date.HeaderText = "POSTING DATE";
-            this.posting_date.Name = "posting_date";
-            this.posting_date.ReadOnly = true;
-            this.posting_date.Visible = false;
-            // 
-            // inserted_date
-            // 
-            this.inserted_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.inserted_date.DataPropertyName = "inserted_date";
-            this.inserted_date.HeaderText = "DATE";
-            this.inserted_date.MinimumWidth = 200;
-            this.inserted_date.Name = "inserted_date";
-            this.inserted_date.ReadOnly = true;
-            // 
-            // account_id
-            // 
-            this.account_id.DataPropertyName = "account_id";
-            this.account_id.HeaderText = "ACCOUNT ID";
-            this.account_id.Name = "account_id";
-            this.account_id.Visible = false;
-            // 
-            // journal_entry_id
-            // 
-            this.journal_entry_id.DataPropertyName = "journal_entry_id";
-            this.journal_entry_id.HeaderText = "JOURNAL ENTRY ID";
-            this.journal_entry_id.Name = "journal_entry_id";
-            this.journal_entry_id.Visible = false;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.Visible = false;
-            // 
             // dgv_journal_entry
             // 
             this.dgv_journal_entry.AllowUserToAddRows = false;
+            this.dgv_journal_entry.AllowUserToDeleteRows = false;
             this.dgv_journal_entry.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_journal_entry.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle37.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle37.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle37.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle37.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_journal_entry.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle37;
             this.dgv_journal_entry.ColumnHeadersHeight = 50;
             this.dgv_journal_entry.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_journal_entry.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -479,6 +402,113 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.dgv_journal_entry.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_journal_entry_CurrentCellDirtyStateChanged);
             this.dgv_journal_entry.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_journal_entry_DataError);
             this.dgv_journal_entry.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_journal_entry_EditingControlShowing);
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // journal_entry_id
+            // 
+            this.journal_entry_id.DataPropertyName = "journal_entry_id";
+            this.journal_entry_id.HeaderText = "JOURNAL ENTRY ID";
+            this.journal_entry_id.Name = "journal_entry_id";
+            this.journal_entry_id.Visible = false;
+            // 
+            // account_id
+            // 
+            this.account_id.DataPropertyName = "account_id";
+            this.account_id.HeaderText = "ACCOUNT ID";
+            this.account_id.Name = "account_id";
+            this.account_id.Visible = false;
+            // 
+            // inserted_date
+            // 
+            this.inserted_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.inserted_date.DataPropertyName = "inserted_date";
+            dataGridViewCellStyle38.BackColor = System.Drawing.Color.Gainsboro;
+            this.inserted_date.DefaultCellStyle = dataGridViewCellStyle38;
+            this.inserted_date.HeaderText = "DATE";
+            this.inserted_date.MinimumWidth = 200;
+            this.inserted_date.Name = "inserted_date";
+            this.inserted_date.ReadOnly = true;
+            // 
+            // posting_date
+            // 
+            this.posting_date.DataPropertyName = "posting_date";
+            dataGridViewCellStyle39.BackColor = System.Drawing.Color.Gainsboro;
+            this.posting_date.DefaultCellStyle = dataGridViewCellStyle39;
+            this.posting_date.HeaderText = "POSTING DATE";
+            this.posting_date.Name = "posting_date";
+            this.posting_date.ReadOnly = true;
+            this.posting_date.Visible = false;
+            // 
+            // account_title
+            // 
+            this.account_title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.account_title.DataPropertyName = "account_title";
+            dataGridViewCellStyle40.BackColor = System.Drawing.Color.Gainsboro;
+            this.account_title.DefaultCellStyle = dataGridViewCellStyle40;
+            this.account_title.HeaderText = "ACCT TITLE & EXPLANATION";
+            this.account_title.Name = "account_title";
+            this.account_title.ReadOnly = true;
+            // 
+            // cmb_posting_ref
+            // 
+            this.cmb_posting_ref.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.cmb_posting_ref.DataPropertyName = "serial_no";
+            dataGridViewCellStyle41.BackColor = System.Drawing.Color.Gainsboro;
+            this.cmb_posting_ref.DefaultCellStyle = dataGridViewCellStyle41;
+            this.cmb_posting_ref.HeaderText = "POSTING REF.";
+            this.cmb_posting_ref.MinimumWidth = 180;
+            this.cmb_posting_ref.Name = "cmb_posting_ref";
+            this.cmb_posting_ref.ReadOnly = true;
+            this.cmb_posting_ref.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.cmb_posting_ref.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // posting_ref
+            // 
+            this.posting_ref.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.posting_ref.DataPropertyName = "posting_ref";
+            dataGridViewCellStyle42.BackColor = System.Drawing.Color.Gainsboro;
+            this.posting_ref.DefaultCellStyle = dataGridViewCellStyle42;
+            this.posting_ref.HeaderText = "POSTING REF.";
+            this.posting_ref.Name = "posting_ref";
+            this.posting_ref.ReadOnly = true;
+            this.posting_ref.Visible = false;
+            // 
+            // debit
+            // 
+            this.debit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.debit.DataPropertyName = "debit";
+            dataGridViewCellStyle43.BackColor = System.Drawing.Color.Gainsboro;
+            this.debit.DefaultCellStyle = dataGridViewCellStyle43;
+            this.debit.HeaderText = "DEBIT";
+            this.debit.Name = "debit";
+            this.debit.ReadOnly = true;
+            // 
+            // credit
+            // 
+            this.credit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.credit.DataPropertyName = "credit";
+            dataGridViewCellStyle44.BackColor = System.Drawing.Color.Gainsboro;
+            this.credit.DefaultCellStyle = dataGridViewCellStyle44;
+            this.credit.HeaderText = "CREDIT";
+            this.credit.MinimumWidth = 180;
+            this.credit.Name = "credit";
+            this.credit.ReadOnly = true;
+            // 
+            // line_memo
+            // 
+            this.line_memo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.line_memo.DataPropertyName = "line_memo";
+            dataGridViewCellStyle45.BackColor = System.Drawing.Color.Gainsboro;
+            this.line_memo.DefaultCellStyle = dataGridViewCellStyle45;
+            this.line_memo.HeaderText = "LINE MEMO";
+            this.line_memo.Name = "line_memo";
+            this.line_memo.ReadOnly = true;
             // 
             // JournalEntryPage
             // 
@@ -532,17 +562,17 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.TextBox txt_period;
         private System.Windows.Forms.ToolStripButton btn_search;
-        private System.Windows.Forms.DataGridViewTextBoxColumn line_memo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn credit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn debit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn posting_ref;
-        private System.Windows.Forms.DataGridViewComboBoxColumn cmb_posting_ref;
-        private System.Windows.Forms.DataGridViewTextBoxColumn account_title;
-        private System.Windows.Forms.DataGridViewTextBoxColumn posting_date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn inserted_date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn account_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn journal_entry_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridView dgv_journal_entry;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn journal_entry_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn account_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn inserted_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn posting_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn account_title;
+        private System.Windows.Forms.DataGridViewComboBoxColumn cmb_posting_ref;
+        private System.Windows.Forms.DataGridViewTextBoxColumn posting_ref;
+        private System.Windows.Forms.DataGridViewTextBoxColumn debit;
+        private System.Windows.Forms.DataGridViewTextBoxColumn credit;
+        private System.Windows.Forms.DataGridViewTextBoxColumn line_memo;
     }
 }

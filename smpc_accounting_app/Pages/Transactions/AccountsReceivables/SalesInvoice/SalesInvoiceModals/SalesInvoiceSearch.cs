@@ -17,8 +17,8 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
     {
         public string SelectedSIId { get; private set; } = null;
         private string placeHolderText = "Sales Invoice Search...";
-        private SalesInvoice2List SalesInvoice;
-        readonly SalesInvoiceService2 salesInvoiceService = new SalesInvoiceService2();
+        private SalesInvoiceList SalesInvoice;
+        readonly SalesInvoiceService salesInvoiceService = new SalesInvoiceService();
         private DataTable siTable;
 
         public SalesInvoiceSearch()
@@ -82,7 +82,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 SalesInvoice = await salesInvoiceService.GetAsModel();
 
                 // Convert journal entry list to DataTable using helper
-                siTable = Helpers.ToDataTable(SalesInvoice.sales_invoice2);
+                siTable = Helpers.ToDataTable(SalesInvoice.sales_invoice);
 
                 if (siTable?.Rows.Count > 0)
                 {

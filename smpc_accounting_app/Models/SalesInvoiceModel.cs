@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace smpc_accounting_app.Models
 {
-    public class SalesInvoice2Model
+    public class SalesInvoiceModel
     {
         public int id { get; set; }
         public string customer { get; set; }
@@ -40,7 +40,7 @@ namespace smpc_accounting_app.Models
         public float total_amount_due { get; set; }
     }
 
-    public class SalesInvoiceDetails2Model
+    public class SalesInvoiceDetailsModel
     {
         public int id { get; set; }
         public int sales_invoice_id { get; set; }
@@ -57,15 +57,15 @@ namespace smpc_accounting_app.Models
         public string date_deliver { get; set; }
     }
 
-    public class SalesInvoice2List
+    public class SalesInvoiceList
     {
-        public List<SalesInvoice2Model> sales_invoice2 { get; set; }
-        public List<SalesInvoiceDetails2Model> sales_invoice_details2 { get; set; }
+        public List<SalesInvoiceModel> sales_invoice { get; set; }
+        public List<SalesInvoiceDetailsModel> sales_invoice_details { get; set; }
     }
 
-    public class SalesInvoice2Payload
+    public class SalesInvoicePayload
     {
-        public SalesInvoice2Model sales_invoice2 { get; set; }
-        public List<SalesInvoiceDetails2Model> sales_invoice_details2 { get; set; }
+        public SalesInvoiceModel sales_invoice { get; set; }
+        public List<SalesInvoiceDetailsModel> sales_invoice_details { get; set; }
     }
 }

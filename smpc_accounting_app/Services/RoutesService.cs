@@ -32,11 +32,9 @@ namespace smpc_accounting_app.Services
             { "Bank Setup", new BankPage() },
             { "Book Setup", new BookPage() },
             { "Currency Setup", new CurrencyPage() },
-            { "Expanded Tax Setup", new ExpandedTaxPage() },
             { "GL Mapper Setup", new GeneralLedgerMapperPage() },        
-            {"Chart Of Accounts Setup", new ChartOfAccountsPage() },
             { "Tax Setup", new InputVatPage() },
-
+            {"Chart Of Accounts Setup", new ChartOfAccountsPage() },
 
             //========================================================================
             // TRANSACTIONS   
@@ -54,7 +52,7 @@ namespace smpc_accounting_app.Services
 
             //========================================================================
             // ACCOUNTS RECEIVABLES
-            {"Sales Invoice", new SalesInvoicePage2()},
+            {"Sales Invoice", new SalesInvoicePage()},
             {"Payment Receipt", new PaymentReceiptPage()},
         };
 
