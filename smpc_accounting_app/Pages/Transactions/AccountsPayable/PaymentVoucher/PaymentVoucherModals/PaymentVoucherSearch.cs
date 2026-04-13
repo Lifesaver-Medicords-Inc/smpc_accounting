@@ -97,7 +97,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.
             }
             catch (NullReferenceException)
             {
-                Helpers.ShowDialogMessage("error", "Nopayment voucher found.");
+                Helpers.ShowDialogMessage("error", "No payment voucher found.");
             }
             catch (Exception ex)
             {

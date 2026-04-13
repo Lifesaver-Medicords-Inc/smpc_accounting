@@ -333,8 +333,11 @@ namespace smpc_accounting_app.Services.Helpers
                         textBox.BackColor = readOnly ? Color.FromArgb(235, 235, 235) : Color.White;
                     }
                     else if (control is ComboBox comboBox)
+                    {
                         comboBox.Enabled = !readOnly;
-
+                        comboBox.DropDownStyle = readOnly ? ComboBoxStyle.DropDown : ComboBoxStyle.DropDownList;
+                        comboBox.BackColor = readOnly ? Color.FromArgb(235, 235, 235) : Color.White;
+                    }
                     else if (control is DateTimePicker datePicker)
                         datePicker.Enabled = !readOnly; // No true ReadOnly, fallback behavior
 
@@ -363,8 +366,13 @@ namespace smpc_accounting_app.Services.Helpers
                             textBox.ReadOnly = readOnly;
                             textBox.BackColor = readOnly ? Color.FromArgb(235, 235, 235) : Color.White;
                         }
+
                         else if (control is ComboBox comboBox)
-                            comboBox.DropDownStyle = readOnly ? ComboBoxStyle.DropDownList : ComboBoxStyle.DropDown;
+                        {
+                            comboBox.Enabled = !readOnly;
+                            comboBox.DropDownStyle = readOnly ? ComboBoxStyle.DropDown : ComboBoxStyle.DropDownList;
+                            comboBox.BackColor = readOnly ? Color.FromArgb(235, 235, 235) : Color.White;
+                        }
 
                         else if (control is DateTimePicker datePicker)
                             datePicker.Enabled = !readOnly;
@@ -869,7 +877,7 @@ namespace smpc_accounting_app.Services.Helpers
                         }
                     }
 
-                    textBox.BackColor = SystemColors.Window;
+                    textBox.BackColor = Color.FromArgb(235, 235, 235);
                 }
                 else if (control is ComboBox comboBox)
                 {
@@ -880,7 +888,7 @@ namespace smpc_accounting_app.Services.Helpers
                     }
                     else
                     {
-                        comboBox.BackColor = SystemColors.Window;
+                        comboBox.BackColor = Color.FromArgb(235, 235, 235);
                     }
                 }
                 else if (control is DateTimePicker dtp)
@@ -894,8 +902,8 @@ namespace smpc_accounting_app.Services.Helpers
                         }
                         else
                         {
-                            dtp.CalendarMonthBackground = SystemColors.Window;
-                            dtp.BackColor = SystemColors.Window;
+                            dtp.CalendarMonthBackground = Color.FromArgb(235, 235, 235);
+                            dtp.BackColor = Color.FromArgb(235, 235, 235);
                         }
                     }
                 }
@@ -961,7 +969,7 @@ namespace smpc_accounting_app.Services.Helpers
                             }
                         }
 
-                        textBox.BackColor = SystemColors.Window;
+                        textBox.BackColor = Color.FromArgb(235, 235, 235);
                     }
                     else if (control is ComboBox comboBox)
                     {
@@ -972,7 +980,7 @@ namespace smpc_accounting_app.Services.Helpers
                         }
                         else
                         {
-                            comboBox.BackColor = SystemColors.Window;
+                            comboBox.BackColor = Color.FromArgb(235, 235, 235);
                         }
                     }
                     else if (control is DateTimePicker dtp)
@@ -986,8 +994,8 @@ namespace smpc_accounting_app.Services.Helpers
                             }
                             else
                             {
-                                dtp.CalendarMonthBackground = SystemColors.Window;
-                                dtp.BackColor = SystemColors.Window;
+                                dtp.CalendarMonthBackground = Color.FromArgb(235, 235, 235);
+                                dtp.BackColor = Color.FromArgb(235, 235, 235);
                             }
                         }
                     }
@@ -999,7 +1007,7 @@ namespace smpc_accounting_app.Services.Helpers
 
         public static void FlashRed(Control control)
         {
-            Color originalColor = SystemColors.Window;
+            Color originalColor = control.BackColor;
             control.BackColor = Color.Red;
 
             var timer = new System.Windows.Forms.Timer();
@@ -1523,49 +1531,71 @@ namespace smpc_accounting_app.Services.Helpers
                                 }
                             }
 
-                            // Check if the control is a Combobox
-                            if (control is ComboBox comboBox)
+                            // Check if the control is a Combobox
+                            if (control is ComboBox comboBox)
                             {
-                                Console.WriteLine($"This is a  combobox: {comboBox.Name} ");
+                                Console.WriteLine($"This is a combobox: {comboBox.Name}");
                                 string key = comboBox.Name.Replace("cmb_", "") + "_id";
+                                comboBox.BackColor = Color.FromArgb(235, 235, 235);
 
                                 if (comboBox.Tag == "DYNAMIC")
                                 {
                                     Console.WriteLine("DYNAMICS:", comboBox.Name);
-                                    comboBox.SelectedValue = (string)dt.Rows[selectedIndex][key].ToString();
+                                    string rawVal = dt.Rows[selectedIndex][key].ToString();
+
+                                    if (comboBox.DataSource != null)
+                                    {
+                                        // Items are loaded, bind normally
+                                        comboBox.SelectedValue = rawVal;
+                                    }
+                                    else
+                                    {
+                                        // Items not loaded yet (view mode) — store for deferred binding
+                                        comboBox.AccessibleDescription = rawVal;
+                                        comboBox.Text = dt.Rows[selectedIndex][column_name].ToString();
+                                    }
                                 }
-                                // Check multiple values
-                                else if (comboBox.Tag == "MULTIVALUE")
+                                else if (comboBox.Tag == "MULTIVALUE")
                                 {
                                     string rawValue = dt.Rows[selectedIndex][column_name].ToString();
                                     var multiValues = rawValue.Split(',')
-                                    .Select(v => v.Trim())
-                                    .Where(v => !string.IsNullOrEmpty(v))
-                                    .ToList();
+                                        .Select(v => v.Trim())
+                                        .Where(v => !string.IsNullOrEmpty(v))
+                                        .ToList();
 
-                                    // Set the first value as the display text (optional behavior)
-                                    comboBox.Text = multiValues.FirstOrDefault() ?? string.Empty;
+                                    comboBox.Text = multiValues.FirstOrDefault() ?? string.Empty;
 
-                                    // Populate the ComboBox with all values
-                                    //comboBox.Items.Clear();
-                                    foreach (var val in multiValues)
-                                    {
+                                    foreach (var val in multiValues)
                                         comboBox.Items.Add(val);
-                                    }
 
-                                    // Optionally set the first item as selected (you could change this logic)
-                                    if (multiValues.Count > 0)
-                                    {
-                                        comboBox.SelectedIndex = 0;  // Select the first item (if needed)
-                                    }
+                                    if (multiValues.Count > 0)
+                                        comboBox.SelectedIndex = 0;
                                 }
                                 else
                                 {
-                                    string keys = comboBox.Name.Replace("cmb_", "");
-                                    comboBox.Text = (string)dt.Rows[selectedIndex][column_name].ToString();
-                                }
+                                    // View mode — no items loaded, just display the text value
+                                    string displayValue = dt.Rows[selectedIndex][column_name].ToString();
 
+                                    if (comboBox.Items.Count > 0)
+                                    {
+                                        // Try to select matching item first
+                                        int matchIndex = comboBox.FindStringExact(displayValue);
+                                        if (matchIndex >= 0)
+                                            comboBox.SelectedIndex = matchIndex;
+                                        else
+                                            comboBox.Text = displayValue;
+                                    }
+                                    else
+                                    {
+                                        // No items — force text display and store raw value
+                                        comboBox.DropDownStyle = ComboBoxStyle.DropDown; // must be DropDown to allow free text
+                                        comboBox.Text = displayValue;
+                                        comboBox.AccessibleDescription = displayValue; // stash for later if needed
+                                        comboBox.BackColor = Color.FromArgb(235, 235, 235);
+                                    }
+                                }
                             }
+
                             // Check if the control is a Checkbox
                             if (control is CheckBox checkbox)
                             {

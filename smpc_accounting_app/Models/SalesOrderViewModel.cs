@@ -11,6 +11,7 @@ namespace smpc_accounting_app.Models
         public int id { get; set; }
         public int sales_order_id { get; set; }
         public string so_number { get; set; }
+        public int dr_number { get; set; }
         public string doc_date { get; set; }
         public string customer_name { get; set; }
         public string sales_person { get; set; }

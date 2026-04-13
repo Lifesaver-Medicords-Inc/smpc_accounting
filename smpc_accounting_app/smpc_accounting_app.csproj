@@ -311,11 +311,11 @@
     <Compile Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptModals\InvoiceSearchSupplier.Designer.cs">
       <DependentUpon>InvoiceSearchSupplier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.cs">
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.Designer.cs">
-      <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage.Designer.cs">
+      <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherModals\PaymentVoucherSearch.cs">
       <SubType>Form</SubType>
@@ -531,8 +531,8 @@
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\InvoiceReceipt\InvoiceReceiptPage.resx">
       <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage2.resx">
-      <DependentUpon>PaymentVoucherPage2.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherPage.resx">
+      <DependentUpon>PaymentVoucherPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\AccountsPayable\PaymentVoucher\PaymentVoucherModals\PaymentVoucherSearch.resx">
       <DependentUpon>PaymentVoucherSearch.cs</DependentUpon>

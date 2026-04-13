@@ -23,6 +23,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private DataTable customerTable;
         private int _customerID;
         public HashSet<string> SelectedSOLabels { get; private set; } = new HashSet<string>();
+        public HashSet<int> SelectedDRLabels { get; private set; } = new HashSet<int>();
         public HashSet<string> SelectedSalesPersonLabels { get; private set; } = new HashSet<string>();
         public DataTable ExistingSOs { get; set; }
 
@@ -199,6 +200,13 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                     if (!string.IsNullOrEmpty(docNo))
                     {
                         SelectedSOLabels.Add(docNo); // HashSet automatically prevents duplicates
+                    }
+
+                    // still collect doc_no if needed
+                    var drNo = row.Cells["dr_number"].Value;
+                    if (drNo != null && int.TryParse(drNo.ToString(), out int drId))
+                    {
+                        SelectedDRLabels.Add(drId); // HashSet automatically prevents duplicates
                     }
 
                     // still collect sales person if needed

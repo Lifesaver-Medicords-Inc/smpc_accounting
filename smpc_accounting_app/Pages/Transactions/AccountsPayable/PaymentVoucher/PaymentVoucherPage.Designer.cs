@@ -1,7 +1,7 @@
 ﻿
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 {
-    partial class PaymentVoucherPage2
+    partial class PaymentVoucherPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentVoucherPage2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentVoucherPage));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();

@@ -585,10 +585,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                     dgv_main.Refresh();
                     UpdatePwdDiscountState();
 
-                    //Set Reference PO textbox
+                    //Set Reference SO textbox
                     if (modal.SelectedSOLabels != null && modal.SelectedSOLabels.Any())
                     {
-                        // Format each PO with prefix + 8 digits
+                        // Format each SO with prefix + 8 digits
                         var formattedPOs = modal.SelectedSOLabels.Select(po =>
                         {
                             if (int.TryParse(po, out int poNumber))
@@ -604,6 +604,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                     {
                         txt_reference_doc_so.Text = string.Empty;
                         txt_reference_doc_so.AccessibleDescription = string.Empty;
+                    }
+
+                    //Set Reference DR textbox
+                    if (modal.SelectedDRLabels != null && modal.SelectedDRLabels.Any())
+                    {
+                        var formattedDRs = modal.SelectedDRLabels
+                            .Select(dr => "DR" + dr.ToString("D8")) // e.g., DR00000012
+                            .ToList();
+
+                        txt_reference_doc_dr.Text = string.Join(", ", formattedDRs);
+                        txt_reference_doc_dr.AccessibleDescription = string.Join(", ", modal.SelectedDRLabels);
+                    }
+                    else
+                    {
+                        txt_reference_doc_dr.Text = string.Empty;
+                        txt_reference_doc_dr.AccessibleDescription = string.Empty;
                     }
 
                     //Set Sales Person textbox

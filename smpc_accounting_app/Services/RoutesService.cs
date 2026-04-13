@@ -45,7 +45,7 @@ namespace smpc_accounting_app.Services
              
             //========================================================================
             // ACCOUNTS PAYABLES
-            { "Payment Voucher", new PaymentVoucherPage2() },
+            { "Payment Voucher", new PaymentVoucherPage() },
             { "AP Voucher", new APVoucherPage() },
             { "Invoice Receipt", new InvoiceReceiptPage() },
             { "Bulk Invoice Receipt", new BulkInvoiceReceiptPage() },

@@ -44,6 +44,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.isSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.sales_order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.so_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dr_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.doc_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customer_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sales_person = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,6 +70,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.isSelected,
             this.sales_order_id,
             this.so_number,
+            this.dr_number,
             this.doc_date,
             this.customer_name,
             this.sales_person,
@@ -145,6 +147,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             this.so_number.Name = "so_number";
             this.so_number.ReadOnly = true;
             // 
+            // dr_number
+            // 
+            this.dr_number.DataPropertyName = "dr_number";
+            this.dr_number.HeaderText = "DR NUMBER";
+            this.dr_number.Name = "dr_number";
+            this.dr_number.ReadOnly = true;
+            this.dr_number.Visible = false;
+            // 
             // doc_date
             // 
             this.doc_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -214,6 +224,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         private System.Windows.Forms.DataGridViewCheckBoxColumn isSelected;
         private System.Windows.Forms.DataGridViewTextBoxColumn sales_order_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn so_number;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dr_number;
         private System.Windows.Forms.DataGridViewTextBoxColumn doc_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn customer_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn sales_person;

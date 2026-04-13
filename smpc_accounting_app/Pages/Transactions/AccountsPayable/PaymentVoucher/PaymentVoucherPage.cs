@@ -18,7 +18,7 @@ using smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.Paym
 
 namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 {
-    public partial class PaymentVoucherPage2 : UserControl
+    public partial class PaymentVoucherPage : UserControl
     {
         PaymentVoucherService paymentVoucherService = new PaymentVoucherService();
         private int _currentPVIndex = -1;
@@ -32,7 +32,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         private bool _isEditing = false;
         private string _userName;
 
-        public PaymentVoucherPage2()
+        public PaymentVoucherPage()
         {
             InitializeComponent();
 
