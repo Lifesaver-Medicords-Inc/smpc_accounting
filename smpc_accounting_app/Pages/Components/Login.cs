@@ -48,8 +48,8 @@ namespace smpc_accounting_app.Pages.Components
 
         private void Login_Load(object sender, EventArgs e)
         {
-            txt_employee_id.Text = "PURCH-PO-8";
-            txt_password.Text = "PURCH-PO-8";
+            //txt_employee_id.Text = "PURCH-PO-8";
+            //txt_password.Text = "PURCH-PO-8";
         }
     }
 }

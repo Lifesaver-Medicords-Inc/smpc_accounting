@@ -61,6 +61,11 @@ namespace smpc_sales_app.Services.Helpers
                 dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
             }
 
+            // A "data": null response (e.g. zero records) is a normal API response, not
+            // an error, so it shouldn't blow up here - just yield an empty table.
+            if (items == null)
+                return dataTable;
+
             // Add rows to the DataTable
             foreach (var item in items)
             {

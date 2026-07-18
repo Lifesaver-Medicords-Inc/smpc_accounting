@@ -419,7 +419,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         {
             _currentCursor = null;
             _lastSearchText = "";
-            _cldata.Rows.Clear();
+            _cldata?.Rows.Clear();
         }
 
         private void LoadSelectedChartClass()
