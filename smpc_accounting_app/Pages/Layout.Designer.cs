@@ -74,6 +74,7 @@ namespace smpc_accounting_app
             this.panel5 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.pnl_redbox_body = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Sidebar = new System.Windows.Forms.TreeView();
             this.container = new System.Windows.Forms.Panel();
@@ -200,6 +201,7 @@ namespace smpc_accounting_app
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.LightCoral;
+            this.panel5.Controls.Add(this.pnl_redbox_body);
             this.panel5.Controls.Add(this.label1);
             this.panel5.Controls.Add(this.panel6);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
@@ -226,7 +228,15 @@ namespace smpc_accounting_app
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(312, 1);
             this.panel6.TabIndex = 0;
-            // 
+            //
+            // pnl_redbox_body
+            //
+            this.pnl_redbox_body.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right);
+            this.pnl_redbox_body.Location = new System.Drawing.Point(1, 42);
+            this.pnl_redbox_body.Name = "pnl_redbox_body";
+            this.pnl_redbox_body.Size = new System.Drawing.Size(311, 385);
+            this.pnl_redbox_body.TabIndex = 2;
+            //
             // panel1
             // 
             this.panel1.Controls.Add(this.Sidebar);
@@ -328,6 +338,7 @@ namespace smpc_accounting_app
         private System.Windows.Forms.ToolStripStatusLabel lbl_status;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel pnl_redbox_body;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TreeView Sidebar;
         private System.Windows.Forms.Label label1;

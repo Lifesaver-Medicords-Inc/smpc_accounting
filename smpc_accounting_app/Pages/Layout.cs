@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using smpc_accounting_app.Pages.Components;
+using smpc_accounting_app.Pages.Shared;
 using smpc_accounting_app.Shared;
 using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Helpers;
@@ -22,6 +23,7 @@ namespace smpc_accounting_app
         GeneralService<JournalEntryModel> serviceJournalSetup;
         GeneralService<ExchangeRateModel> serviceCurrencyRateSetup;
         private string _currencyCode;
+        private readonly RedBoxAR _redBoxAR = new RedBoxAR { Dock = DockStyle.Fill };
 
         public Layout()
         {
@@ -29,10 +31,12 @@ namespace smpc_accounting_app
 
             tabContainer.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabContainer.SizeMode = TabSizeMode.Fixed;
-            tabContainer.ItemSize = new Size(150, 20); // Width, Height of tabs  
+            tabContainer.ItemSize = new Size(150, 20); // Width, Height of tabs
 
             //tabContainer.DrawItem += tabContainer_DrawItem;
             //tabContainer.MouseDown += tabContainer_MouseDown;
+
+            pnl_redbox_body.Controls.Add(_redBoxAR);
         }
 
         private void Sidebar_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -192,6 +196,12 @@ namespace smpc_accounting_app
             await LoadCurrency();
 
             Sidebar.Enabled = true;
+
+            // Loaded last, after login/currency are confirmed - RedBoxAR lives in
+            // the always-visible panel5, so its constructor runs before login
+            // resolves; kicking off its first data load here (rather than on its
+            // own Load event) avoids hitting the API before a session exists.
+            await _redBoxAR.RefreshData();
         }
 
         private async Task LoadCurrency()
