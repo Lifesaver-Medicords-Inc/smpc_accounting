@@ -188,6 +188,7 @@
     <Compile Include="Models\SalesOrderList.cs" />
     <Compile Include="Models\SalesOrderViewModel.cs" />
     <Compile Include="Models\SupplierTradeViewModel.cs" />
+    <Compile Include="Models\CreditMemoModel.cs" />
     <Compile Include="Models\Taxation.cs" />
     <Compile Include="Models\TaxSetupModel.cs" />
     <Compile Include="Models\TaxSetupList.cs" />
@@ -422,6 +423,7 @@
     <Compile Include="Services\Transactions\APVoucherService.cs" />
     <Compile Include="Services\Transactions\BulkInvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\InvoiceReceiptService.cs" />
+    <Compile Include="Services\Transactions\CreditMemoService.cs" />
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
     <Compile Include="Services\Transactions\PaymentReceiptService.cs" />
     <Compile Include="Services\Transactions\PaymentVoucherService.cs" />

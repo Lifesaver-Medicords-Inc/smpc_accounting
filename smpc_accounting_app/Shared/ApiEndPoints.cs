@@ -62,5 +62,10 @@ namespace smpc_accounting_app.Shared
         public const string JOURNAL_ENTRY = "/accounting/journal_entry";
         public const string COMPANY_SETUP = "/accounting/company_setup";
         public const string CURRENT_JOURNAL = "/accounting/current_journal";
+
+        // Credit Memo / Debit Memo (spec §5.18/§5.19) - own top-level routes on the
+        // Go side, not nested under /accounting like everything else above.
+        public const string CREDIT_MEMO = "/credit-memos";
+        public const string DEBIT_MEMO = "/debit-memos";
     }
 }

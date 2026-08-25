@@ -37,23 +37,26 @@ namespace smpc_accounting_app.Services
             {"Chart Of Accounts Setup", new ChartOfAccountsPage() },
 
             //========================================================================
-            // TRANSACTIONS   
+            // TRANSACTIONS
             {"Journal Voucher", new JournalVoucher() },
             {"Journal Entry", new JournalEntryPage() },
-            {"Credit Memo", new CreditMemo() },
-            {"Debit Memo", new DebitMemo() },
-             
+
             //========================================================================
             // ACCOUNTS PAYABLES
             { "Payment Voucher", new PaymentVoucherPage() },
             { "AP Voucher", new APVoucherPage() },
             { "Invoice Receipt", new InvoiceReceiptPage() },
             { "Bulk Invoice Receipt", new BulkInvoiceReceiptPage() },
+            // Sec5.18: direction is fixed by which menu entry constructs this -
+            // never a choice made inside the form itself (Sec14.98).
+            { "Credit Memo", new CreditMemo("Supplier") },
+            { "Debit Memo", new DebitMemo() },
 
             //========================================================================
             // ACCOUNTS RECEIVABLES
             {"Sales Invoice", new SalesInvoicePage()},
             {"Payment Receipt", new PaymentReceiptPage()},
+            {"Customer Credit Memo", new CreditMemo("Customer") },
         };
 
         private string _selectedRoute;
