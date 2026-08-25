@@ -318,7 +318,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(71, 13);
             this.label11.TabIndex = 262;
-            this.label11.Text = "CUSTOMER:";
+            // Was "CUSTOMER:" - Debit Memo is A/P-only (spec Sec5.19, CLAUDE.md
+            // invariant #13); the spec explicitly calls this label the error, not
+            // the field's data (it was already populated with an S# supplier id).
+            this.label11.Text = "SUPPLIER:";
             // 
             // dateTimePicker4
             // 
