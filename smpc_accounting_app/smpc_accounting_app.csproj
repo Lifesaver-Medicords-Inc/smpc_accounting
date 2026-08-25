@@ -189,6 +189,7 @@
     <Compile Include="Models\SalesOrderViewModel.cs" />
     <Compile Include="Models\SupplierTradeViewModel.cs" />
     <Compile Include="Models\CreditMemoModel.cs" />
+    <Compile Include="Models\DebitMemoModel.cs" />
     <Compile Include="Models\Taxation.cs" />
     <Compile Include="Models\TaxSetupModel.cs" />
     <Compile Include="Models\TaxSetupList.cs" />
@@ -384,6 +385,12 @@
     <Compile Include="Pages\Transactions\Journal\DebitMemo.Designer.cs">
       <DependentUpon>DebitMemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Transactions\Journal\DebitMemoModals\DebitMemoCreditMemoPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\Journal\DebitMemoModals\DebitMemoCreditMemoPicker.Designer.cs">
+      <DependentUpon>DebitMemoCreditMemoPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -424,6 +431,7 @@
     <Compile Include="Services\Transactions\BulkInvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\InvoiceReceiptService.cs" />
     <Compile Include="Services\Transactions\CreditMemoService.cs" />
+    <Compile Include="Services\Transactions\DebitMemoService.cs" />
     <Compile Include="Services\Transactions\JournalEntryService.cs" />
     <Compile Include="Services\Transactions\PaymentReceiptService.cs" />
     <Compile Include="Services\Transactions\PaymentVoucherService.cs" />
