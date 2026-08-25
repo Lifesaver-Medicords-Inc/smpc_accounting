@@ -8,16 +8,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using smpc_accounting_app.Shared;
 
 namespace smpc_accounting_app.Services.Helpers
-{  
+{
 
     public static class ApiService<T> where T : class
     {
         static string baseUrl => Program.ApiBaseUrl ?? "http://127.0.0.1:3000/api";
         static private async Task<T> SendRequestAsync(string url, HttpMethod method, string body = null)
         {
-            
+
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -35,10 +36,29 @@ namespace smpc_accounting_app.Services.Helpers
                         Content = content
                     };
 
+                    // ERP_API's RequireAuth middleware rejects every request with no
+                    // token ("Missing authentication token") - the token is only ever
+                    // delivered via a Set-Cookie header at login (utils.CreateAuthToken),
+                    // never in the JSON body, and this class never read it or resent it.
+                    // Same fix as smpc_inventory_app's RequestToApi.cs, which already
+                    // works this way.
+                    if (!string.IsNullOrEmpty(CacheData.SessionToken))
+                    {
+                        requestMessage.Headers.Add("Authorization", CacheData.SessionToken);
+                    }
+
                     // Perform the HTTP request asynchronously
                     HttpResponseMessage response = await client.SendAsync(requestMessage);
 
-
+                    if (string.IsNullOrEmpty(CacheData.SessionToken)
+                        && response.Headers.TryGetValues("Set-Cookie", out var setCookieValues))
+                    {
+                        string token = ExtractToken(setCookieValues.First());
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            CacheData.SessionToken = token;
+                        }
+                    }
 
                     // Check if the response is successful
                     if (response.IsSuccessStatusCode)
@@ -124,5 +144,19 @@ namespace smpc_accounting_app.Services.Helpers
             return await SendRequestAsync(url, HttpMethod.Delete, jsonContent);
         }
 
+        // Same parsing as smpc_inventory_app.Services.Helpers.RequestToApi<T>.ExtractToken -
+        // the cookie header looks like "Authorization=<jwt>; expires=...; SameSite=Lax"
+        // (utils.CreateAuthToken), so pull out just the value between "Authorization="
+        // and the next ";" (or end of string if there isn't one).
+        private static string ExtractToken(string cookieString)
+        {
+            int tokenStartIndex = cookieString.IndexOf("Authorization=") + "Authorization=".Length;
+            if (tokenStartIndex < "Authorization=".Length) return null; // "Authorization=" not found
+
+            int tokenEndIndex = cookieString.IndexOf(";", tokenStartIndex);
+            return tokenEndIndex == -1
+                ? cookieString.Substring(tokenStartIndex)
+                : cookieString.Substring(tokenStartIndex, tokenEndIndex - tokenStartIndex);
+        }
     }
 }

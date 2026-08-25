@@ -30,7 +30,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private readonly CreditMemoService _service = new CreditMemoService();
         private List<CreditMemoModel> _records = new List<CreditMemoModel>();
         private int _currentIndex = -1;
-        private bool _isNewMode;
 
         // Fields that are always read-only regardless of edit mode - system-set
         // (DOC NO.), derived and never user-typed (PARTNER TYPE), or populated
@@ -193,7 +192,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
         private void btn_new_Click(object sender, EventArgs e)
         {
-            _isNewMode = true;
             _currentIndex = -1;
             ClearForm();
             SetEditMode(true);
@@ -202,13 +200,11 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private void btn_edit_Click(object sender, EventArgs e)
         {
             if (_currentIndex < 0) return;
-            _isNewMode = false;
             SetEditMode(true);
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            _isNewMode = false;
             SetEditMode(false);
             if (_currentIndex < 0 && _records.Count > 0) _currentIndex = 0;
             ShowCurrentRecord();

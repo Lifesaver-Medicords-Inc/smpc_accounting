@@ -18,6 +18,15 @@ namespace smpc_accounting_app.Shared
 
 
         public static DataTable PaymentTerms { get; set; } = new DataTable();
+
+        // Login only ever delivered the auth token as a Set-Cookie header
+        // (utils.CreateAuthToken on the Go side) - ApiService.cs never read it,
+        // so every authenticated call after login failed with "Missing
+        // authentication token" (RequireAuth). Mirrors
+        // smpc_inventory_app's RequestToApi.cs, the app where this already
+        // works correctly.
+        public static string SessionToken { get; set; } = "";
+
         public static CurrentUserModel CurrentUser { get; set; } = null;
         public static CompanySetupModel CompanySetup { get; set; } = null;
         public static JournalEntryModel CurrentJournal { get; set; } = null;
