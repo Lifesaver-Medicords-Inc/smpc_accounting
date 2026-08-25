@@ -180,11 +180,26 @@ namespace smpc_accounting_app
                 this.Enabled = true;
 
                 serviceCompanySetup = new GeneralService<CompanySetupModel>(ApiEndPoints.COMPANY_SETUP);
-                CacheData.CompanySetup = await serviceCompanySetup.GetAsModel();
+                // GetAsModel() returns null on any failed/errored call (auth failure,
+                // no matching row, etc.) - defaulting to an empty instance here means
+                // every page that reads CacheData.CompanySetup.* later gets blank
+                // fields instead of a NullReferenceException on CompanySetup itself.
+                CacheData.CompanySetup = await serviceCompanySetup.GetAsModel() ?? new CompanySetupModel();
                 _currencyCode = CacheData.CompanySetup.currency_code;
 
                 serviceJournalSetup = new GeneralService<JournalEntryModel>(ApiEndPoints.CURRENT_JOURNAL);
-                CacheData.CurrentJournal = await serviceJournalSetup.GetAsModel();
+                // GetCurrentJournal (Go) returns an error - not an empty result - when
+                // no journal entry period covers today (confirmed: tbl_accounting_
+                // journal_entry has zero rows in the test DB right now), so this comes
+                // back null until someone sets one up. Same defensive default as
+                // CompanySetup above - every page reading CacheData.CurrentJournal.*
+                // (e.g. SalesInvoicePage) was crashing on this being null rather than
+                // just having blank journal info.
+                CacheData.CurrentJournal = await serviceJournalSetup.GetAsModel() ?? new JournalEntryModel();
+                if (string.IsNullOrEmpty(CacheData.CurrentJournal.journal_name))
+                {
+                    Helpers.ShowDialogMessage("warning", "No active journal entry period is configured for today. Set one up in Journal Entry before posting transactions that need one.");
+                }
 
                 this.Enabled = true;
             }
