@@ -198,7 +198,14 @@ namespace smpc_accounting_app
                 CacheData.CurrentJournal = await serviceJournalSetup.GetAsModel() ?? new JournalEntryModel();
                 if (string.IsNullOrEmpty(CacheData.CurrentJournal.journal_name))
                 {
-                    Helpers.ShowDialogMessage("warning", "No active journal entry period is configured for today. Set one up in Journal Entry before posting transactions that need one.");
+                    // Helpers.ShowDialogMessage only handles "success"/"error" in this
+                    // app (unlike smpc_inventory_app's version, which also has
+                    // "warning") - anything else falls through to its own "Unknown
+                    // status" dialog. Plain MessageBox.Show here instead of extending
+                    // a shared helper other screens also rely on.
+                    MessageBox.Show(
+                        "No active journal entry period is configured for today. Set one up in Journal Entry before posting transactions that need one.",
+                        "SMPC SOFTWARE", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 this.Enabled = true;
