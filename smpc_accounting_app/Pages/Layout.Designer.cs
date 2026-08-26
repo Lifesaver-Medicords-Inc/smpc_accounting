@@ -57,10 +57,16 @@ namespace smpc_accounting_app
             System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Chart Class Setup");
             System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Chart Of Accounts Setup");
             System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Tax Setup");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Output VAT Setup");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Final Tax Setup");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Company Setup");
             System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
             treeNode14,
             treeNode15,
-            treeNode16});
+            treeNode16,
+            treeNode18,
+            treeNode19,
+            treeNode20});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Layout));
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -290,6 +296,12 @@ namespace smpc_accounting_app
             treeNode15.Text = "Chart Of Accounts Setup";
             treeNode16.Name = "Tax Setup";
             treeNode16.Text = "Tax Setup";
+            treeNode18.Name = "Output VAT Setup";
+            treeNode18.Text = "Output VAT Setup";
+            treeNode19.Name = "Final Tax Setup";
+            treeNode19.Text = "Final Tax Setup";
+            treeNode20.Name = "Company Setup";
+            treeNode20.Text = "Company Setup";
             treeNode17.Name = "parent_6";
             treeNode17.Text = "System Configuration";
             this.Sidebar.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {

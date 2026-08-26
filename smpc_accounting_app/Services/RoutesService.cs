@@ -1,4 +1,5 @@
 ﻿using smpc_accounting_app.Pages;
+using smpc_accounting_app.Pages.Setup;
 using smpc_accounting_app.Pages.Setup.Financial;
 using smpc_accounting_app.Pages.Setup.Others;
 using smpc_accounting_app.Pages.Setup.Tax;
@@ -35,6 +36,15 @@ namespace smpc_accounting_app.Services
             { "GL Mapper Setup", new GeneralLedgerMapperPage() },        
             { "Tax Setup", new InputVatPage() },
             {"Chart Of Accounts Setup", new ChartOfAccountsPage() },
+            // Phase 3 items 3.2-3.4. Output VAT/Final Tax are the same generic §4.5.3
+            // Tax Code Setup screen InputVatPage already is (that page shows every
+            // code unfiltered - "Input VAT" is just its current menu label) narrowed
+            // to a real subset: Output VAT to codes with a Sales COA assigned, Final
+            // Tax to the single "FINAL-TAX" code (confirmed with the user: just
+            // another Tax Code Setup entry, not a separate concept).
+            { "Output VAT Setup", new OutputVatPage() },
+            { "Final Tax Setup", new FinalTaxPage() },
+            { "Company Setup", new CompanySetupPage() },
 
             //========================================================================
             // TRANSACTIONS

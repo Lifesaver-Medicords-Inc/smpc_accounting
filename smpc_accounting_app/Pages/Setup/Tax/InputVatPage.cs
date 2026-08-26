@@ -38,10 +38,21 @@ namespace smpc_accounting_app.Pages.Setup.Tax
             InitializeComponent();
 
             Helpers.Placeholder.SetPlaceholder(txt_search, placeHolderText);
-            Helpers.AllowOnlyNumbers(txt_code);
+            // AllowOnlyNumbers(txt_code) was here - wrong for a TAX CODE field (VAT,
+            // EWT, NON-VAT, ...), which is alphanumeric with hyphens. Combined with
+            // txt_code's Designer-set ReadOnly=true (see SetEditableColumns), this
+            // meant a tax code could never actually be typed at all - very likely why
+            // every §4.5.3 code still sits at zero rows in the DB.
         }
 
-        private void SetEditableColumns(bool isEdit)
+        // txt_code/txt_tax_desc are ReadOnly=true in the Designer and were never
+        // toggled anywhere - meaning "New" could never actually let anyone type a
+        // real TAX CODE or TAX DESCRIPTION, on this screen or its clones (Output
+        // VAT/Final Tax). That's very likely why all ten §4.5.3 codes still sit at
+        // zero rows in the DB - nothing could ever create one through this UI.
+        // Unlocked for NEW records only - an existing code's identity shouldn't
+        // change once created, only its validity periods (already handled below).
+        private void SetEditableColumns(bool isEdit, bool isNewMode = false)
         {
             var editableColumns = new[] { "valid_from", "valid_to", "tax_rate" };
 
@@ -57,11 +68,16 @@ namespace smpc_accounting_app.Pages.Setup.Tax
                     column.DefaultCellStyle.BackColor = column.ReadOnly ? Color.Gainsboro : Color.White;
                 }
             }
+
+            txt_code.ReadOnly = !isNewMode;
+            txt_code.BackColor = isNewMode ? Color.White : Color.FromArgb(235, 235, 235);
+            txt_tax_desc.ReadOnly = !isNewMode;
+            txt_tax_desc.BackColor = isNewMode ? Color.White : Color.FromArgb(235, 235, 235);
         }
 
         private void SetEditMode(bool enable, bool isNewMode = false)
         {
-            SetEditableColumns(enable);
+            SetEditableColumns(enable, isNewMode);
             _isNewMode = isNewMode;
             _isEditMode = !isNewMode && enable;
             dgv_tax_details.AllowUserToAddRows = enable;
