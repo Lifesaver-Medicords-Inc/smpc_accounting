@@ -563,20 +563,26 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             if (parts.Length != 2)
                 return false;
 
-            //Should be MM/dd/yyyy format
-            string format = "dd/MM/yyyy h:mm:ss tt";
-
+            // This used to require the single exact pattern "dd/MM/yyyy h:mm:ss tt" -
+            // but start_fiscal_date/end_fiscal_date (CompanySetupPage.cs, Phase 3 item 3.4)
+            // are plain free-text fields with no date picker and no format enforcement, so
+            // there is no single format actually guaranteed here. The live value driving
+            // this ("2025-01-01 13:45:00", set on tbl_company by whatever was typed into
+            // Company Setup) never matched that pattern at all - every journal entry period
+            // built from it failed to parse, so ValidatePeriodOverlap rejected every save
+            // with "Invalid period format" regardless of whether it actually overlapped
+            // anything. DateTime.TryParse (culture-aware, format-flexible) handles this and
+            // any other reasonable format someone might type into that free-text field,
+            // instead of assuming one exact shape.
             return
-                DateTime.TryParseExact(
+                DateTime.TryParse(
                     parts[0].Trim(),
-                    format,
                     CultureInfo.InvariantCulture,
                     DateTimeStyles.None,
                     out start
                 ) &&
-                DateTime.TryParseExact(
+                DateTime.TryParse(
                     parts[1].Trim(),
-                    format,
                     CultureInfo.InvariantCulture,
                     DateTimeStyles.None,
                     out end
