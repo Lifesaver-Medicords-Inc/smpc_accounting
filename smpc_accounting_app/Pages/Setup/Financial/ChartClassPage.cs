@@ -188,17 +188,18 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 }
 
                 SetEditMode(false);
+
+                // ClearPaginationStatus() above already emptied _cldata, so this
+                // GetChartClass() call takes the "first page: build table from
+                // scratch" branch - a full, correct reload from the server that
+                // already includes the row just saved. A manual re-append used to
+                // run after this using chartClassPayload (the pre-save form data) -
+                // for a brand-new record chartClassPayload.id is still 0 (Insert()
+                // never wrote the server-assigned id back into it), so its "is this
+                // already in the list?" check never matched anything and a second,
+                // wrong-id copy of the same row got appended on every single Save.
+                // The fresh reload already has the real thing; nothing to append.
                 await GetChartClass();
-
-                // Only append if the updated row is not already in _cldata
-                bool alreadyExists = _cldata.Select($"id = {chartClassPayload.id}").Length > 0;
-                if (!alreadyExists)
-                {
-                    var updatedTable = Helpers.ToDataTable(new List<ChartClassModel> { chartClassPayload });
-                    foreach (DataRow row in updatedTable.Rows)
-                        _cldata.ImportRow(row);
-                }
-
 
                 LoadSelectedChartClass();
             }
