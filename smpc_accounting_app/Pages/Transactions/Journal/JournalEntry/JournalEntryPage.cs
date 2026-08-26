@@ -372,11 +372,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 journalEntryParent.period_from = _companySetup.start_fiscal_date;
                 journalEntryParent.period_to = _companySetup.end_fiscal_date;
 
-                if (!ValidatePeriodOverlap(journalEntryParent))
-                {
-                    return;
-                }
-
                 // Wrap everything into Journal Entry Payload
                 var jePayload = new JournalEntryPayload
                 {
@@ -508,86 +503,15 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             }
         }
 
-        private bool ValidatePeriodOverlap(JournalEntryModel currentEntry)
-        {
-            if (_journalEntries == null || !_journalEntries.Any())
-                return true;
-
-            // Parse current entry period
-            if (!TryParsePeriod(currentEntry.period, out DateTime currentStart, out DateTime currentEnd))
-            {
-                Helpers.ShowDialogMessage("error", "Invalid period format in current Journal Entry.");
-                return false;
-            }
-
-            foreach (var existing in _journalEntries)
-            {
-                // Skip same record when editing
-                if (!_isNewMode && existing.id == currentEntry.id)
-                    continue;
-
-                if (string.IsNullOrWhiteSpace(existing.period))
-                    continue;
-
-                if (!TryParsePeriod(existing.period, out DateTime existingStart, out DateTime existingEnd))
-                    continue;
-
-                // OVERLAP CHECK
-                bool overlaps =
-                    currentStart <= existingEnd &&
-                    currentEnd >= existingStart;
-
-                if (overlaps)
-                {
-                    Helpers.ShowDialogMessage(
-                        "error",
-                        $"Journal Entry period overlaps with an existing record.\n\n" +
-                        $"Existing Period: {existing.period}"
-                    );
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool TryParsePeriod(string period, out DateTime start, out DateTime end)
-        {
-            start = DateTime.MinValue;
-            end = DateTime.MinValue;
-
-            if (string.IsNullOrWhiteSpace(period))
-                return false;
-
-            var parts = period.Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 2)
-                return false;
-
-            // This used to require the single exact pattern "dd/MM/yyyy h:mm:ss tt" -
-            // but start_fiscal_date/end_fiscal_date (CompanySetupPage.cs, Phase 3 item 3.4)
-            // are plain free-text fields with no date picker and no format enforcement, so
-            // there is no single format actually guaranteed here. The live value driving
-            // this ("2025-01-01 13:45:00", set on tbl_company by whatever was typed into
-            // Company Setup) never matched that pattern at all - every journal entry period
-            // built from it failed to parse, so ValidatePeriodOverlap rejected every save
-            // with "Invalid period format" regardless of whether it actually overlapped
-            // anything. DateTime.TryParse (culture-aware, format-flexible) handles this and
-            // any other reasonable format someone might type into that free-text field,
-            // instead of assuming one exact shape.
-            return
-                DateTime.TryParse(
-                    parts[0].Trim(),
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out start
-                ) &&
-                DateTime.TryParse(
-                    parts[1].Trim(),
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out end
-                );
-        }
+        // ValidatePeriodOverlap/TryParsePeriod removed (were here through commit 0dbb730).
+        // Every journal entry's period/period_from/period_to is built from the same
+        // _companySetup.start_fiscal_date/end_fiscal_date - one company-wide fiscal-year
+        // record (§4.5.6), identical for every entry. An "overlap" check comparing that
+        // constant against itself can never legitimately pass for a second entry - it
+        // isn't catching a real conflict, since there is no per-entry period range in this
+        // design to conflict in the first place. Confirmed with the user rather than
+        // guessing at what a real conflict should look like - removed outright rather than
+        // reworked.
 
         private async void JournalEntry_Load(object sender, EventArgs e)
         {
