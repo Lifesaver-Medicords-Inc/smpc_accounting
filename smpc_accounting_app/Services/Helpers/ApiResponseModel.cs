@@ -8,8 +8,15 @@ namespace smpc_accounting_app.Services.Helpers
 {
     public class ApiResponseModel<T>
     {
-        public bool success { get; set; } 
+        public bool success { get; set; }
         public T data { get; set; }
+        // The server's own RespondError always sends {"success": false, "message": "..."}
+        // (utils.RespondError in ERP_API), but this generic response shape had nowhere to
+        // put it - every caller of a Post/Put/Delete typed to ApiResponseModel<T> could only
+        // ever show a hardcoded, non-specific string on failure, never the server's actual
+        // reason. Purely additive: existing deserialization just ignores the extra JSON
+        // field when a caller doesn't read this property.
+        public string message { get; set; }
         public PaginationModel pagination { get; set; } = null;
     }
 

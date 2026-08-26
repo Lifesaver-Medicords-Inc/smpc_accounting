@@ -384,18 +384,28 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                     journal_entry_details = journalEntryDetails
                 };
 
+                // Capture BEFORE the SetEditMode(false) call below - that call's own
+                // isNewMode parameter defaults to false and unconditionally overwrites
+                // _isNewMode, so reading _isNewMode after it (as this used to) always saw
+                // false regardless of which button the user actually pressed. Every save -
+                // New or Edit alike - was silently forced onto the Update branch below,
+                // which then failed server-side because a brand-new record has no id yet
+                // (nothing for UpdateColumns to match), always surfacing as the generic
+                // "Journal Entry not updated." This is why no journal entry had ever
+                // actually been saved through this screen.
+                bool wasNewMode = _isNewMode;
+
                 Helpers.Loading.ShowLoading(dgv_journal_entry, "Saving data...");
 
-                SetEditMode(false);
-                await LoadJournalEntries();
-
-                if (_isNewMode)
+                if (wasNewMode)
                 {
                     var result = await journalEntryService.CreateJERecord(jePayload);
 
                     if (!result.success)
                     {
-                        Helpers.ShowDialogMessage("error", "Journal Entry not created.");
+                        Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(result.message)
+                            ? "Journal Entry not created."
+                            : result.message);
                         return;
                     }
 
@@ -407,12 +417,22 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
                     if (!result.success)
                     {
-                        Helpers.ShowDialogMessage("error", "Journal Entry not updated.");
+                        Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(result.message)
+                            ? "Journal Entry not updated."
+                            : result.message);
                         return;
                     }
 
                     Helpers.ShowDialogMessage("success", "Journal Entry updated successfully.");
                 }
+
+                // Only reset out of edit mode and reload once the save has actually
+                // succeeded - doing this unconditionally beforehand (the previous order)
+                // meant a failed save had already reset the screen to read-only and
+                // reloaded stale, pre-save data, making the user's edits look like they'd
+                // been silently discarded even though nothing had touched the server yet.
+                SetEditMode(false);
+                await LoadJournalEntries();
             }
             catch (Exception ex)
             {
