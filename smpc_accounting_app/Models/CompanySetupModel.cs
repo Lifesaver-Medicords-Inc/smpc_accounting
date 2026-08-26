@@ -31,5 +31,10 @@ namespace smpc_accounting_app.Models
         public string inclusions_quotation_terms { get; set; }
         public string exclusions_quotation_terms { get; set; }
         public string term_and_conditions { get; set; }
+        // Sales_Quotation_Bug_Report_2026-08-03.md #18 - whole-number percentage
+        // (12 means 12%), matching how VAT is written throughout the spec
+        // ("VAT (12%)"). Consumers divide by 100 rather than storing the raw
+        // decimal fraction.
+        public float vat_rate_percent { get; set; }
     }
 }

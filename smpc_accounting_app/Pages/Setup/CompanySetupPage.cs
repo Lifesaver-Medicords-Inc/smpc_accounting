@@ -47,6 +47,10 @@ namespace smpc_accounting_app.Pages.Setup
             ("beg_bal", "BEGINNING BALANCE", FieldKind.Text),
             ("monthly_rate", "EXCHANGE RATE", FieldKind.Text),
             ("markup_multiplier_price", "MARKUP MULTIPLIER (PRICE)", FieldKind.Text),
+            // Sales_Quotation_Bug_Report_2026-08-03.md #18 - was a hardcoded 1.186 in
+            // Quotation.cs's own markup computation, contradicting the separate
+            // VAT_RATE = 0.12m constant used elsewhere. Both are configurable here now.
+            ("vat_rate_percent", "VAT RATE (%)", FieldKind.Text),
             ("start_fiscal_date", "FISCAL YEAR START", FieldKind.Text),
             ("end_fiscal_date", "FISCAL YEAR END", FieldKind.Text),
             ("inclusions_quotation_terms", "QUOTATION T&C - INCLUSIONS", FieldKind.Multiline),
