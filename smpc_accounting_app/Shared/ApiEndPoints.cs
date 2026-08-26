@@ -60,7 +60,12 @@ namespace smpc_accounting_app.Shared
 
         //Journal Entry
         public const string JOURNAL_ENTRY = "/accounting/journal_entry";
+        // Read-only, hardcoded to id=1 server-side - used for the initial fetch.
         public const string COMPANY_SETUP = "/accounting/company_setup";
+        // Full CRUD (list/get/create/update/delete), its own top-level group like
+        // Credit/Debit Memo below - Company Setup (Phase 3 item 3.4) always operates
+        // on id=1, so only Get/Put against COMPANIES + "1" are actually used.
+        public const string COMPANIES = "/companies";
         public const string CURRENT_JOURNAL = "/accounting/current_journal";
 
         // Credit Memo / Debit Memo (spec §5.18/§5.19) - own top-level routes on the

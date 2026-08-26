@@ -471,6 +471,7 @@
     <Compile Include="Services\Setup\ChartOfAccountService.cs" />
     <Compile Include="Services\Setup\BankService.cs" />
     <Compile Include="Services\Setup\ChartClassService.cs" />
+    <Compile Include="Services\Setup\CompanySetupService.cs" />
     <Compile Include="Shared\ENUM_TAX_CODE.cs" />
     <EmbeddedResource Include="Pages\Components\GetBpiModal.resx">
       <DependentUpon>GetBpiModal.cs</DependentUpon>
