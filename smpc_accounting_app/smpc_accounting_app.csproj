@@ -403,12 +403,6 @@
     <Compile Include="Pages\Transactions\Journal\JournalEntry\JournalEntryModals\JournalEntrySearch.Designer.cs">
       <DependentUpon>JournalEntrySearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Transactions\Journal\JournalVoucher.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Pages\Transactions\Journal\JournalVoucher.Designer.cs">
-      <DependentUpon>JournalVoucher.cs</DependentUpon>
-    </Compile>
     <Compile Include="Printing\PrintPreview.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -588,9 +582,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Transactions\Journal\JournalEntry\JournalEntryModals\JournalEntrySearch.resx">
       <DependentUpon>JournalEntrySearch.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Transactions\Journal\JournalVoucher.resx">
-      <DependentUpon>JournalVoucher.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="Printing\AccountsReceivables\SalesInvoiceReport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

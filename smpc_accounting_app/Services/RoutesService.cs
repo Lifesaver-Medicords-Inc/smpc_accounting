@@ -38,7 +38,12 @@ namespace smpc_accounting_app.Services
 
             //========================================================================
             // TRANSACTIONS
-            {"Journal Voucher", new JournalVoucher() },
+            // "Journal Voucher" retired (Phase 3 item 3.1) - it was a permanent 20-line
+            // shell with no sidebar node of its own (unreachable in the UI either way).
+            // JournalEntryPage already implements everything §4.5.5 asks for (header +
+            // editable debit/credit lines, full New/Edit/Save/Delete/Print/Search)
+            // against the same complete API - confirmed with the user rather than
+            // building a second copy of the same feature.
             {"Journal Entry", new JournalEntryPage() },
 
             //========================================================================
