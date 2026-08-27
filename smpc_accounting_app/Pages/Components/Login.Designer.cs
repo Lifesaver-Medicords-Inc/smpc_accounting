@@ -125,7 +125,7 @@ namespace smpc_accounting_app.Pages.Components
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Login";
-            this.Text = "Login";
+            this.Text = "Lightspeed ERP - Accounting Login";
             this.Load += new System.EventHandler(this.Login_Load);
             this.pnl_auth.ResumeLayout(false);
             this.pnl_auth.PerformLayout();

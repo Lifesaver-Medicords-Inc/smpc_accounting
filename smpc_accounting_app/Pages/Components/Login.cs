@@ -26,8 +26,24 @@ namespace smpc_accounting_app.Pages.Components
             Application.Exit();
         }
 
+        // Phase 4.6 (UI uniformity): required-field validation and the server's own
+        // failure message (already modeled here via ApiResponseModel<T>.message - see
+        // its comment - but never actually read until now), matching the other 5 apps'
+        // Login.
         private async void btn_login_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txt_employee_id.Text))
+            {
+                Helpers.ShowDialogMessage("error", "Employee ID is required.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txt_password.Text))
+            {
+                Helpers.ShowDialogMessage("error", "Password is required.");
+                return;
+            }
+
             var data = Helpers.GetControlsValues(pnl_auth);
             data.Add("motherboard_serial_no", Helpers.GetSerialNumber());
             data.Add("machine_name", Environment.MachineName);
@@ -42,7 +58,8 @@ namespace smpc_accounting_app.Pages.Components
             }
             else
             {
-                Helpers.ShowDialogMessage("error", "Invalid Credentials");
+                string serverMessage = currentUser?.message;
+                Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(serverMessage) ? "Invalid Credentials" : serverMessage);
             }
         }
 
