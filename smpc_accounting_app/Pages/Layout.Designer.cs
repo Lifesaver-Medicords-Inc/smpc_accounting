@@ -69,6 +69,7 @@ namespace smpc_accounting_app
             treeNode20});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Layout));
             this.tabContainer = new System.Windows.Forms.TabControl();
+            this.pnl_content_capped = new System.Windows.Forms.Panel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lbl_name = new System.Windows.Forms.ToolStripStatusLabel();
@@ -90,14 +91,19 @@ namespace smpc_accounting_app
             this.panel1 = new System.Windows.Forms.Panel();
             this.Sidebar = new System.Windows.Forms.TreeView();
             this.container = new System.Windows.Forms.Panel();
+            this.pnl_content_capped.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // tabContainer
-            // 
-            this.tabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            //
+            // Phase 4.6 (UI uniformity): no longer Dock=Fill - pnl_content_capped now
+            // owns that, and sizes/centers this manually (see Layout.cs's
+            // RecalculateContentWidth) so the work area caps at 1280px on wide/ultrawide
+            // monitors instead of stretching edge to edge, matching all 6 apps' new
+            // standard.
             this.tabContainer.Location = new System.Drawing.Point(230, 0);
             this.tabContainer.Multiline = true;
             this.tabContainer.Name = "tabContainer";
@@ -106,7 +112,18 @@ namespace smpc_accounting_app
             this.tabContainer.TabIndex = 0;
             this.tabContainer.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabContainer_DrawItem);
             this.tabContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabContainer_MouseDown);
-            // 
+            //
+            // pnl_content_capped
+            //
+            this.pnl_content_capped.Controls.Add(this.tabContainer);
+            this.pnl_content_capped.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_content_capped.AutoScroll = true;
+            this.pnl_content_capped.Location = new System.Drawing.Point(230, 0);
+            this.pnl_content_capped.Name = "pnl_content_capped";
+            this.pnl_content_capped.Size = new System.Drawing.Size(714, 428);
+            this.pnl_content_capped.TabIndex = 11;
+            this.pnl_content_capped.Resize += new System.EventHandler(this.pnl_content_capped_Resize);
+            //
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -324,7 +341,7 @@ namespace smpc_accounting_app
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1257, 450);
-            this.Controls.Add(this.tabContainer);
+            this.Controls.Add(this.pnl_content_capped);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.statusStrip1);
@@ -334,6 +351,7 @@ namespace smpc_accounting_app
             this.Text = "SMPC - ACCOUNTING";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Layout_Load);
+            this.pnl_content_capped.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -346,6 +364,7 @@ namespace smpc_accounting_app
 
         #endregion
         private System.Windows.Forms.TabControl tabContainer;
+        private System.Windows.Forms.Panel pnl_content_capped;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lbl_name;
