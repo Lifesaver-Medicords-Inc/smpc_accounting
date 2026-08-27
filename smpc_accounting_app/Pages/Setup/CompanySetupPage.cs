@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 using smpc_accounting_app.Models;
 using smpc_accounting_app.Services.Helpers;
@@ -51,14 +52,32 @@ namespace smpc_accounting_app.Pages.Setup
             // Quotation.cs's own markup computation, contradicting the separate
             // VAT_RATE = 0.12m constant used elsewhere. Both are configurable here now.
             ("vat_rate_percent", "VAT RATE (%)", FieldKind.Text),
-            ("start_fiscal_date", "FISCAL YEAR START", FieldKind.Text),
-            ("end_fiscal_date", "FISCAL YEAR END", FieldKind.Text),
+            // These used to be FieldKind.Text - a bare TextBox a person could type
+            // anything into. JournalEntryPage.cs copies these two strings verbatim
+            // into every Journal Entry's period_from/period_to, and the API parses
+            // that period against a fixed month/day/year layout - a free-typed date
+            // (US day/month order or not, any AM/PM casing, any punctuation) could
+            // silently fail that parse and made "no active journal entry" fire no
+            // matter what was typed. A DateTimePicker guarantees a real, parseable
+            // date every time.
+            ("start_fiscal_date", "FISCAL YEAR START", FieldKind.Date),
+            ("end_fiscal_date", "FISCAL YEAR END", FieldKind.Date),
             ("inclusions_quotation_terms", "QUOTATION T&C - INCLUSIONS", FieldKind.Multiline),
             ("exclusions_quotation_terms", "QUOTATION T&C - EXCLUSIONS", FieldKind.Multiline),
             ("term_and_conditions", "QUOTATION T&C - GENERAL", FieldKind.Multiline),
         };
 
-        private enum FieldKind { Text, Multiline, Check }
+        private enum FieldKind { Text, Multiline, Check, Date }
+
+        // Must match the layout the API actually parses this against - see the
+        // comment on `layout` in ERP_API's journal_entry_service.go GetCurrentJournal,
+        // and the identical parse in sales_invoice_service.go / invoice_receipt_service.go
+        // / bulk_invoice_receipt_service.go / payment_receipt_service.go /
+        // payment_voucher_service.go (all six match a Journal Entry's period against
+        // this exact shape). InvariantCulture so this never drifts with the
+        // workstation's regional settings (PH locale still defaults to day/month for
+        // short dates in some builds - this format string sidesteps that entirely).
+        private const string FiscalDateFormat = "M/d/yyyy h:mm:ss tt";
 
         public CompanySetupPage()
         {
@@ -89,6 +108,16 @@ namespace smpc_accounting_app.Pages.Setup
                 if (kind == FieldKind.Check)
                 {
                     field = new CheckBox { Margin = new Padding(3, 6, 3, 3), Enabled = false };
+                }
+                else if (kind == FieldKind.Date)
+                {
+                    field = new DateTimePicker
+                    {
+                        Width = 380,
+                        Format = DateTimePickerFormat.Short,
+                        Margin = new Padding(3, 3, 3, 3),
+                        Enabled = false,
+                    };
                 }
                 else
                 {
@@ -160,8 +189,8 @@ namespace smpc_accounting_app.Pages.Setup
             SetValue("beg_bal", c.beg_bal.ToString("0.00"));
             SetValue("monthly_rate", c.monthly_rate.ToString("0.0000"));
             SetValue("markup_multiplier_price", c.markup_multiplier_price.ToString("0.0000"));
-            SetValue("start_fiscal_date", c.start_fiscal_date);
-            SetValue("end_fiscal_date", c.end_fiscal_date);
+            SetDateValue("start_fiscal_date", c.start_fiscal_date);
+            SetDateValue("end_fiscal_date", c.end_fiscal_date);
             SetValue("inclusions_quotation_terms", c.inclusions_quotation_terms);
             SetValue("exclusions_quotation_terms", c.exclusions_quotation_terms);
             SetValue("term_and_conditions", c.term_and_conditions);
@@ -178,6 +207,34 @@ namespace smpc_accounting_app.Pages.Setup
         private string GetValue(string prop)
         {
             return _fields.TryGetValue(prop, out var control) && control is TextBox txt ? txt.Text : "";
+        }
+
+        // Existing rows may still hold whatever a person previously free-typed into
+        // what used to be a plain text box - parse leniently (current culture first,
+        // since that's what a human most likely typed, then invariant as a fallback)
+        // and fall back to today rather than let a stray old value crash the page load.
+        private void SetDateValue(string prop, string value)
+        {
+            if (!_fields.TryGetValue(prop, out var control) || !(control is DateTimePicker dtp)) return;
+
+            if (!DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.None, out var parsed) &&
+                !DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsed))
+            {
+                parsed = DateTime.Today;
+            }
+            dtp.Value = parsed.Date;
+        }
+
+        // startOfDay pins the time to midnight (fiscal year START); the end date
+        // gets pushed to the last instant of that day so a document dated on the
+        // fiscal year's last calendar day still falls inside the range - see the
+        // FiscalDateFormat comment for why this exact shape matters to the API.
+        private string GetDateValue(string prop, bool startOfDay)
+        {
+            if (!_fields.TryGetValue(prop, out var control) || !(control is DateTimePicker dtp)) return "";
+
+            DateTime value = startOfDay ? dtp.Value.Date : dtp.Value.Date.AddDays(1).AddSeconds(-1);
+            return value.ToString(FiscalDateFormat, CultureInfo.InvariantCulture);
         }
 
         private void SetEditMode(bool enable)
@@ -198,6 +255,10 @@ namespace smpc_accounting_app.Pages.Setup
                 else if (kvp.Value is CheckBox chk)
                 {
                     chk.Enabled = enable;
+                }
+                else if (kvp.Value is DateTimePicker dtp)
+                {
+                    dtp.Enabled = enable;
                 }
             }
 
@@ -246,8 +307,8 @@ namespace smpc_accounting_app.Pages.Setup
                     status = GetValue("status"),
                     is_head_office = ((CheckBox)_fields["is_head_office"]).Checked,
                     currency_code = GetValue("currency_code"),
-                    start_fiscal_date = GetValue("start_fiscal_date"),
-                    end_fiscal_date = GetValue("end_fiscal_date"),
+                    start_fiscal_date = GetDateValue("start_fiscal_date", startOfDay: true),
+                    end_fiscal_date = GetDateValue("end_fiscal_date", startOfDay: false),
                     inclusions_quotation_terms = GetValue("inclusions_quotation_terms"),
                     exclusions_quotation_terms = GetValue("exclusions_quotation_terms"),
                     term_and_conditions = GetValue("term_and_conditions"),
