@@ -60,13 +60,20 @@ namespace smpc_accounting_app
             System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Output VAT Setup");
             System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Final Tax Setup");
             System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Company Setup");
+            // PP&E register (not in the spec - see ERP_API's
+            // accounting_asset_category_model.go) - Setup lives here, same as
+            // every other financial master-data screen in this group.
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Asset Category Setup");
+            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Fixed Asset Setup");
             System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
             treeNode14,
             treeNode15,
             treeNode16,
             treeNode18,
             treeNode19,
-            treeNode20});
+            treeNode20,
+            treeNode21,
+            treeNode22});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Layout));
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.pnl_content_capped = new System.Windows.Forms.Panel();
@@ -319,6 +326,10 @@ namespace smpc_accounting_app
             treeNode19.Text = "Final Tax Setup";
             treeNode20.Name = "Company Setup";
             treeNode20.Text = "Company Setup";
+            treeNode21.Name = "Asset Category Setup";
+            treeNode21.Text = "Asset Category Setup";
+            treeNode22.Name = "Fixed Asset Setup";
+            treeNode22.Text = "Fixed Asset Setup";
             treeNode17.Name = "parent_6";
             treeNode17.Text = "System Configuration";
             this.Sidebar.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {

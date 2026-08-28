@@ -166,6 +166,8 @@
     <Compile Include="Models\ChartOfAccount.cs" />
     <Compile Include="Models\ChartGroup.cs" />
     <Compile Include="Models\ChartClassModel.cs" />
+    <Compile Include="Models\AssetCategoryModel.cs" />
+    <Compile Include="Models\FixedAssetModel.cs" />
     <Compile Include="Models\ChartOfAccountsModel.cs" />
     <Compile Include="Models\CompanySetupModel.cs" />
     <Compile Include="Models\Currency.cs" />
@@ -445,6 +447,18 @@
     <Compile Include="Pages\Setup\Financial\ChartClassPage.Designer.cs">
       <DependentUpon>ChartClassPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Setup\Financial\AssetCategoryPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\Setup\Financial\AssetCategoryPage.Designer.cs">
+      <DependentUpon>AssetCategoryPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Setup\Financial\FixedAssetPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\Setup\Financial\FixedAssetPage.Designer.cs">
+      <DependentUpon>FixedAssetPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Transactions\AccountsPayable\APVoucher\APVoucherPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -471,6 +485,8 @@
     <Compile Include="Services\Setup\ChartOfAccountService.cs" />
     <Compile Include="Services\Setup\BankService.cs" />
     <Compile Include="Services\Setup\ChartClassService.cs" />
+    <Compile Include="Services\Setup\AssetCategoryService.cs" />
+    <Compile Include="Services\Setup\FixedAssetService.cs" />
     <Compile Include="Services\Setup\CompanySetupService.cs" />
     <Compile Include="Shared\ENUM_TAX_CODE.cs" />
     <EmbeddedResource Include="Pages\Components\GetBpiModal.resx">

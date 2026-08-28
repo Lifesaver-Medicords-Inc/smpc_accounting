@@ -22,6 +22,11 @@ namespace smpc_accounting_app.Shared
         //Chart of Accounts Setup
         public const string CHART_OF_ACCOUNT_SETUP = "/accounting/chart_of_account";
 
+        //PP&E register - Asset Category and Fixed Asset Setup (not in the
+        //spec at all; see accounting_asset_category_model.go in ERP_API)
+        public const string ASSET_CATEGORY_SETUP = "/accounting/asset_category";
+        public const string FIXED_ASSET_SETUP = "/accounting/fixed_asset";
+
         //Tax Setup
         public const string TAX_SETUP = "/accounting/tax";
         public const string TAX_CODE_SETUP = "/setup/tax_setup/";

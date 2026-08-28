@@ -45,6 +45,9 @@ namespace smpc_accounting_app.Services
             { "Output VAT Setup", new OutputVatPage() },
             { "Final Tax Setup", new FinalTaxPage() },
             { "Company Setup", new CompanySetupPage() },
+            // PP&E register - not in the spec, see accounting_asset_category_model.go.
+            { "Asset Category Setup", new AssetCategoryPage() },
+            { "Fixed Asset Setup", new FixedAssetPage() },
 
             //========================================================================
             // TRANSACTIONS
