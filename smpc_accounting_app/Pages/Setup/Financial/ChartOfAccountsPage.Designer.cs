@@ -45,6 +45,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_cancel = new System.Windows.Forms.ToolStripButton();
             this.pnl_content = new System.Windows.Forms.Panel();
+            this.cmb_cash_flow_category = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.cmb_group = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.cmb_account_class = new System.Windows.Forms.ComboBox();
@@ -66,6 +68,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.class_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cash_flow_category = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.pnl_content.SuspendLayout();
@@ -165,7 +168,9 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // pnl_content
-            // 
+            //
+            this.pnl_content.Controls.Add(this.cmb_cash_flow_category);
+            this.pnl_content.Controls.Add(this.label8);
             this.pnl_content.Controls.Add(this.cmb_group);
             this.pnl_content.Controls.Add(this.label7);
             this.pnl_content.Controls.Add(this.cmb_account_class);
@@ -179,9 +184,34 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.pnl_content.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnl_content.Location = new System.Drawing.Point(0, 72);
             this.pnl_content.Name = "pnl_content";
-            this.pnl_content.Size = new System.Drawing.Size(1400, 156);
+            this.pnl_content.Size = new System.Drawing.Size(1400, 179);
             this.pnl_content.TabIndex = 67;
-            // 
+            //
+            // cmb_cash_flow_category
+            //
+            this.cmb_cash_flow_category.BackColor = System.Drawing.Color.White;
+            this.cmb_cash_flow_category.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_cash_flow_category.Enabled = false;
+            this.cmb_cash_flow_category.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_cash_flow_category.FormattingEnabled = true;
+            this.cmb_cash_flow_category.Items.AddRange(new object[] { "OPERATING", "FINANCING" });
+            this.cmb_cash_flow_category.Location = new System.Drawing.Point(67, 140);
+            this.cmb_cash_flow_category.MinimumSize = new System.Drawing.Size(200, 0);
+            this.cmb_cash_flow_category.Name = "cmb_cash_flow_category";
+            this.cmb_cash_flow_category.Size = new System.Drawing.Size(289, 21);
+            this.cmb_cash_flow_category.TabIndex = 106;
+            this.cmb_cash_flow_category.TabStop = false;
+            this.cmb_cash_flow_category.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_cash_flow_category_KeyDown);
+            //
+            // label8
+            //
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 143);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(46, 13);
+            this.label8.TabIndex = 107;
+            this.label8.Text = "CASH FLOW CATEGORY";
+            //
             // cmb_group
             // 
             this.cmb_group.BackColor = System.Drawing.Color.White;
@@ -343,7 +373,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.account_class,
             this.class_id,
             this.group,
-            this.group_id});
+            this.group_id,
+            this.cash_flow_category});
             this.dgv_chart_of_account.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_chart_of_account.Location = new System.Drawing.Point(0, 288);
             this.dgv_chart_of_account.Name = "dgv_chart_of_account";
@@ -418,7 +449,15 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.group_id.Name = "group_id";
             this.group_id.ReadOnly = true;
             this.group_id.Visible = false;
-            // 
+            //
+            // cash_flow_category
+            //
+            this.cash_flow_category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.cash_flow_category.DataPropertyName = "cash_flow_category";
+            this.cash_flow_category.HeaderText = "CASH FLOW CATEGORY";
+            this.cash_flow_category.Name = "cash_flow_category";
+            this.cash_flow_category.ReadOnly = true;
+            //
             // ChartOfAccountsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -457,6 +496,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private System.Windows.Forms.ToolStripButton btn_save;
         private System.Windows.Forms.ToolStripButton btn_cancel;
         private System.Windows.Forms.Panel pnl_content;
+        private System.Windows.Forms.ComboBox cmb_cash_flow_category;
+        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cmb_group;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmb_account_class;
@@ -478,5 +519,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private System.Windows.Forms.DataGridViewTextBoxColumn class_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn group;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cash_flow_category;
     }
 }

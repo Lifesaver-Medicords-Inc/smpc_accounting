@@ -15,5 +15,8 @@ namespace smpc_accounting_app.Models
        public int class_id { get; set; }
        public string group { get; set; }
        public int group_id { get; set; }
+       // OPERATING (default/blank) | FINANCING - feeds the Cash Flow
+       // Statement's Financing section.
+       public string cash_flow_category { get; set; }
     }
 }

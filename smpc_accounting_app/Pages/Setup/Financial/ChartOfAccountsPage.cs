@@ -548,5 +548,19 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 e.Handled = true;
             }
         }
+
+        // Cash Flow Category (OPERATING/FINANCING) - feeds the Cash Flow
+        // Statement's Financing section (see ERP_API's cash_flow_service.go).
+        // Optional, unlike Account Class - most accounts stay OPERATING
+        // (the default/blank treatment), so nothing forces a pick here.
+        private void cmb_cash_flow_category_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
+            {
+                cmb_cash_flow_category.SelectedIndex = -1;
+                cmb_cash_flow_category.Text = "";
+                e.Handled = true;
+            }
+        }
     }
 }
