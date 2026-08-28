@@ -44,6 +44,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.supplier_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.invoice_type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.payment_term = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tax_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.supplier_address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.overpayment_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,6 +70,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.supplier_code,
             this.invoice_type,
             this.payment_term,
+            this.tax_code,
             this.type,
             this.supplier_address,
             this.overpayment_amount});
@@ -132,7 +134,24 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
             this.payment_term.MinimumWidth = 150;
             this.payment_term.Name = "payment_term";
             this.payment_term.ReadOnly = true;
-            // 
+            //
+            // tax_code
+            //
+            // Bug fix (Invoice Receipt): dgv_suplier_search_CellClick builds
+            // SelectedSupplier by copying ONLY the columns declared on this grid
+            // (AutoGenerateColumns=false) - adding tax_code to SupplierTradeView/
+            // SupplierTradeViewModel alone (the vw_get_supplier_trade join fix) was
+            // not enough, since it never reached SelectedSupplier without a matching
+            // grid column here. Confirmed live: "Column 'tax_code' does not belong to
+            // table" the moment InvoiceReceiptPage.cs's btn_supplier_Click tried to
+            // read row["tax_code"]. Hidden - it's plumbing for the tax code combo
+            // default, not something worth showing in the picker itself.
+            this.tax_code.DataPropertyName = "tax_code";
+            this.tax_code.HeaderText = "TAX CODE";
+            this.tax_code.Name = "tax_code";
+            this.tax_code.ReadOnly = true;
+            this.tax_code.Visible = false;
+            //
             // type
             // 
             this.type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -190,6 +209,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         private System.Windows.Forms.DataGridViewTextBoxColumn supplier_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn invoice_type;
         private System.Windows.Forms.DataGridViewTextBoxColumn payment_term;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tax_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn type;
         private System.Windows.Forms.DataGridViewTextBoxColumn supplier_address;
         private System.Windows.Forms.DataGridViewTextBoxColumn overpayment_amount;

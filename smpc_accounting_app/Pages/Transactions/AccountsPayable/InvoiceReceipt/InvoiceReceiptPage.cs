@@ -482,7 +482,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     // fix comment). Matched by code against the already-loaded Tax Setup
                     // table since that's the only form BPI stores it in; left blank if no
                     // matching code exists there, rather than guessing.
-                    string supplierTaxCode = row["tax_code"]?.ToString();
+                    // Column, not just value, can be missing - row comes from
+                    // InvoiceSearchSupplier's grid-copied DataTable (see its
+                    // dgv_suplier_search_CellClick), which only carries whatever
+                    // columns are declared on that grid. Guard so a future mismatch
+                    // there degrades to "no default" instead of an unhandled
+                    // "Column 'tax_code' does not belong to table" crash - exactly
+                    // what happened live before tax_code was added to that grid.
+                    string supplierTaxCode = row.Table.Columns.Contains("tax_code") ? row["tax_code"]?.ToString() : null;
                     DataRow[] taxMatches = string.IsNullOrWhiteSpace(supplierTaxCode) || _taxSetupTable == null
                         ? new DataRow[0]
                         : _taxSetupTable.Select($"code = '{supplierTaxCode.Replace("'", "''")}'");
