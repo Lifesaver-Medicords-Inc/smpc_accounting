@@ -494,8 +494,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                         ? new DataRow[0]
                         : _taxSetupTable.Select($"code = '{supplierTaxCode.Replace("'", "''")}'");
 
-                    cmb_tax_code.SelectedValue = taxMatches.Length > 0 ? taxMatches[0]["view_id"] : null;
-                    if (taxMatches.Length == 0)
+                    // Live crash: "Value cannot be null. Parameter name: key" the
+                    // instant this ran - a bound ComboBox's SelectedValue throws on a
+                    // direct null assignment (a known WinForms quirk; internally it
+                    // does a Hashtable lookup keyed by the value, and null isn't a
+                    // valid key). SelectedIndex=-1 is the actual way to clear a bound
+                    // combo's selection - never assign SelectedValue = null.
+                    if (taxMatches.Length > 0)
+                        cmb_tax_code.SelectedValue = taxMatches[0]["view_id"];
+                    else
                         cmb_tax_code.SelectedIndex = -1;
 
                     dgv_main.DataSource = null;
