@@ -335,8 +335,11 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             try
             {
                 var all = await _creditMemoService.GetCreditMemos();
+                // applied_by_dm excluded: a CM a previous Debit Memo already fully
+                // applied has nothing left to offer (§12.6.3 - the server now sets
+                // this flag on full consumption; see applyToTargetDocuments).
                 supplierCreditMemos = all
-                    .Where(c => c.partner_type == "Supplier" && c.partner_id == supplierId)
+                    .Where(c => c.partner_type == "Supplier" && c.partner_id == supplierId && !c.applied_by_dm)
                     .ToList();
             }
             catch (Exception)

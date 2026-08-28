@@ -16,10 +16,12 @@ namespace smpc_accounting_app.Pages.Transactions.Journal.DebitMemoModals
     // this memo's supplier - see DebitMemo.cs's btn_add_credit_memo_Click),
     // this modal doesn't fetch anything itself.
     //
-    // Known limitation, not solved here: CreditMemoModel has no "already
-    // applied/used" flag, so nothing stops the same supplier Credit Memo
-    // being picked into two different Debit Memos - there's no persistence
-    // mechanism anywhere in this codebase yet to track that.
+    // CreditMemoModel.applied_by_dm now gates a fully-consumed CM out of the
+    // list DebitMemo.cs passes in here (server sets it on full application,
+    // §12.6.3). Remaining, real gap: a PARTIAL application still leaves this
+    // false, since nothing in this codebase tracks a running balance for any
+    // of the three DM apply-target types - see applyToTargetDocuments in the
+    // Go service for the full explanation.
     public partial class DebitMemoCreditMemoPicker : Form
     {
         public CreditMemoModel Selected { get; private set; }

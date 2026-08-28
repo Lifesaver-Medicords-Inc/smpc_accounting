@@ -71,7 +71,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             btn_search.Click += btn_search_Click;
             btn_prev.Click += btn_prev_Click;
             btn_next.Click += btn_next_Click;
-            btn_edit.Click += btn_edit_Click;
             btn_save.Click += btn_save_Click;
             btn_cancel.Click += btn_cancel_Click;
             btn_approve.Click += btn_approve_Click;
@@ -176,13 +175,18 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
         private void SetEditMode(bool enable)
         {
+            // btn_edit is deliberately never in the visible set. Neither Credit Memo
+            // endpoint has an update route - a CM commits in full on Save (§14) - so
+            // re-entering edit mode on an already-saved record and hitting Save would
+            // silently call CreateCreditMemo again and produce a duplicate, not an
+            // update. btn_new is the only way into edit mode, same as Debit Memo.
             Helpers.SetButtonVisibility(toolStrip1, panel3,
                 visibleButtons: enable
                     ? new[] { "btn_save", "btn_cancel" }
-                    : new[] { "btn_new", "btn_search", "btn_prev", "btn_next", "btn_print", "btn_edit" },
+                    : new[] { "btn_new", "btn_search", "btn_prev", "btn_next", "btn_print" },
                 hiddenButtons: enable
                     ? new[] { "btn_new", "btn_search", "btn_prev", "btn_next", "btn_print", "btn_edit", "btn_approve" }
-                    : new[] { "btn_save", "btn_cancel" });
+                    : new[] { "btn_save", "btn_cancel", "btn_edit" });
 
             Helpers.SetChildControlsEnabled(new Control[] { panel3 }, !enable, AlwaysReadOnlyFields);
 
@@ -194,12 +198,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         {
             _currentIndex = -1;
             ClearForm();
-            SetEditMode(true);
-        }
-
-        private void btn_edit_Click(object sender, EventArgs e)
-        {
-            if (_currentIndex < 0) return;
             SetEditMode(true);
         }
 

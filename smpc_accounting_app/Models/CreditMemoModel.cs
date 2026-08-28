@@ -41,6 +41,11 @@ namespace smpc_accounting_app.Models
         public bool is_approved { get; set; }
         public int approved_by_id { get; set; }
         public string approved_by_name { get; set; }
+
+        // Set once a Debit Memo's apply line fully consumes this CM (§12.6.3).
+        // Used by DebitMemo.cs's own Credit Memo picker to stop offering an
+        // already-fully-applied CM a second time.
+        public bool applied_by_dm { get; set; }
         public string approval_date { get; set; }
     }
 
