@@ -301,9 +301,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                     string docNo = row["receipt_no"]?.ToString();
                     string dueDate = row["ir_due_date"]?.ToString();
                     double total = Convert.ToDouble(row["line_amount"]);
+                    double openAmount = Convert.ToDouble(row["open_amount"]);
                     string targetType = NormalizeTargetDocType(row["receipt_type"]?.ToString());
 
-                    AddApplyLine(targetType, targetId, docNo, dueDate, total);
+                    AddApplyLine(targetType, targetId, docNo, dueDate, total, openAmount);
                 }
             }
         }
@@ -335,11 +336,12 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             try
             {
                 var all = await _creditMemoService.GetCreditMemos();
-                // applied_by_dm excluded: a CM a previous Debit Memo already fully
-                // applied has nothing left to offer (§12.6.3 - the server now sets
-                // this flag on full consumption; see applyToTargetDocuments).
+                // Filtered on the real running balance, not the applied_by_dm flag -
+                // a CM already brought to zero by one or more prior Debit Memos has
+                // nothing left to offer (§12.6.3), and open_amount reflects that
+                // cumulatively even if no single prior DM fully consumed it alone.
                 supplierCreditMemos = all
-                    .Where(c => c.partner_type == "Supplier" && c.partner_id == supplierId && !c.applied_by_dm)
+                    .Where(c => c.partner_type == "Supplier" && c.partner_id == supplierId && c.open_amount > 0.005)
                     .ToList();
             }
             catch (Exception)
@@ -369,24 +371,24 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                         }
                     }
 
-                    AddApplyLine("Credit Memo", cm.id, "CM#" + cm.doc_no, cm.doc_date, cm.trans_amount);
+                    AddApplyLine("Credit Memo", cm.id, "CM#" + cm.doc_no, cm.doc_date, cm.trans_amount, cm.open_amount);
                 }
             }
         }
 
-        // TOTAL and OPEN AMOUNT start equal - this codebase has no partial-
-        // payment/running-balance tracking for an IR or "already applied"
-        // tracking for a CM anywhere yet (confirmed against
-        // sp_GetInvoiceAPVoucher.sql: it's an all-or-nothing ap_voucher
-        // flag, not a running balance), so the full face amount is the only
-        // figure available - not invented, it's what the one source that
-        // exists actually provides. AMOUNT APPLIED defaults to whatever's
-        // still needed to zero out UNAPPLIED AMOUNT, capped at this line's
-        // own total.
-        private void AddApplyLine(string targetType, int targetId, string docNo, string dueDate, double total)
+        // TOTAL is the target document's original full face value; OPEN
+        // AMOUNT is its real running balance - net_amount/trans_amount minus
+        // everything already applied via any AP Voucher or Debit Memo
+        // (services.ComputeReceiptOpenAmount / ComputeCreditMemoOpenAmount on
+        // the Go side). The two used to always be equal, which is why this
+        // apply table couldn't tell a fresh IR from one already 90% paid
+        // down - both callers below now pass the real figure. AMOUNT APPLIED
+        // defaults to whatever's still needed to zero out UNAPPLIED AMOUNT,
+        // capped at this line's own open amount (never its total).
+        private void AddApplyLine(string targetType, int targetId, string docNo, string dueDate, double total, double openAmount)
         {
             double remaining = GetRemainingUnapplied();
-            double amountApplied = Math.Max(0, Math.Min(remaining, total));
+            double amountApplied = Math.Max(0, Math.Min(remaining, openAmount));
 
             _suppressGridEvents = true;
             var newRow = _detailsTable.NewRow();
@@ -394,9 +396,9 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             newRow["DOC NO."] = docNo;
             newRow["DUE DATE"] = dueDate;
             newRow["TOTAL"] = total;
-            newRow["OPEN AMOUNT"] = total;
+            newRow["OPEN AMOUNT"] = openAmount;
             newRow["AMOUNT APPLIED"] = amountApplied;
-            newRow["BALANCE"] = total - amountApplied;
+            newRow["BALANCE"] = openAmount - amountApplied;
             newRow["TARGET_TYPE"] = targetType;
             newRow["TARGET_ID"] = targetId;
             _detailsTable.Rows.Add(newRow);

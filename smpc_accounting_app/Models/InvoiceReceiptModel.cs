@@ -55,6 +55,13 @@ namespace smpc_accounting_app.Models
         public float twas_amount { get; set; }
         public float line_amount { get; set; }
         public string receipt_type { get; set; }
+
+        // Real running balance - net_amount minus everything already applied
+        // via any AP Voucher or Debit Memo (sp_GetInvoiceAPVoucher now
+        // computes this live and filters on it, replacing the old
+        // all-or-nothing ap_voucher boolean). line_amount above is still the
+        // receipt's original full face value, unchanged.
+        public float open_amount { get; set; }
     }
 
     public class InvoiceReceiptList

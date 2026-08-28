@@ -43,10 +43,16 @@ namespace smpc_accounting_app.Models
         public string approved_by_name { get; set; }
 
         // Set once a Debit Memo's apply line fully consumes this CM (§12.6.3).
-        // Used by DebitMemo.cs's own Credit Memo picker to stop offering an
-        // already-fully-applied CM a second time.
+        // Purely informational now - see the Go model's own doc comment.
         public bool applied_by_dm { get; set; }
         public string approval_date { get; set; }
+
+        // Real running balance - trans_amount minus every Debit Memo detail
+        // already applied against this CM, computed live server-side
+        // (CreditMemoService.GetCreditMemo). This is what actually gates
+        // whether DebitMemo.cs's Credit Memo picker offers this CM again;
+        // 0 for a customer CM, which has no such consumer.
+        public double open_amount { get; set; }
     }
 
     public class CreditMemoBody

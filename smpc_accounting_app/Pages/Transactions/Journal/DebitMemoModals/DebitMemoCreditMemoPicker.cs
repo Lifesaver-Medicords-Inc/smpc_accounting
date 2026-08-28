@@ -16,12 +16,10 @@ namespace smpc_accounting_app.Pages.Transactions.Journal.DebitMemoModals
     // this memo's supplier - see DebitMemo.cs's btn_add_credit_memo_Click),
     // this modal doesn't fetch anything itself.
     //
-    // CreditMemoModel.applied_by_dm now gates a fully-consumed CM out of the
-    // list DebitMemo.cs passes in here (server sets it on full application,
-    // §12.6.3). Remaining, real gap: a PARTIAL application still leaves this
-    // false, since nothing in this codebase tracks a running balance for any
-    // of the three DM apply-target types - see applyToTargetDocuments in the
-    // Go service for the full explanation.
+    // CreditMemoModel.open_amount (a real running balance, computed live
+    // server-side - CreditMemoService.GetCreditMemo) now gates a consumed CM
+    // out of the list DebitMemo.cs passes in here, whether it was consumed
+    // by one DM in full or several partial ones summing to the total.
     public partial class DebitMemoCreditMemoPicker : Form
     {
         public CreditMemoModel Selected { get; private set; }
