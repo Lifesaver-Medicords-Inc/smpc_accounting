@@ -475,6 +475,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
                     txt_currency.Text = _companySetup.currency_code;
                     txt_reference_po.Text = string.Empty;
 
+                    // Default the tax code combo from the supplier's own BPI-configured
+                    // code (tbl_bpi_finance.finance_tax_code, a plain string like "S1") -
+                    // this never worked before (nothing here ever touched cmb_tax_code,
+                    // and vw_get_supplier_trade didn't even select it - see that view's
+                    // fix comment). Matched by code against the already-loaded Tax Setup
+                    // table since that's the only form BPI stores it in; left blank if no
+                    // matching code exists there, rather than guessing.
+                    string supplierTaxCode = row["tax_code"]?.ToString();
+                    DataRow[] taxMatches = string.IsNullOrWhiteSpace(supplierTaxCode) || _taxSetupTable == null
+                        ? new DataRow[0]
+                        : _taxSetupTable.Select($"code = '{supplierTaxCode.Replace("'", "''")}'");
+
+                    cmb_tax_code.SelectedValue = taxMatches.Length > 0 ? taxMatches[0]["view_id"] : null;
+                    if (taxMatches.Length == 0)
+                        cmb_tax_code.SelectedIndex = -1;
+
                     dgv_main.DataSource = null;
                     dgv_main.Rows.Clear();
                 }
