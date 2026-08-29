@@ -61,6 +61,16 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
         private void btn_edit_Click(object sender, EventArgs e)
         {
+            // Bug #223 (Trello): this entered edit mode unconditionally, even with
+            // nothing selected - txt_id stayed empty, so Save's own isNewMode check
+            // took the Update branch instead of Insert and could create a record
+            // through what looked like an edit action.
+            if (string.IsNullOrWhiteSpace(txt_id.Text))
+            {
+                Helpers.ShowDialogMessage("error", "Please select a Chart of Account to edit.");
+                return;
+            }
+
             SetEditMode(true);
         }
 
@@ -101,6 +111,14 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 }
 
                 Helpers.ShowDialogMessage("success", "Chart of Account deleted successfully.");
+
+                // Bug #220 (Trello): nothing cleared txt_id after a successful
+                // delete, so clicking Delete a second time in a row (before
+                // selecting a different record) tried to delete the same,
+                // already-gone id again. FetchChartOfAccount below refreshes the
+                // grid but doesn't itself clear the panel since no row is
+                // guaranteed to end up selected.
+                Helpers.ResetControls(new Panel[] { pnl_content });
             }
             catch (Exception ex)
             {
