@@ -258,7 +258,24 @@ namespace smpc_accounting_app.Services.Helpers
                 if (decimal.TryParse(txt.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out value))
                 {
                     txt.TextChanged -= TextBox_TextChanged; // prevent recursion
-                    txt.Text = value.ToString();
+
+                    // Bug #212 (Trello): a MONEY-tagged field (e.g. Sales Invoice's
+                    // txt_pwd_discount) went through this same reformatter on every
+                    // blur, which used to always write a bare number back - undoing
+                    // whatever peso-sign currency formatting the field's own MONEY
+                    // handling elsewhere had applied. Every other (non-MONEY) caller
+                    // of TextboxDecimalFormat keeps its previous plain-number behavior.
+                    bool isMoney = txt.Tag?.ToString()?.IndexOf("MONEY", StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (isMoney)
+                    {
+                        txt.Text = value.ToString("C2", CultureInfo.GetCultureInfo("en-PH"));
+                        txt.AccessibleDescription = value.ToString();
+                    }
+                    else
+                    {
+                        txt.Text = value.ToString();
+                    }
+
                     txt.TextChanged += TextBox_TextChanged;
                 }
             }
