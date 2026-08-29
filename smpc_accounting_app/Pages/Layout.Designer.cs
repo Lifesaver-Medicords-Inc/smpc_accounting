@@ -316,8 +316,12 @@ namespace smpc_accounting_app
             treeNode13.Text = "Transactions";
             treeNode14.Name = "Chart Class Setup";
             treeNode14.Text = "Chart Class Setup";
+            // Bugs #222/#224 (Trello): rename the visible label only - Name stays
+            // "Chart Of Accounts Setup" since RoutesService.cs looks pages up by
+            // this exact string; changing it there too without checking every
+            // other reference risks breaking navigation for no visible benefit.
             treeNode15.Name = "Chart Of Accounts Setup";
-            treeNode15.Text = "Chart Of Accounts Setup";
+            treeNode15.Text = "Chart Of Account Setup";
             treeNode16.Name = "Tax Setup";
             treeNode16.Text = "Tax Setup";
             treeNode18.Name = "Output VAT Setup";
