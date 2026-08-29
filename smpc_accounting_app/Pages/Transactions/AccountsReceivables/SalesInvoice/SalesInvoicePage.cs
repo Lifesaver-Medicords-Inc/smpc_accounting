@@ -320,8 +320,12 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
                 Helpers.ShowDialogMessage("success", "Sales Invoice created successfully.");
 
+                // Bug #209 (Trello): capture this before SetEditMode(false) clears
+                // _isNewMode - see LoadSalesInvoices' own comment for why.
+                bool wasNewRecord = _isNewMode;
+
                 SetEditMode(false);
-                await LoadSalesInvoices();
+                await LoadSalesInvoices(selectNewest: wasNewRecord);
             }
             catch (Exception ex)
             {
@@ -354,7 +358,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             }
         }
 
-        private async Task LoadSalesInvoices()
+        // Bug #209 (Trello): "PWD Discount displays as blank after saving" traced
+        // to this always restoring oldIndex - the index the page was sitting on
+        // BEFORE the user clicked New, not the invoice they just created. For a
+        // brand new record that index now points at whatever used to be there
+        // (or one slot off, once the new row lands in the list), so the user
+        // ends up looking at a different, older invoice and its blank/zero PWD
+        // Discount reads as "my entry disappeared". selectNewest picks the
+        // highest-id record instead, landing on the one just created.
+        private async Task LoadSalesInvoices(bool selectNewest = false)
         {
             // save current index before reload
             int oldIndex = _currentSIIndex;
@@ -367,8 +379,22 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                 //set this variable to the parent of the sales invoice
                 _salesInvoice = _sidata.sales_invoice;
 
+                if (selectNewest)
+                {
+                    int newestIndex = 0;
+                    int highestId = _salesInvoice[0].id;
+                    for (int i = 1; i < _salesInvoice.Count; i++)
+                    {
+                        if (_salesInvoice[i].id > highestId)
+                        {
+                            highestId = _salesInvoice[i].id;
+                            newestIndex = i;
+                        }
+                    }
+                    _currentSIIndex = newestIndex;
+                }
                 // restore old index if valid, otherwise fallback to 0
-                if (oldIndex >= 0 && oldIndex < _salesInvoice.Count)
+                else if (oldIndex >= 0 && oldIndex < _salesInvoice.Count)
                     _currentSIIndex = oldIndex;
                 else
                     _currentSIIndex = 0;
@@ -414,6 +440,17 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
             dgv_main.AutoGenerateColumns = false;
 
             var current = _salesInvoice[_currentSIIndex];
+
+            // Bugs #208/#216 (Trello): the generic Helpers.BindControls call above
+            // never reliably filled these two - txt_customer_id (hidden, used purely
+            // as an internal id bridge - see btn_ref_doc_Click/btn_save_Click) and
+            // txt_payment_term both stayed blank after loading an already-saved
+            // invoice (Next/Prev, Search, or a post-save reload), even though
+            // btn_customer_Click sets both directly and correctly on a fresh pick.
+            // Set them straight from the strongly-typed record instead of relying on
+            // the reflection-based binder for these two.
+            txt_customer_id.Text = current.customer_id.ToString();
+            txt_payment_term.Text = current.payment_term;
 
             //Bind child details (grids)
             if (_sidata?.sales_invoice_details != null)
