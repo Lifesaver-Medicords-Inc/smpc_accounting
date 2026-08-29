@@ -150,7 +150,14 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
         private void btn_print_Click(object sender, EventArgs e)
         {
-            if (_currentSIIndex < 0) return;
+            // Bug #203 (Trello): this returned with no feedback at all when there
+            // was nothing loaded to print - looked exactly like "no print modal
+            // appeared" from the user's side.
+            if (_currentSIIndex < 0)
+            {
+                Helpers.ShowDialogMessage("error", "Please select or create a Sales Invoice first.");
+                return;
+            }
 
             var reportPath = Path.Combine(Application.StartupPath, "Printing", "AccountsReceivables", "SalesInvoiceReport.rdlc");
 
