@@ -65,6 +65,27 @@ namespace smpc_accounting_app
             // every other financial master-data screen in this group.
             System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Asset Category Setup");
             System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Fixed Asset Setup");
+            // HRIS group - a TOP-LEVEL nav parent beside Transactions and System
+            // Configuration, served by the HRIS GraphQL API (D:\HRIS), not
+            // ERP_API. Recorded in Changes_Outside_Spec_*.md. Catalogued in
+            // tbl_access_modules under module "HRIS".
+            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Employee Information");
+            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Timesheet");
+            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Payroll");
+            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Holiday Calendar");
+            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("Holiday Setup");
+            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("Leave Requests");
+            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("Benefits");
+            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("People Analytics");
+            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("HRIS", new System.Windows.Forms.TreeNode[] {
+            treeNode23,
+            treeNode25,
+            treeNode26,
+            treeNode27,
+            treeNode28,
+            treeNode29,
+            treeNode30,
+            treeNode31});
             System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("System Configuration", new System.Windows.Forms.TreeNode[] {
             treeNode14,
             treeNode15,
@@ -334,11 +355,31 @@ namespace smpc_accounting_app
             treeNode21.Text = "Asset Category Setup";
             treeNode22.Name = "Fixed Asset Setup";
             treeNode22.Text = "Fixed Asset Setup";
+            treeNode23.Name = "Employee Information";
+            treeNode23.Text = "Employee Information";
+            treeNode25.Name = "Timesheet";
+            treeNode25.Text = "Timesheet";
+            treeNode26.Name = "Payroll";
+            treeNode26.Text = "Payroll";
+            treeNode27.Name = "Holiday Calendar";
+            treeNode27.Text = "Holiday Calendar";
+            treeNode28.Name = "Holiday Setup";
+            treeNode28.Text = "Holiday Setup";
+            treeNode29.Name = "Leave Requests";
+            treeNode29.Text = "Leave Requests";
+            treeNode30.Name = "Benefits";
+            treeNode30.Text = "Benefits";
+            treeNode31.Name = "People Analytics";
+            treeNode31.Text = "People Analytics";
+            // "parent" prefix keeps Sidebar_NodeMouseClick from routing the group node.
+            treeNode24.Name = "parent_7";
+            treeNode24.Text = "HRIS";
             treeNode17.Name = "parent_6";
             treeNode17.Text = "System Configuration";
             this.Sidebar.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode13,
-            treeNode17});
+            treeNode17,
+            treeNode24});
             this.Sidebar.Size = new System.Drawing.Size(230, 428);
             this.Sidebar.TabIndex = 0;
             this.Sidebar.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.Sidebar_NodeMouseClick);

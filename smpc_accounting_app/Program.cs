@@ -11,6 +11,10 @@ namespace smpc_accounting_app
     static class Program
     {
         public static string ApiBaseUrl { get; private set; }
+        // HRIS GraphQL API base URL. Optional key: null when unconfigured, and only
+        // the Employee Information module needs it (HrisApiService guards for null),
+        // so a missing key never blocks the rest of the app from starting.
+        public static string HrisApiBaseUrl { get; private set; }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -30,6 +34,8 @@ namespace smpc_accounting_app
                 // Resolve the correct API URL
                 ApiBaseUrl = System.Configuration.ConfigurationManager.AppSettings[$"ApiBaseUrl.{env}"]
                              ?? throw new ConfigurationErrorsException($"No API URL configured for environment: {env}");
+
+                HrisApiBaseUrl = System.Configuration.ConfigurationManager.AppSettings[$"HrisApiBaseUrl.{env}"];
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

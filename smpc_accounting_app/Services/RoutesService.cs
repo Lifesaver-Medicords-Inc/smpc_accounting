@@ -1,6 +1,7 @@
 ﻿using smpc_accounting_app.Pages;
 using smpc_accounting_app.Pages.Setup;
 using smpc_accounting_app.Pages.Setup.Financial;
+using smpc_accounting_app.Pages.Setup.Hris;
 using smpc_accounting_app.Pages.Setup.Others;
 using smpc_accounting_app.Pages.Setup.Tax;
 using smpc_accounting_app.Pages.Transactions;
@@ -48,6 +49,17 @@ namespace smpc_accounting_app.Services
             // PP&E register - not in the spec, see accounting_asset_category_model.go.
             { "Asset Category Setup", new AssetCategoryPage() },
             { "Fixed Asset Setup", new FixedAssetPage() },
+            // HRIS 201-file master - talks to the HRIS GraphQL API (port 4001),
+            // not ERP_API. Constructor must stay I/O-free (this dictionary
+            // eagerly instantiates every page).
+            { "Employee Information", new EmployeeInformationPage() },
+            { "Timesheet", new TimesheetPage() },
+            { "Payroll", new PayrollRunPage() },
+            { "Holiday Calendar", new HolidayCalendarPage() },
+            { "Holiday Setup", new HolidaySetupPage() },
+            { "Leave Requests", new LeaveRequestsPage() },
+            { "Benefits", new BenefitsPage() },
+            { "People Analytics", new PeopleAnalyticsPage() },
 
             //========================================================================
             // TRANSACTIONS

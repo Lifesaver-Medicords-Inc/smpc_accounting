@@ -1045,7 +1045,11 @@ namespace smpc_accounting_app.Services.Helpers
         {
             private static UserControl overlayPanel;
 
-            public static void ShowLoading(DataGridView dgv, string message = "Loading, please wait...")
+            // Widened from DataGridView to Control (2026-08-31, People Analytics) so
+            // the same overlay works on a Chart or any other container - every
+            // existing call site already passed a DataGridView, which is a
+            // Control, so nothing else needed to change.
+            public static void ShowLoading(Control host, string message = "Loading, please wait...")
             {
                 if (overlayPanel != null) return; // already showing
 
@@ -1067,19 +1071,19 @@ namespace smpc_accounting_app.Services.Helpers
 
                 overlayPanel.Controls.Add(lblMessage);
 
-                // Add overlay inside the DataGridView's parent (so it sits on top of the grid)
-                dgv.Controls.Add(overlayPanel);
+                // Add overlay inside the host's Controls (so it sits on top of it)
+                host.Controls.Add(overlayPanel);
                 overlayPanel.BringToFront();
             }
 
             /// <summary>
-            /// Hide the loading overlay from the DataGridView
+            /// Hide the loading overlay from the host control
             /// </summary>
-            public static void HideLoading(DataGridView dgv)
+            public static void HideLoading(Control host)
             {
                 if (overlayPanel != null)
                 {
-                    dgv.Controls.Remove(overlayPanel);
+                    host.Controls.Remove(overlayPanel);
                     overlayPanel.Dispose();
                     overlayPanel = null;
                 }
