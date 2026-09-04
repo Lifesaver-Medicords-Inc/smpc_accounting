@@ -161,11 +161,23 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             cardRow.Controls.Add(MakeStatCard("AVG TENURE (YRS)", out lbl_tenure));
             tab.Controls.Add(cardRow);
 
+            // Plain percentage-based TableLayoutPanel, not SplitContainer -
+            // SplitContainer's own internal layout code re-validates the
+            // splitter position against the control's CURRENT size on every
+            // layout pass, not just when this code explicitly sets it, and
+            // throws "Height/Width must be greater than 0px" if that happens
+            // while it's still 0-sized (e.g. sitting in a TabPage that isn't
+            // the initially-selected one, which never gets a real layout
+            // pass until clicked). A row/column percentage split has no
+            // equivalent runtime check, so it can't hit this class of bug.
             var pnl_main = new Panel { Dock = DockStyle.Fill, Padding = new Padding(10) };
-            var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 550 };
+            var mainSplit = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 1, ColumnCount = 2 };
+            mainSplit.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
+            mainSplit.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            mainSplit.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             chart_department = MakeChart("Active Employees by Department");
-            split.Panel1.Controls.Add(chart_department);
+            mainSplit.Controls.Add(chart_department, 0, 0);
 
             var breakdowns = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 3, ColumnCount = 1 };
             breakdowns.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
@@ -182,9 +194,9 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             breakdowns.Controls.Add(LabeledGrid("Employment Status", out dgv_byStatus), 0, 0);
             breakdowns.Controls.Add(LabeledGrid("Schedule Type", out dgv_bySchedule), 0, 1);
             breakdowns.Controls.Add(LabeledGrid("Pay Frequency", out dgv_byFrequency), 0, 2);
-            split.Panel2.Controls.Add(breakdowns);
+            mainSplit.Controls.Add(breakdowns, 1, 0);
 
-            pnl_main.Controls.Add(split);
+            pnl_main.Controls.Add(mainSplit);
             tab.Controls.Add(pnl_main);
 
             tab.Controls.SetChildIndex(pnl_main, 0);
@@ -251,14 +263,18 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             toolStrip.Items.Add(btnRefresh);
             tab.Controls.Add(toolStrip);
 
-            var split = new SplitContainer { Dock = DockStyle.Fill, Orientation = Orientation.Horizontal, SplitterDistance = 400 };
+            // TableLayoutPanel, not SplitContainer - see the comment on the
+            // Headcount tab's mainSplit above for why.
+            var trendsSplit = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 2, ColumnCount = 1 };
+            trendsSplit.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            trendsSplit.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             chart_turnover = MakeChart("Turnover Trend (Hires vs Exits)");
             chart_payrollCost = MakeChart("Payroll Cost Trend (Approved Runs, Total Net)");
-            split.Panel1.Controls.Add(chart_turnover);
-            split.Panel2.Controls.Add(chart_payrollCost);
-            tab.Controls.Add(split);
+            trendsSplit.Controls.Add(chart_turnover, 0, 0);
+            trendsSplit.Controls.Add(chart_payrollCost, 0, 1);
+            tab.Controls.Add(trendsSplit);
 
-            tab.Controls.SetChildIndex(split, 0);
+            tab.Controls.SetChildIndex(trendsSplit, 0);
             tab.Controls.SetChildIndex(toolStrip, 1);
         }
 

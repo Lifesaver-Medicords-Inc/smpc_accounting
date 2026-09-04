@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>1000</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -176,6 +176,7 @@
     <Compile Include="Models\CompanySetupModel.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\CurrentUserModel.cs" />
+    <Compile Include="Models\CreditMemoCustomerViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\ExchangeRateModel.cs" />
     <Compile Include="Models\GeneralLedgerMapper.cs" />
@@ -390,6 +391,12 @@
     </Compile>
     <Compile Include="Pages\Transactions\Journal\DebitMemo.Designer.cs">
       <DependentUpon>DebitMemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Transactions\Journal\CreditMemoModals\CreditMemoCustomerPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\Transactions\Journal\CreditMemoModals\CreditMemoCustomerPicker.Designer.cs">
+      <DependentUpon>CreditMemoCustomerPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\Transactions\Journal\DebitMemoModals\DebitMemoCreditMemoPicker.cs">
       <SubType>Form</SubType>

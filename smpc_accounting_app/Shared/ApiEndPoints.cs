@@ -77,5 +77,13 @@ namespace smpc_accounting_app.Shared
         // Go side, not nested under /accounting like everything else above.
         public const string CREDIT_MEMO = "/credit-memos";
         public const string DEBIT_MEMO = "/debit-memos";
+
+        // Customer Credit Memo's own partner picker. NOT CUSTOMER_VIEW above:
+        // that one (vw_get_customer, Sales Invoice's picker) returns the parent
+        // tbl_bpi.id as customer_id, which Credit Memo's server-side "is this
+        // partner registered as a Customer" guard can never match - it checks
+        // tbl_bpi_entity, which keys on the branch id. This endpoint returns the
+        // branch id and is pre-filtered to partners that actually hold "CUS".
+        public const string CREDIT_MEMO_CUSTOMERS = "/credit-memos/customers";
     }
 }

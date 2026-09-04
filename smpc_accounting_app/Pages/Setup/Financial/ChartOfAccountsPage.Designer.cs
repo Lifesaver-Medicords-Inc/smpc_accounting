@@ -30,11 +30,11 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartOfAccountsPage));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -168,7 +168,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // pnl_content
-            //
+            // 
             this.pnl_content.Controls.Add(this.cmb_cash_flow_category);
             this.pnl_content.Controls.Add(this.label8);
             this.pnl_content.Controls.Add(this.cmb_group);
@@ -186,32 +186,34 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.pnl_content.Name = "pnl_content";
             this.pnl_content.Size = new System.Drawing.Size(1400, 179);
             this.pnl_content.TabIndex = 67;
-            //
+            // 
             // cmb_cash_flow_category
-            //
+            // 
             this.cmb_cash_flow_category.BackColor = System.Drawing.Color.White;
             this.cmb_cash_flow_category.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_cash_flow_category.Enabled = false;
             this.cmb_cash_flow_category.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_cash_flow_category.FormattingEnabled = true;
-            this.cmb_cash_flow_category.Items.AddRange(new object[] { "OPERATING", "FINANCING" });
-            this.cmb_cash_flow_category.Location = new System.Drawing.Point(67, 140);
+            this.cmb_cash_flow_category.Items.AddRange(new object[] {
+            "OPERATING",
+            "FINANCING"});
+            this.cmb_cash_flow_category.Location = new System.Drawing.Point(153, 140);
             this.cmb_cash_flow_category.MinimumSize = new System.Drawing.Size(200, 0);
             this.cmb_cash_flow_category.Name = "cmb_cash_flow_category";
             this.cmb_cash_flow_category.Size = new System.Drawing.Size(289, 21);
             this.cmb_cash_flow_category.TabIndex = 106;
             this.cmb_cash_flow_category.TabStop = false;
             this.cmb_cash_flow_category.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_cash_flow_category_KeyDown);
-            //
+            // 
             // label8
-            //
+            // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(15, 143);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(46, 13);
+            this.label8.Size = new System.Drawing.Size(132, 13);
             this.label8.TabIndex = 107;
             this.label8.Text = "CASH FLOW CATEGORY";
-            //
+            // 
             // cmb_group
             // 
             this.cmb_group.BackColor = System.Drawing.Color.White;
@@ -219,7 +221,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.cmb_group.Enabled = false;
             this.cmb_group.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_group.FormattingEnabled = true;
-            this.cmb_group.Location = new System.Drawing.Point(67, 94);
+            this.cmb_group.Location = new System.Drawing.Point(153, 97);
             this.cmb_group.MaxLength = 50;
             this.cmb_group.MinimumSize = new System.Drawing.Size(200, 0);
             this.cmb_group.Name = "cmb_group";
@@ -233,7 +235,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(15, 97);
+            this.label7.Location = new System.Drawing.Point(101, 100);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(46, 13);
             this.label7.TabIndex = 104;
@@ -246,7 +248,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.cmb_account_class.Enabled = false;
             this.cmb_account_class.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_account_class.FormattingEnabled = true;
-            this.cmb_account_class.Location = new System.Drawing.Point(67, 71);
+            this.cmb_account_class.Location = new System.Drawing.Point(153, 74);
             this.cmb_account_class.MaxLength = 50;
             this.cmb_account_class.MinimumSize = new System.Drawing.Size(200, 0);
             this.cmb_account_class.Name = "cmb_account_class";
@@ -260,7 +262,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 74);
+            this.label6.Location = new System.Drawing.Point(101, 77);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 64;
@@ -278,7 +280,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 31);
+            this.label3.Location = new System.Drawing.Point(101, 34);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 57;
@@ -297,7 +299,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // txt_code
             // 
             this.txt_code.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            this.txt_code.Location = new System.Drawing.Point(67, 28);
+            this.txt_code.Location = new System.Drawing.Point(153, 31);
             this.txt_code.Name = "txt_code";
             this.txt_code.ReadOnly = true;
             this.txt_code.Size = new System.Drawing.Size(289, 20);
@@ -308,7 +310,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.txt_name.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txt_name.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            this.txt_name.Location = new System.Drawing.Point(67, 49);
+            this.txt_name.Location = new System.Drawing.Point(153, 52);
             this.txt_name.Name = "txt_name";
             this.txt_name.ReadOnly = true;
             this.txt_name.Size = new System.Drawing.Size(289, 20);
@@ -318,7 +320,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 52);
+            this.label2.Location = new System.Drawing.Point(101, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 60;
@@ -329,7 +331,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.panel4.Controls.Add(this.txt_search);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(0, 228);
+            this.panel4.Location = new System.Drawing.Point(0, 251);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1400, 60);
             this.panel4.TabIndex = 68;
@@ -357,14 +359,14 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.dgv_chart_of_account.AllowUserToDeleteRows = false;
             this.dgv_chart_of_account.AllowUserToResizeColumns = false;
             this.dgv_chart_of_account.AllowUserToResizeRows = false;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_chart_of_account.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_chart_of_account.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_chart_of_account.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_chart_of_account.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -376,12 +378,12 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.group_id,
             this.cash_flow_category});
             this.dgv_chart_of_account.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_chart_of_account.Location = new System.Drawing.Point(0, 288);
+            this.dgv_chart_of_account.Location = new System.Drawing.Point(0, 311);
             this.dgv_chart_of_account.Name = "dgv_chart_of_account";
             this.dgv_chart_of_account.ReadOnly = true;
             this.dgv_chart_of_account.RowHeadersVisible = false;
             this.dgv_chart_of_account.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_chart_of_account.Size = new System.Drawing.Size(1400, 662);
+            this.dgv_chart_of_account.Size = new System.Drawing.Size(1400, 639);
             this.dgv_chart_of_account.TabIndex = 69;
             this.dgv_chart_of_account.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_chart_of_account_CellClick);
             this.dgv_chart_of_account.SelectionChanged += new System.EventHandler(this.dgv_chart_of_account_SelectionChanged);
@@ -398,8 +400,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.code.DataPropertyName = "code";
-            dataGridViewCellStyle22.BackColor = System.Drawing.Color.Gainsboro;
-            this.code.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.code.DefaultCellStyle = dataGridViewCellStyle2;
             this.code.HeaderText = "CODE";
             this.code.Name = "code";
             this.code.ReadOnly = true;
@@ -408,8 +410,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.name.DataPropertyName = "name";
-            dataGridViewCellStyle23.BackColor = System.Drawing.Color.Gainsboro;
-            this.name.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.name.DefaultCellStyle = dataGridViewCellStyle3;
             this.name.HeaderText = "NAME";
             this.name.Name = "name";
             this.name.ReadOnly = true;
@@ -418,8 +420,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.account_class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.account_class.DataPropertyName = "account_class";
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.Gainsboro;
-            this.account_class.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            this.account_class.DefaultCellStyle = dataGridViewCellStyle4;
             this.account_class.HeaderText = "CLASS";
             this.account_class.Name = "account_class";
             this.account_class.ReadOnly = true;
@@ -436,8 +438,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.group.DataPropertyName = "group";
-            dataGridViewCellStyle25.BackColor = System.Drawing.Color.Gainsboro;
-            this.group.DefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            this.group.DefaultCellStyle = dataGridViewCellStyle5;
             this.group.HeaderText = "GROUP";
             this.group.Name = "group";
             this.group.ReadOnly = true;
@@ -449,15 +451,15 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.group_id.Name = "group_id";
             this.group_id.ReadOnly = true;
             this.group_id.Visible = false;
-            //
+            // 
             // cash_flow_category
-            //
+            // 
             this.cash_flow_category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.cash_flow_category.DataPropertyName = "cash_flow_category";
             this.cash_flow_category.HeaderText = "CASH FLOW CATEGORY";
             this.cash_flow_category.Name = "cash_flow_category";
             this.cash_flow_category.ReadOnly = true;
-            //
+            // 
             // ChartOfAccountsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

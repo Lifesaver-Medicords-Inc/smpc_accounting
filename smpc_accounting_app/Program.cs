@@ -37,6 +37,32 @@ namespace smpc_accounting_app
 
                 HrisApiBaseUrl = System.Configuration.ConfigurationManager.AppSettings[$"HrisApiBaseUrl.{env}"];
 
+                // Global crash guard (mirrors dispatching's Program.cs). The try/catch below
+                // only covers STARTUP - once the message loop is pumping, a UI-thread
+                // exception (e.g. "Index out of range" on a grid click) bypasses it and hit
+                // the raw .NET Continue/Quit dialog. CatchException routes those here so the
+                // app keeps running; the full stack is logged and the user sees a clean message.
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                Application.ThreadException += (s, e) =>
+                {
+                    try { Serilog.Log.Error(e.Exception, "Unhandled UI-thread exception"); } catch { }
+                    MessageBox.Show(
+                        "Something went wrong and that action could not be completed." + Environment.NewLine + Environment.NewLine
+                        + e.Exception.Message + Environment.NewLine + Environment.NewLine
+                        + "The app will keep running. Full details were saved to the log.",
+                        "Unexpected Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                };
+                AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                {
+                    var uex = e.ExceptionObject as Exception;
+                    try { Serilog.Log.Error(uex, "Unhandled non-UI exception"); } catch { }
+                    MessageBox.Show(
+                        "A serious error occurred." + Environment.NewLine + Environment.NewLine
+                        + (uex?.Message ?? "Unknown error") + Environment.NewLine + Environment.NewLine
+                        + "Details were saved to the log.",
+                        "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                };
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Layout());

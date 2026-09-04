@@ -290,7 +290,10 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
                     return;
                 }
 
-                string[] columnsToValidate = new[] { "item_code", "item_qty", "item_uom", "date_deliver", "unit_price" };
+                //string[] columnsToValidate = new[] { "item_code", "item_qty", "item_uom", "date_deliver", "unit_price" }; // original code
+
+                string[] columnsToValidate = new[] { "item_code", "item_qty", "item_uom", "date_deliver", "total_cost" }; // put the total cost instead the unit price
+
 
                 if (await Helpers.ValidateDataGridViewCells(dgv_main, columnsToValidate))
                     return;

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using smpc_accounting_app.Models;
 using smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.InvoiceReceiptModals;
 using smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoice.SalesInvoiceModals;
+using smpc_accounting_app.Pages.Transactions.Journal.CreditMemoModals;
 using smpc_accounting_app.Services.Helpers;
 using smpc_accounting_app.Services.Transactions;
 
@@ -245,15 +246,25 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             }
             else
             {
-                using (var modal = new SalesInvoiceCustomer())
+                // CreditMemoCustomerPicker, NOT SalesInvoiceCustomer: the latter is
+                // backed by vw_get_customer, whose customer_id is the PARENT
+                // tbl_bpi.id. This screen's partner_id has to be the branch id
+                // (tbl_bpi_general.id) because the server verifies it against
+                // tbl_bpi_entity, which keys on bpi_general_id - feeding it the
+                // parent id failed every customer Credit Memo with "partner <n> is
+                // not registered as a Customer", even for correctly registered
+                // customers (confirmed live on Bridge Inc: branch 40015 holds CUS,
+                // parent 40026 holds nothing and never should). The supplier branch
+                // above was never affected - vw_get_supplier_trade already returns
+                // the branch id.
+                using (var modal = new CreditMemoCustomerPicker())
                 {
                     if (modal.ShowDialog(this.FindForm()) == DialogResult.OK
-                        && modal.SelectedCustomer != null && modal.SelectedCustomer.Rows.Count > 0)
+                        && modal.Selected != null)
                     {
-                        var row = modal.SelectedCustomer.Rows[0];
-                        txt_partner_id.Text = row["customer_id"].ToString();
-                        txt_partner_code.Text = row["customer_code"].ToString();
-                        txt_partner_name.Text = row["customer"].ToString();
+                        txt_partner_id.Text = modal.Selected.partner_id.ToString();
+                        txt_partner_code.Text = modal.Selected.customer_code;
+                        txt_partner_name.Text = modal.Selected.customer;
                     }
                 }
             }
