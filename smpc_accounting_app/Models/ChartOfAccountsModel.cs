@@ -18,5 +18,13 @@ namespace smpc_accounting_app.Models
        // OPERATING (default/blank) | FINANCING - feeds the Cash Flow
        // Statement's Financing section.
        public string cash_flow_category { get; set; }
+
+       // "" (unclassified) | CURRENT | NON-CURRENT | CASH - feeds the
+       // liquidity ratios (§12.10). Blank is a real state, not a missing
+       // value: an unclassified account is excluded from the ratios and
+       // reported, never assumed to be current. CASH is a subset of CURRENT,
+       // so a cash account counts toward both current assets and the cash
+       // ratio.
+       public string liquidity_class { get; set; }
     }
 }

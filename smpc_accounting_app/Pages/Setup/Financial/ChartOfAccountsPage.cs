@@ -580,5 +580,27 @@ namespace smpc_accounting_app.Pages.Setup.Financial
                 e.Handled = true;
             }
         }
+        // Liquidity Class (CURRENT / NON-CURRENT / CASH) - feeds the four
+        // liquidity ratios on the Financial Ratios report (spec 12.10, see
+        // ERP_API's financial_ratios_service.go). CASH is a SUBSET of CURRENT,
+        // not an alternative: a CASH account counts toward current assets as
+        // well as toward the cash ratio, which is why it sits on this one
+        // field rather than a second checkbox.
+        //
+        // Deliberately optional, and blank stays selectable via Backspace /
+        // Delete below. Unclassified is a REAL state here, not a missing
+        // value: 12.10 forbids inferring current-ness from an account's code,
+        // class or name, so an account nobody has classified is excluded from
+        // the ratios and named in the report rather than assumed current.
+        // Nothing here may default a value.
+        private void cmb_liquidity_class_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
+            {
+                cmb_liquidity_class.SelectedIndex = -1;
+                cmb_liquidity_class.Text = "";
+                e.Handled = true;
+            }
+        }
     }
 }

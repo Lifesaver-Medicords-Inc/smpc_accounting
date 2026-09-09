@@ -47,6 +47,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.pnl_content = new System.Windows.Forms.Panel();
             this.cmb_cash_flow_category = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.cmb_liquidity_class = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.cmb_group = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.cmb_account_class = new System.Windows.Forms.ComboBox();
@@ -69,6 +71,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cash_flow_category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.liquidity_class = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.pnl_content.SuspendLayout();
@@ -171,6 +174,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             // 
             this.pnl_content.Controls.Add(this.cmb_cash_flow_category);
             this.pnl_content.Controls.Add(this.label8);
+            this.pnl_content.Controls.Add(this.cmb_liquidity_class);
+            this.pnl_content.Controls.Add(this.label9);
             this.pnl_content.Controls.Add(this.cmb_group);
             this.pnl_content.Controls.Add(this.label7);
             this.pnl_content.Controls.Add(this.cmb_account_class);
@@ -213,6 +218,34 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.label8.Size = new System.Drawing.Size(132, 13);
             this.label8.TabIndex = 107;
             this.label8.Text = "CASH FLOW CATEGORY";
+            // 
+            // cmb_liquidity_class
+            // 
+            this.cmb_liquidity_class.BackColor = System.Drawing.Color.White;
+            this.cmb_liquidity_class.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_liquidity_class.Enabled = false;
+            this.cmb_liquidity_class.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_liquidity_class.FormattingEnabled = true;
+            this.cmb_liquidity_class.Items.AddRange(new object[] {
+            "CURRENT",
+            "NON-CURRENT",
+            "CASH"});
+            this.cmb_liquidity_class.Location = new System.Drawing.Point(620, 140);
+            this.cmb_liquidity_class.MinimumSize = new System.Drawing.Size(200, 0);
+            this.cmb_liquidity_class.Name = "cmb_liquidity_class";
+            this.cmb_liquidity_class.Size = new System.Drawing.Size(289, 21);
+            this.cmb_liquidity_class.TabIndex = 108;
+            this.cmb_liquidity_class.TabStop = false;
+            this.cmb_liquidity_class.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_liquidity_class_KeyDown);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(513, 143);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(101, 13);
+            this.label9.TabIndex = 109;
+            this.label9.Text = "LIQUIDITY CLASS";
             // 
             // cmb_group
             // 
@@ -376,7 +409,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.class_id,
             this.group,
             this.group_id,
-            this.cash_flow_category});
+            this.cash_flow_category,
+            this.liquidity_class});
             this.dgv_chart_of_account.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_chart_of_account.Location = new System.Drawing.Point(0, 311);
             this.dgv_chart_of_account.Name = "dgv_chart_of_account";
@@ -460,6 +494,14 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             this.cash_flow_category.Name = "cash_flow_category";
             this.cash_flow_category.ReadOnly = true;
             // 
+            // liquidity_class
+            // 
+            this.liquidity_class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.liquidity_class.DataPropertyName = "liquidity_class";
+            this.liquidity_class.HeaderText = "LIQUIDITY CLASS";
+            this.liquidity_class.Name = "liquidity_class";
+            this.liquidity_class.ReadOnly = true;
+            // 
             // ChartOfAccountsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,6 +542,8 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private System.Windows.Forms.Panel pnl_content;
         private System.Windows.Forms.ComboBox cmb_cash_flow_category;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox cmb_liquidity_class;
+        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cmb_group;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmb_account_class;
@@ -522,5 +566,6 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         private System.Windows.Forms.DataGridViewTextBoxColumn group;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn cash_flow_category;
+        private System.Windows.Forms.DataGridViewTextBoxColumn liquidity_class;
     }
 }
