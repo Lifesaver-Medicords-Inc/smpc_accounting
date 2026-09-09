@@ -35,6 +35,12 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private bool _isNewMode = false;
         private bool _isEditMode = false;
 
+        // Re-entrancy guard for dgv_journal_entry_CellValueChanged. Every branch in that
+        // handler writes cell values, and each write raises CellValueChanged again -
+        // which for the DEBIT/CREDIT pair was fatal, not merely wasteful. See the
+        // handler for the full account.
+        private bool _suppressJournalCellValueChanged = false;
+
         public JournalEntryPage()
         {
             InitializeComponent();
@@ -781,62 +787,82 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             if (e.RowIndex < 0)
                 return;
 
+            // Every branch below assigns to a cell, and each assignment raises this same
+            // event. For DEBIT/CREDIT that was fatal rather than merely wasteful: typing
+            // a debit cleared the credit, which re-entered and cleared the debit, which
+            // re-entered again - until the stack ran out. A StackOverflowException cannot
+            // be caught in .NET, so the app died outright and took the user's in-progress
+            // line with it. CurrentCellDirtyStateChanged commits on every edit, which made
+            // it easy to hit.
+            if (_suppressJournalCellValueChanged)
+                return;
+
             var row = dgv_journal_entry.Rows[e.RowIndex];
             var columnName = dgv_journal_entry.Columns[e.ColumnIndex].Name;
 
-            if (columnName == "inserted_date")
+            _suppressJournalCellValueChanged = true;
+            try
             {
-                CopyInsertedDateToPostingDate(e.RowIndex);
-                return;
-            }
-
-            if (columnName == "cmb_posting_ref")
-            {
-                var postingRefValue = row.Cells["cmb_posting_ref"].Value;
-
-                if (int.TryParse(postingRefValue.ToString(), out int selectedId))
+                if (columnName == "inserted_date")
                 {
-                    var coa = _coadata.FirstOrDefault(c => c.id == selectedId);
-                    if (coa != null)
+                    CopyInsertedDateToPostingDate(e.RowIndex);
+                    return;
+                }
+
+                if (columnName == "cmb_posting_ref")
+                {
+                    var postingRefValue = row.Cells["cmb_posting_ref"].Value;
+
+                    if (int.TryParse(postingRefValue?.ToString(), out int selectedId))
                     {
-                        row.Cells["account_title"].Value = coa.name;
-                        row.Cells["posting_ref"].Value = coa.code;
+                        var coa = _coadata.FirstOrDefault(c => c.id == selectedId);
+                        if (coa != null)
+                        {
+                            row.Cells["account_title"].Value = coa.name;
+                            row.Cells["posting_ref"].Value = coa.code;
+                        }
                     }
                 }
+
+                if (columnName == "debit" || columnName == "credit")
+                {
+                    // Decide from the column the user actually edited, not from both
+                    // values at once. The previous version read BOTH into locals up
+                    // front and then tested them after clearing one, so the second test
+                    // still saw the pre-clear figure: typing a debit onto a line that
+                    // already had a credit wiped both cells and locked DEBIT read-only -
+                    // exactly backwards.
+                    string editedColumn = columnName;
+                    string otherColumn = editedColumn == "debit" ? "credit" : "debit";
+
+                    decimal editedValue = 0;
+                    decimal.TryParse(row.Cells[editedColumn].Value?.ToString(), out editedValue);
+
+                    if (editedValue > 0)
+                    {
+                        // User decision, 2026-09-04: newest entry wins. A line carries a
+                        // debit or a credit, never both, so the side just typed clears
+                        // and locks the other. Clearing that side unlocks it again below
+                        // on the next edit.
+                        row.Cells[otherColumn].Value = null;
+                        row.Cells[otherColumn].ReadOnly = true;
+                    }
+                    else
+                    {
+                        row.Cells[otherColumn].ReadOnly = false;
+                    }
+
+                    // The edited side is always editable - otherwise a mistyped figure
+                    // could not be corrected on the line it was typed into.
+                    row.Cells[editedColumn].ReadOnly = false;
+
+                    // Force repaint (for indentation + visual updates)
+                    dgv_journal_entry.InvalidateRow(e.RowIndex);
+                }
             }
-
-            if (columnName == "debit" || columnName == "credit")
+            finally
             {
-                decimal debit = 0;
-                decimal credit = 0;
-
-                decimal.TryParse(row.Cells["debit"].Value?.ToString(), out debit);
-                decimal.TryParse(row.Cells["credit"].Value?.ToString(), out credit);
-
-                // If DEBIT has value → lock CREDIT
-                if (debit > 0)
-                {
-                    row.Cells["credit"].Value = null;
-                    row.Cells["credit"].ReadOnly = true;
-                }
-                else
-                {
-                    row.Cells["credit"].ReadOnly = false;
-                }
-
-                // If CREDIT has value → lock DEBIT
-                if (credit > 0)
-                {
-                    row.Cells["debit"].Value = null;
-                    row.Cells["debit"].ReadOnly = true;
-                }
-                else
-                {
-                    row.Cells["debit"].ReadOnly = false;
-                }
-
-                // Force repaint (for indentation + visual updates)
-                dgv_journal_entry.InvalidateRow(e.RowIndex);
+                _suppressJournalCellValueChanged = false;
             }
         }
 

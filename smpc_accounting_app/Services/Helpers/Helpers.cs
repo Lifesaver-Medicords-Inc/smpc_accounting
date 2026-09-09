@@ -108,6 +108,16 @@ namespace smpc_accounting_app.Services.Helpers
             private static readonly Dictionary<DataGridView, string[]> _moneyColumns
                 = new Dictionary<DataGridView, string[]>();
 
+            // Re-entrancy guard, per grid. Dgv_CellValueChanged ends by assigning to the
+            // very cell whose change invoked it, and that assignment raises the event
+            // again. Where the assigned decimal does not round-trip to an identical
+            // stored value - a bound column of a different underlying type, for one -
+            // every pass counts as a fresh change and the handler recurses until the
+            // stack is gone. StackOverflowException cannot be caught in .NET, so the app
+            // dies outright, mid-edit.
+            private static readonly HashSet<DataGridView> _formatting
+                = new HashSet<DataGridView>();
+
             public static void DataGridViewDecimalFormat(DataGridView dgv, IEnumerable<string> moneyColumns)
             {
                 if (dgv == null) return;
@@ -162,6 +172,8 @@ namespace smpc_accounting_app.Services.Helpers
                 var cell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 if (cell.Value == null) return;
 
+                if (_formatting.Contains(dgv)) return;
+
                 string rawValue = cell.Value.ToString().Trim();
 
                 if (!decimal.TryParse(rawValue, NumberStyles.Currency,
@@ -174,7 +186,20 @@ namespace smpc_accounting_app.Services.Helpers
                         moneyValue = 0m;
                 }
 
-                cell.Value = moneyValue;
+                // Already the parsed decimal - writing it back would change nothing but
+                // still risk another pass. This alone handles the common case; the guard
+                // below covers the rest.
+                if (cell.Value is decimal current && current == moneyValue) return;
+
+                _formatting.Add(dgv);
+                try
+                {
+                    cell.Value = moneyValue;
+                }
+                finally
+                {
+                    _formatting.Remove(dgv);
+                }
             }
         }
 
