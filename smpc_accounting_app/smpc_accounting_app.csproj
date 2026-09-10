@@ -23,7 +23,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1000</ApplicationRevision>
+    <UpdateUrl>http://localhost/smpc_accounting_app/</UpdateUrl>
+    <ApplicationRevision>1002</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -531,6 +532,7 @@
       <DependentUpon>InvoiceReceiptPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="SmpcEndpoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounting\APVoucherServices.cs" />
     <Compile Include="Services\Helpers\ApiResponseModel.cs" />
