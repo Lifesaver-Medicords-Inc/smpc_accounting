@@ -60,6 +60,7 @@ namespace smpc_accounting_app.Printing
             this.btn_prev.Name = "btn_prev";
             this.btn_prev.Size = new System.Drawing.Size(52, 22);
             this.btn_prev.Text = "Back";
+            this.btn_prev.Click += new System.EventHandler(this.btn_prev_Click);
             // 
             // panel6
             // 

@@ -184,9 +184,9 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             Helpers.SetButtonVisibility(toolStrip1, panel3,
                 visibleButtons: enable
                     ? new[] { "btn_save", "btn_cancel" }
-                    : new[] { "btn_new", "btn_search", "btn_prev", "btn_next", "btn_print" },
+                    : new[] { "btn_new", "btn_search", "btn_prev", "btn_next" },
                 hiddenButtons: enable
-                    ? new[] { "btn_new", "btn_search", "btn_prev", "btn_next", "btn_print", "btn_edit", "btn_approve" }
+                    ? new[] { "btn_new", "btn_search", "btn_prev", "btn_next", "btn_edit", "btn_approve" }
                     : new[] { "btn_save", "btn_cancel", "btn_edit" });
 
             Helpers.SetChildControlsEnabled(new Control[] { panel3 }, !enable, AlwaysReadOnlyFields);

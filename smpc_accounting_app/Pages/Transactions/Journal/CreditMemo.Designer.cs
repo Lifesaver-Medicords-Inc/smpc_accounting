@@ -39,7 +39,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.btn_search = new System.Windows.Forms.ToolStripButton();
             this.btn_prev = new System.Windows.Forms.ToolStripButton();
             this.btn_next = new System.Windows.Forms.ToolStripButton();
-            this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_cancel = new System.Windows.Forms.ToolStripButton();
@@ -121,7 +120,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.btn_search,
             this.btn_prev,
             this.btn_next,
-            this.btn_print,
             this.btn_edit,
             this.btn_save,
             this.btn_cancel,
@@ -164,14 +162,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             this.btn_next.Name = "btn_next";
             this.btn_next.Size = new System.Drawing.Size(52, 22);
             this.btn_next.Text = "Next";
-            //
-            // btn_print
-            //
-            this.btn_print.Image = ((System.Drawing.Image)(resources.GetObject("btn_print.Image")));
-            this.btn_print.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_print.Name = "btn_print";
-            this.btn_print.Size = new System.Drawing.Size(52, 22);
-            this.btn_print.Text = "Print";
             //
             // btn_edit
             //
@@ -580,7 +570,6 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         private System.Windows.Forms.ToolStripButton btn_search;
         private System.Windows.Forms.ToolStripButton btn_prev;
         private System.Windows.Forms.ToolStripButton btn_next;
-        private System.Windows.Forms.ToolStripButton btn_print;
         private System.Windows.Forms.ToolStripButton btn_edit;
         private System.Windows.Forms.ToolStripButton btn_save;
         private System.Windows.Forms.ToolStripButton btn_cancel;

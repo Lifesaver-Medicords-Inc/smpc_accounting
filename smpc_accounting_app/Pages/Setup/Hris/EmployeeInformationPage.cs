@@ -25,7 +25,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
     public partial class EmployeeInformationPage : UserControl
     {
         private static readonly string[] Departments =
-            { "Admin", "HR", "Sales", "Engineering", "Purchasing", "Dispatch", "Warehouse", "Accounting" };
+            { "Management", "Sales", "Engineering", "Warehouse", "Purchasing", "Dispatching", "A/R", "A/P", "A/R\u2013A/P Cashier", "Admin" };
         private static readonly string[] EmploymentStatuses =
             { "PROBATIONARY", "REGULAR", "CONTRACTUAL", "PROJECT_BASED", "RESIGNED", "TERMINATED", "AWOL", "RETIRED" };
         private static readonly string[] CivilStatuses = { "", "SINGLE", "MARRIED", "WIDOWED", "SEPARATED" };
