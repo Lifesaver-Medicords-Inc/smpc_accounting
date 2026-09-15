@@ -41,7 +41,15 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         {
             try
             {
-                await LoadPurchaseOrder();
+                Helpers.Loading.ShowLoading(this);
+                try
+                {
+                    await LoadPurchaseOrder();
+                }
+                finally
+                {
+                    Helpers.Loading.HideLoading(this);
+                }
             }
             catch (Exception ex)
             {

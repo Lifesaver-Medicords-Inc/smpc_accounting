@@ -158,20 +158,28 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
-
-            // If no records exist, clear everything
-            if (_paymentReceipt == null || !_paymentReceipt.Any())
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                ClearPaymentReceiptUI();
-                return;
+                SetEditMode(false);
+
+                // If no records exist, clear everything
+                if (_paymentReceipt == null || !_paymentReceipt.Any())
+                {
+                    ClearPaymentReceiptUI();
+                    return;
+                }
+
+                // Return to the previous record index if available
+                if (_previousPRIndex >= 0 && _paymentReceipt != null && _paymentReceipt.Count > 0)
+                {
+                    _currentPRIndex = _previousPRIndex;
+                    await LoadPaymentReceipts();
+                }
             }
-
-            // Return to the previous record index if available
-            if (_previousPRIndex >= 0 && _paymentReceipt != null && _paymentReceipt.Count > 0)
+            finally
             {
-                _currentPRIndex = _previousPRIndex;
-                await LoadPaymentReceipts();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -357,7 +365,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main);
                 await LoadPaymentReceipts();
             }
             catch (Exception ex)

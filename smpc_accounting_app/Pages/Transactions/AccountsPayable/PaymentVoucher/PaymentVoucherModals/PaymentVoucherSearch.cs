@@ -63,7 +63,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher.
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_pv_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_pv_search);
                 await PaymentVouchers();
             }
             catch (Exception ex)

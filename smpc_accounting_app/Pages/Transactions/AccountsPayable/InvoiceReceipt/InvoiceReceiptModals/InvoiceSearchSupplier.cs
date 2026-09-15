@@ -62,7 +62,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt.
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_suplier_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_suplier_search);
                 await LoadSupplier();
             }
             catch (Exception ex)

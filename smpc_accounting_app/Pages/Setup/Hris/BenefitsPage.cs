@@ -183,7 +183,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_plans, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_plans);
                 var result = await HrisBenefitService.GetPlansAsync();
                 if (result.HasErrors)
                 {
@@ -447,7 +447,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             _loaded = true;
             try
             {
-                Helpers.Loading.ShowLoading(dgv_plans, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_plans);
                 var employees = await HrisEmployeeService.GetEmployeesAsync();
                 if (employees.HasErrors)
                 {
@@ -483,7 +483,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_enrollments, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_enrollments);
                 var result = await HrisBenefitService.GetEnrollmentsAsync(status: cmb_enrollStatusFilter.Text);
                 if (result.HasErrors)
                 {

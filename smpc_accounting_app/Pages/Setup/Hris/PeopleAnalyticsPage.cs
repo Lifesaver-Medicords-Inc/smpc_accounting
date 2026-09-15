@@ -208,7 +208,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_byStatus, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_byStatus);
                 var result = await HrisAnalyticsService.GetHeadcountSummaryAsync();
                 if (result.HasErrors)
                 {
@@ -283,7 +283,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             int months = (int)num_trendMonths.Value;
             try
             {
-                Helpers.Loading.ShowLoading(chart_turnover, "Fetching data...");
+                Helpers.Loading.ShowLoading(chart_turnover);
 
                 var turnover = await HrisAnalyticsService.GetTurnoverTrendAsync(months);
                 if (turnover.HasErrors)
@@ -388,7 +388,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             int? month = cmb_alMonth.SelectedIndex > 0 ? cmb_alMonth.SelectedIndex : (int?)null;
             try
             {
-                Helpers.Loading.ShowLoading(dgv_leaveByType, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_leaveByType);
 
                 var attendance = await HrisAnalyticsService.GetAttendanceSummaryAsync(year, month);
                 if (attendance.HasErrors)

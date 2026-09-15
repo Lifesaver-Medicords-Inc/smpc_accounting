@@ -61,6 +61,17 @@ namespace smpc_accounting_app.Shared
 
         //Payment Receipt
         public const string PAYMENT_RECEIPT = "/accounting/payment_receipt";
+        // A/R Record of Transactions (spec 12.3), Billing list (12.5) and the
+        // SO billing ledger (12.4).
+        public const string AR_RECORDS = "/accounting/ar_records";
+        public const string AR_RECORDS_NEXT_DUE = "/accounting/ar_records/next_due";
+        public const string AP_RECORDS = "/accounting/ap_records";
+        public const string BILLING = "/accounting/billing";
+        public const string BILLING_TRANSACTIONS = "/accounting/billing/transactions";
+        // Petty Cash Replenishment (spec 5.26).
+        public const string PETTY_CASH = "/accounting/petty_cash";
+        public const string PETTY_CASH_NEXT_CYCLE = "/accounting/petty_cash/next_cycle";
+        public const string PETTY_CASH_APPROVE = "/accounting/petty_cash/approve";
         public const string SALES_INVOICE_RECEIPT = "/accounting/payment_receipt/sales_invoice/";
 
         //Journal Entry

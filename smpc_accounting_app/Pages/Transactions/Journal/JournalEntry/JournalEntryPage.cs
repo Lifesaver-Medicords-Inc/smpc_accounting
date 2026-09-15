@@ -142,20 +142,28 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
-
-            // If no records exist, clear everything
-            if (_journalEntries == null || !_journalEntries.Any())
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                ClearJournalEntryUI();
-                return;
+                SetEditMode(false);
+
+                // If no records exist, clear everything
+                if (_journalEntries == null || !_journalEntries.Any())
+                {
+                    ClearJournalEntryUI();
+                    return;
+                }
+
+                // Return to the previous record index if available
+                if (_previousJEIndex >= 0 && _journalEntries != null && _journalEntries.Count > 0)
+                {
+                    _currentJEIndex = _previousJEIndex;
+                    await LoadJournalEntries();
+                }
             }
-
-            // Return to the previous record index if available
-            if (_previousJEIndex >= 0 && _journalEntries != null && _journalEntries.Count > 0)
+            finally
             {
-                _currentJEIndex = _previousJEIndex;
-                await LoadJournalEntries();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -523,7 +531,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_journal_entry, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_journal_entry);
                 await LoadJournalEntries();
             }
             catch (Exception ex)
@@ -926,6 +934,52 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
             e.ThrowException = false;
 
             Helpers.ShowDialogMessage("error", "Invalid numeric value. Please enter a valid amount.");
+        }
+
+        // Prints the journal entry on screen, on the house template (spec 2.10).
+        // Lines carry their posting date, account, reference and memo, with debit and
+        // credit right-aligned and a total row closing the table.
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            if (_journalEntries == null || _currentJEIndex < 0 || _currentJEIndex >= _journalEntries.Count)
+            {
+                MessageBox.Show("No journal entry selected.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var je = _journalEntries[_currentJEIndex];
+            var report = new smpc_accounting_app.Printing.HouseTemplateReport { Title = "JOURNAL ENTRY" };
+
+            report.LeftBlock.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("JOURNAL", je.journal_name));
+            report.LeftBlock.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("DESCRIPTION", je.journal_description));
+            report.LeftBlock.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("CURRENCY", je.currency));
+
+            report.RightBlock.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("DOC NO.", "JE#" + je.doc_no.ToString("D4")));
+            report.RightBlock.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("PERIOD", je.period));
+            report.RightBlock.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("COVERING", je.period_from + " to " + je.period_to));
+
+            report.Columns.Add(new smpc_accounting_app.Printing.HouseTemplateColumn("POSTING DATE"));
+            report.Columns.Add(new smpc_accounting_app.Printing.HouseTemplateColumn("ACCOUNT TITLE"));
+            report.Columns.Add(new smpc_accounting_app.Printing.HouseTemplateColumn("REFERENCE"));
+            report.Columns.Add(new smpc_accounting_app.Printing.HouseTemplateColumn("MEMO"));
+            report.Columns.Add(new smpc_accounting_app.Printing.HouseTemplateColumn("DEBIT", 'R'));
+            report.Columns.Add(new smpc_accounting_app.Printing.HouseTemplateColumn("CREDIT", 'R'));
+
+            double debit = 0, credit = 0;
+            foreach (var d in _currentDetails ?? new System.ComponentModel.BindingList<JournalEntryDetailsModel>())
+            {
+                debit += d.debit;
+                credit += d.credit;
+                report.Rows.Add(new[]
+                {
+                    d.posting_date, d.account_title, d.posting_ref, d.line_memo,
+                    d.debit.ToString("N2"), d.credit.ToString("N2"),
+                });
+            }
+
+            report.Rows.Add(new[] { "", "TOTAL", "", "", debit.ToString("N2"), credit.ToString("N2") });
+            report.Signatures.Add(smpc_accounting_app.Printing.HouseTemplateReport.Pair("PREPARED BY", je.created_by));
+            report.ShowPreview();
         }
     }
 }

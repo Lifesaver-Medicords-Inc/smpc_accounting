@@ -36,5 +36,16 @@ namespace smpc_accounting_app.Models
         // ("VAT (12%)"). Consumers divide by 100 rather than storing the raw
         // decimal fraction.
         public float vat_rate_percent { get; set; }
+
+        // Spec 4.5.6: the restocking and cancellation fee percentages are live
+        // defaults, not just contract wording. They autofill the Sales Order's
+        // charges modal (5.4) and the Sales Return's credit computation (12.6.2),
+        // and stay overridable at the point of charge.
+        //
+        // Whole-number percentages, same convention as vat_rate_percent: 10 means
+        // 10%. Zero is a real value meaning "no fee" - 8.15 says a 0 fee produces
+        // no invoice line - so nothing may substitute a default for an explicit 0.
+        public float restocking_fee_percent { get; set; }
+        public float cancellation_fee_percent { get; set; }
     }
 }

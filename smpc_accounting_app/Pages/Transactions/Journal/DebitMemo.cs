@@ -577,27 +577,35 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 debit_memo_details = details
             };
 
-            lbl_status.Text = "saving...";
-            btn_save.Enabled = false;
-            btn_cancel.Enabled = false;
+            Helpers.Loading.ShowLoading(this);
             try
             {
-                var response = await _service.CreateDebitMemo(payload);
-                if (response == null || !response.success)
+                lbl_status.Text = "saving...";
+                btn_save.Enabled = false;
+                btn_cancel.Enabled = false;
+                try
                 {
-                    MessageBox.Show(response?.message ?? "Failed to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    lbl_status.Text = "";
-                    return;
-                }
+                    var response = await _service.CreateDebitMemo(payload);
+                    if (response == null || !response.success)
+                    {
+                        MessageBox.Show(response?.message ?? "Failed to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        lbl_status.Text = "";
+                        return;
+                    }
 
-                lbl_status.Text = "saved";
-                SetEditMode(false);
-                await LoadRecordsAsync();
+                    lbl_status.Text = "saved";
+                    SetEditMode(false);
+                    await LoadRecordsAsync();
+                }
+                finally
+                {
+                    btn_save.Enabled = true;
+                    btn_cancel.Enabled = true;
+                }
             }
             finally
             {
-                btn_save.Enabled = true;
-                btn_cancel.Enabled = true;
+                Helpers.Loading.HideLoading(this);
             }
         }
     }

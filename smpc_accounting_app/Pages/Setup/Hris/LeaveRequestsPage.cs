@@ -93,7 +93,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_list, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_list);
                 var result = await HrisLeaveService.GetLeaveRequestsAsync(cmb_statusFilter.Text);
                 if (result.HasErrors)
                 {

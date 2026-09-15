@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -19,10 +19,12 @@ namespace smpc_accounting_app.Pages.Setup
     // identified yet, and sending an empty one on Save is safe: the Go update path
     // uses the same DbUpdate that already skips zero-valued fields, so leaving
     // those blank in this form never overwrites the real address/contacts, doesn't
-    // matter that this form has no fields for them). Restocking-fee %/cancellation-
-    // fee % from §4.5.6's text are deliberately NOT included - §15.1 is still open
-    // on what they even mean, and there is no backing column for them on tbl_company
-    // yet, so there is nothing here to bind them to.
+    // matter that this form has no fields for them).
+    //
+    // The restocking and cancellation fee percentages from 4.5.6 ARE included now.
+    // They were left out while 15.1 was open on what they meant and while
+    // tbl_company had no column to bind them to; both are resolved - the fees are
+    // chargeable, and the columns exist on CompanyContent.
     public partial class CompanySetupPage : UserControl
     {
         private readonly CompanySetupService _service = new CompanySetupService();
@@ -52,6 +54,13 @@ namespace smpc_accounting_app.Pages.Setup
             // Quotation.cs's own markup computation, contradicting the separate
             // VAT_RATE = 0.12m constant used elsewhere. Both are configurable here now.
             ("vat_rate_percent", "VAT RATE (%)", FieldKind.Text),
+            // 4.5.6's two fee percentages. They were left out while 15.1 was still
+            // open on what they meant; that is settled now - both fees are
+            // chargeable, they autofill the SO charges modal (5.4) and the Sales
+            // Return credit (12.6.2), and they are overridable at the point of
+            // charge. Whole numbers: 10 means 10%, and 0 means the fee is declined.
+            ("restocking_fee_percent", "RESTOCKING FEE (%)", FieldKind.Text),
+            ("cancellation_fee_percent", "CANCELLATION FEE (%)", FieldKind.Text),
             // These used to be FieldKind.Text - a bare TextBox a person could type
             // anything into. JournalEntryPage.cs copies these two strings verbatim
             // into every Journal Entry's period_from/period_to, and the API parses
@@ -279,8 +288,16 @@ namespace smpc_accounting_app.Pages.Setup
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
-            await LoadCompany();
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                SetEditMode(false);
+                await LoadCompany();
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
@@ -288,65 +305,73 @@ namespace smpc_accounting_app.Pages.Setup
             btn_save.Enabled = false;
             btn_cancel.Enabled = false;
 
+            Helpers.Loading.ShowLoading(this);
             try
             {
-                var payload = new CompanySetupModel
+                try
                 {
-                    id = 1,
-                    company_code = GetValue("company_code"),
-                    company_name = GetValue("company_name"),
-                    legal_name = GetValue("legal_name"),
-                    trade_name = GetValue("trade_name"),
-                    business_type = GetValue("business_type"),
-                    sec_registration_no = GetValue("sec_registration_no"),
-                    dti_registration_no = GetValue("dti_registration_no"),
-                    tin = GetValue("tin"),
-                    bir_branch_code = GetValue("bir_branch_code"),
-                    rdo_code = GetValue("rdo_code"),
-                    industry = GetValue("industry"),
-                    status = GetValue("status"),
-                    is_head_office = ((CheckBox)_fields["is_head_office"]).Checked,
-                    currency_code = GetValue("currency_code"),
-                    start_fiscal_date = GetDateValue("start_fiscal_date", startOfDay: true),
-                    end_fiscal_date = GetDateValue("end_fiscal_date", startOfDay: false),
-                    inclusions_quotation_terms = GetValue("inclusions_quotation_terms"),
-                    exclusions_quotation_terms = GetValue("exclusions_quotation_terms"),
-                    term_and_conditions = GetValue("term_and_conditions"),
-                };
+                    var payload = new CompanySetupModel
+                    {
+                        id = 1,
+                        company_code = GetValue("company_code"),
+                        company_name = GetValue("company_name"),
+                        legal_name = GetValue("legal_name"),
+                        trade_name = GetValue("trade_name"),
+                        business_type = GetValue("business_type"),
+                        sec_registration_no = GetValue("sec_registration_no"),
+                        dti_registration_no = GetValue("dti_registration_no"),
+                        tin = GetValue("tin"),
+                        bir_branch_code = GetValue("bir_branch_code"),
+                        rdo_code = GetValue("rdo_code"),
+                        industry = GetValue("industry"),
+                        status = GetValue("status"),
+                        is_head_office = ((CheckBox)_fields["is_head_office"]).Checked,
+                        currency_code = GetValue("currency_code"),
+                        start_fiscal_date = GetDateValue("start_fiscal_date", startOfDay: true),
+                        end_fiscal_date = GetDateValue("end_fiscal_date", startOfDay: false),
+                        inclusions_quotation_terms = GetValue("inclusions_quotation_terms"),
+                        exclusions_quotation_terms = GetValue("exclusions_quotation_terms"),
+                        term_and_conditions = GetValue("term_and_conditions"),
+                    };
 
-                if (!float.TryParse(GetValue("beg_bal"), out float begBal) ||
-                    !float.TryParse(GetValue("monthly_rate"), out float monthlyRate) ||
-                    !float.TryParse(GetValue("markup_multiplier_price"), out float markup))
-                {
-                    Helpers.ShowDialogMessage("error", "Beginning balance, exchange rate, and markup multiplier must be numbers.");
-                    return;
+                    if (!float.TryParse(GetValue("beg_bal"), out float begBal) ||
+                        !float.TryParse(GetValue("monthly_rate"), out float monthlyRate) ||
+                        !float.TryParse(GetValue("markup_multiplier_price"), out float markup))
+                    {
+                        Helpers.ShowDialogMessage("error", "Beginning balance, exchange rate, and markup multiplier must be numbers.");
+                        return;
+                    }
+                    payload.beg_bal = begBal;
+                    payload.monthly_rate = monthlyRate;
+                    payload.markup_multiplier_price = markup;
+
+                    pnl_scroll.Enabled = false;
+                    var result = await _service.Update(payload);
+
+                    if (result == null || !result.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Company setup not updated.");
+                        return;
+                    }
+
+                    Helpers.ShowDialogMessage("success", "Company setup updated successfully.");
+                    SetEditMode(false);
+                    await LoadCompany();
                 }
-                payload.beg_bal = begBal;
-                payload.monthly_rate = monthlyRate;
-                payload.markup_multiplier_price = markup;
-
-                pnl_scroll.Enabled = false;
-                var result = await _service.Update(payload);
-
-                if (result == null || !result.Success)
+                catch (Exception ex)
                 {
-                    Helpers.ShowDialogMessage("error", "Company setup not updated.");
-                    return;
+                    Helpers.ShowDialogMessage("error", $"Failed to save: {ex.Message}");
                 }
-
-                Helpers.ShowDialogMessage("success", "Company setup updated successfully.");
-                SetEditMode(false);
-                await LoadCompany();
-            }
-            catch (Exception ex)
-            {
-                Helpers.ShowDialogMessage("error", $"Failed to save: {ex.Message}");
+                finally
+                {
+                    btn_save.Enabled = true;
+                    btn_cancel.Enabled = true;
+                    pnl_scroll.Enabled = true;
+                }
             }
             finally
             {
-                btn_save.Enabled = true;
-                btn_cancel.Enabled = true;
-                pnl_scroll.Enabled = true;
+                Helpers.Loading.HideLoading(this);
             }
         }
     }

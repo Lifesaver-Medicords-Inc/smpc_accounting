@@ -53,7 +53,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal.CreditMemoModals
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_customer_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_customer_search);
                 await LoadCustomers();
             }
             catch (Exception ex)

@@ -63,7 +63,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.PaymentRece
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_pr_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_pr_search);
                 await PaymentReceipts();
             }
             catch (Exception ex)

@@ -313,27 +313,35 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 payload.ref_dm_no = txt_ref_dm_no.Text;
             }
 
-            lbl_status.Text = "saving...";
-            btn_save.Enabled = false;
-            btn_cancel.Enabled = false;
+            Helpers.Loading.ShowLoading(this);
             try
             {
-                var response = await _service.CreateCreditMemo(payload);
-                if (response == null || !response.success)
+                lbl_status.Text = "saving...";
+                btn_save.Enabled = false;
+                btn_cancel.Enabled = false;
+                try
                 {
-                    MessageBox.Show(response?.message ?? "Failed to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    lbl_status.Text = "";
-                    return;
-                }
+                    var response = await _service.CreateCreditMemo(payload);
+                    if (response == null || !response.success)
+                    {
+                        MessageBox.Show(response?.message ?? "Failed to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        lbl_status.Text = "";
+                        return;
+                    }
 
-                lbl_status.Text = "saved";
-                SetEditMode(false);
-                await LoadRecordsAsync();
+                    lbl_status.Text = "saved";
+                    SetEditMode(false);
+                    await LoadRecordsAsync();
+                }
+                finally
+                {
+                    btn_save.Enabled = true;
+                    btn_cancel.Enabled = true;
+                }
             }
             finally
             {
-                btn_save.Enabled = true;
-                btn_cancel.Enabled = true;
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -346,20 +354,28 @@ namespace smpc_accounting_app.Pages.Transactions.Journal
                 "Confirm Approval", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm != DialogResult.Yes) return;
 
-            btn_approve.Enabled = false;
+            Helpers.Loading.ShowLoading(this);
             try
             {
-                var response = await _service.ApproveCreditMemo(_records[_currentIndex].id);
-                if (response == null || !response.success)
+                btn_approve.Enabled = false;
+                try
                 {
-                    MessageBox.Show(response?.message ?? "Failed to approve.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    var response = await _service.ApproveCreditMemo(_records[_currentIndex].id);
+                    if (response == null || !response.success)
+                    {
+                        MessageBox.Show(response?.message ?? "Failed to approve.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    await LoadRecordsAsync();
                 }
-                await LoadRecordsAsync();
+                finally
+                {
+                    btn_approve.Enabled = true;
+                }
             }
             finally
             {
-                btn_approve.Enabled = true;
+                Helpers.Loading.HideLoading(this);
             }
         }
     }

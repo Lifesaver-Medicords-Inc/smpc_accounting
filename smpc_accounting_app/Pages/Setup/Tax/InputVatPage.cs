@@ -406,8 +406,8 @@ namespace smpc_accounting_app.Pages.Setup.Tax
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_tax_code_list, "Fetching data...");
-                Helpers.Loading.ShowLoading(dgv_tax_details, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_tax_code_list);
+                Helpers.Loading.ShowLoading(dgv_tax_details);
                 await LoadTaxSetups();
                 await FetchChartOfAccountClass();
                 LoadSelectedTaxSetup();

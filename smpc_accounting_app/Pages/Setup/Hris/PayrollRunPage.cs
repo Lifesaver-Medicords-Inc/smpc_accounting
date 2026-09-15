@@ -140,7 +140,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             _loaded = true;
             try
             {
-                Helpers.Loading.ShowLoading(dgv_items, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_items);
                 await LoadData();
             }
             catch (Exception ex)

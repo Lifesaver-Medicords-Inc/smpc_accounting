@@ -61,8 +61,16 @@ namespace smpc_accounting_app.Pages.Setup.Others
             var data = Helpers.GetControlsValues(pnl_content);
 
             data["id"] = int.Parse(data["id"]);
-            await bookService.Delete(data);
-            await GetAll();
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                await bookService.Delete(data);
+                await GetAll();
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
@@ -91,20 +99,28 @@ namespace smpc_accounting_app.Pages.Setup.Others
                 }
             }
 
-            if (String.IsNullOrEmpty(txt_id.Text))
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                data.Remove("id");
-                await bookService.Insert(data);
-            }
+                if (String.IsNullOrEmpty(txt_id.Text))
+                {
+                    data.Remove("id");
+                    await bookService.Insert(data);
+                }
 
-            else
+                else
+                {
+                    data["id"] = int.Parse(data["id"]);
+                    await bookService.Update(data);
+                }
+
+
+                await GetAll();
+            }
+            finally
             {
-                data["id"] = int.Parse(data["id"]);
-                await bookService.Update(data);
+                Helpers.Loading.HideLoading(this);
             }
-
-
-            await GetAll();
             Toggle(false);
         }
 

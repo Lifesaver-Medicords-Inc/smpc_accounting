@@ -15,6 +15,28 @@ namespace smpc_accounting_app
         // the Employee Information module needs it (HrisApiService guards for null),
         // so a missing key never blocks the rest of the app from starting.
         public static string HrisApiBaseUrl { get; private set; }
+
+        // Ends this session on the server as the app closes. The API revokes a token on
+        // /logout; no app ever called it, so a closed app's token stayed usable for the rest
+        // of its 24 hours. Best effort - a slow or unreachable API must not hold up closing.
+        private static void EndServerSession(string apiBaseUrl, string token)
+        {
+            if (string.IsNullOrWhiteSpace(apiBaseUrl) || string.IsNullOrWhiteSpace(token)) return;
+            try
+            {
+                using (var client = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromSeconds(3) })
+                {
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", token);
+                    // Task.Run keeps the blocking wait off the UI synchronization context.
+                    Task.Run(() => client.PostAsync(apiBaseUrl.TrimEnd('/') + "/logout", null))
+                        .Wait(TimeSpan.FromSeconds(3));
+                }
+            }
+            catch
+            {
+                // Closing the app matters more than telling the server.
+            }
+        }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -68,6 +90,7 @@ namespace smpc_accounting_app
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Layout());
+                EndServerSession(ApiBaseUrl, smpc_accounting_app.Shared.CacheData.SessionToken);
             }
             catch (ConfigurationErrorsException ex)
             {

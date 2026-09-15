@@ -292,7 +292,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
             try
             {
                 LoadTypes();
-                Helpers.Loading.ShowLoading(dgv_list, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_list);
                 await GetChartClass();
             }
             catch (Exception ex)
@@ -512,6 +512,22 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
                 txt_code.Text = "";
             }
+        }
+
+        // Prints the list as it stands on screen, on the house template (spec 2.10:
+        // lists and reports print). Columns and rows come from the grid, so a search
+        // that narrowed it prints narrowed too.
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            var report = smpc_accounting_app.Printing.HouseTemplateReport.FromGrid(dgv_list, "CHART OF ACCOUNTS CLASS");
+
+            if (report.Rows.Count == 0)
+            {
+                MessageBox.Show("Nothing to print.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            report.ShowPreview();
         }
     }
 }

@@ -81,7 +81,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main_search);
                 await LoadSalesInvoice();
             }
             catch (Exception ex)

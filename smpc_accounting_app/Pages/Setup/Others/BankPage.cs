@@ -49,9 +49,17 @@ namespace smpc_accounting_app.Pages.Setup.Others
 
             data["id"] = int.Parse(data["id"]);
 
-            await bankService.Delete(data);
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                await bankService.Delete(data);
 
-            await GetBanks();
+                await GetBanks();
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         } 
 
         private async Task GetBanks()
@@ -87,26 +95,42 @@ namespace smpc_accounting_app.Pages.Setup.Others
                 }
             }
 
-            if (String.IsNullOrEmpty(txt_id.Text))
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                data.Remove("id");
-                await bankService.Insert(data);
+                if (String.IsNullOrEmpty(txt_id.Text))
+                {
+                    data.Remove("id");
+                    await bankService.Insert(data);
+                }
+
+                else
+                {
+                    data["id"] = int.Parse(data["id"]);
+                    await bankService.Update(data);
+                } 
+
+                await GetBanks();
             }
-
-            else
+            finally
             {
-                data["id"] = int.Parse(data["id"]);
-                await bankService.Update(data);
-            } 
-
-            await GetBanks();
+                Helpers.Loading.HideLoading(this);
+            }
 
             Toggle(false);
         }
 
         private async void BankPage_Load(object sender, EventArgs e)
         {
-            await GetBanks();
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                await GetBanks();
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)

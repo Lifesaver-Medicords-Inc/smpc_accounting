@@ -128,7 +128,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             _loaded = true;
             try
             {
-                Helpers.Loading.ShowLoading(dgv_entries, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_entries);
                 var employees = await HrisEmployeeService.GetEmployeesAsync();
                 if (employees.HasErrors)
                 {

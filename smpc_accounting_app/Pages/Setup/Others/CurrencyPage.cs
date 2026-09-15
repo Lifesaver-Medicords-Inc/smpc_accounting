@@ -71,20 +71,28 @@ namespace smpc_accounting_app.Pages.Setup.Others
                 }
             }
 
-            if (String.IsNullOrEmpty(txt_id.Text))
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                data.Remove("id");
-                await currencyService.Insert(data);
-            }
+                if (String.IsNullOrEmpty(txt_id.Text))
+                {
+                    data.Remove("id");
+                    await currencyService.Insert(data);
+                }
 
-            else
+                else
+                {
+                    data["id"] = int.Parse(data["id"]);
+                    await currencyService.Update(data);
+                }
+
+
+                await GetAll();
+            }
+            finally
             {
-                data["id"] = int.Parse(data["id"]);
-                await currencyService.Update(data);
+                Helpers.Loading.HideLoading(this);
             }
-
-
-            await GetAll();
             Toggle(false);
         }
 
@@ -109,8 +117,16 @@ namespace smpc_accounting_app.Pages.Setup.Others
             var data = Helpers.GetControlsValues(pnl_content);
 
             data["id"] = int.Parse(data["id"]);
-            await currencyService.Delete(data);
-            await GetAll();
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                await currencyService.Delete(data);
+                await GetAll();
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
     }
 }

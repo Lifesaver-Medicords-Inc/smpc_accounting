@@ -139,39 +139,47 @@ namespace smpc_accounting_app.Pages.Setup.Financial
 
                 return;
 
-            DataTable dataFromDatagridview = (DataTable)bindingSource.DataSource;
-
-            var updatedLedgerList = new List<Dictionary<string, dynamic>>();
-
-            var payload = new Dictionary<string, dynamic>();
-
-            foreach (DataRow item in dataFromDatagridview.Rows)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                var ledgerId = int.Parse(
-                        string.IsNullOrEmpty(item["id"].ToString()) ? "0" : item["id"].ToString()
-                    );
+                DataTable dataFromDatagridview = (DataTable)bindingSource.DataSource;
 
-                var accountId = int.Parse(
-                        string.IsNullOrEmpty(item["account_id"].ToString()) ? "0" : item["account_id"].ToString()
-                    );
+                var updatedLedgerList = new List<Dictionary<string, dynamic>>();
 
-                var pseudoAccount = item["pseudo_account"].ToString();
+                var payload = new Dictionary<string, dynamic>();
 
-                Dictionary<string, dynamic> rowData = new Dictionary<string, dynamic>
-                    {
-                        {"id",ledgerId },
-                        {"pseudo_account",pseudoAccount },
-                        {"account_id",accountId }
-                    };
+                foreach (DataRow item in dataFromDatagridview.Rows)
+                {
+                    var ledgerId = int.Parse(
+                            string.IsNullOrEmpty(item["id"].ToString()) ? "0" : item["id"].ToString()
+                        );
 
-                updatedLedgerList.Add(rowData);
+                    var accountId = int.Parse(
+                            string.IsNullOrEmpty(item["account_id"].ToString()) ? "0" : item["account_id"].ToString()
+                        );
+
+                    var pseudoAccount = item["pseudo_account"].ToString();
+
+                    Dictionary<string, dynamic> rowData = new Dictionary<string, dynamic>
+                        {
+                            {"id",ledgerId },
+                            {"pseudo_account",pseudoAccount },
+                            {"account_id",accountId }
+                        };
+
+                    updatedLedgerList.Add(rowData);
+                }
+
+                payload.Add("Payload", updatedLedgerList);
+
+                await generalLedgerMapperService.Update(payload);
+
+                Helpers.ShowDialogMessage("success", "Successfully saved!");
             }
-
-            payload.Add("Payload", updatedLedgerList);
-
-            await generalLedgerMapperService.Update(payload);
-
-            Helpers.ShowDialogMessage("success", "Successfully saved!");
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
     }
 }

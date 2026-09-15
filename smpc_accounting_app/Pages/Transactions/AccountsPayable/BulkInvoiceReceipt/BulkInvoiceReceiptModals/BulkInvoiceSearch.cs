@@ -119,7 +119,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
             try
             {
-                Helpers.Loading.ShowLoading(dgv_ir_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_ir_search);
 
                 bulkInvoiceSearchService = new GeneralService<BulkInvoiceReceiptModel>(
                     ApiEndPoints.BULK_INVOICE_RECEIPT_SEARCH);

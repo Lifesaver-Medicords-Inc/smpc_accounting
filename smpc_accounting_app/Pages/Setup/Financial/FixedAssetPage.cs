@@ -216,7 +216,7 @@ namespace smpc_accounting_app.Pages.Setup.Financial
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_list, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_list);
                 await LoadCategoriesIntoCombo();
                 await LoadData();
             }

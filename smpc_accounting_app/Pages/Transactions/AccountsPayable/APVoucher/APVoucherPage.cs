@@ -196,25 +196,33 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                SetEditMode(false);
 
-            // If no records exist, clear everything
-            if (_apVouchers == null || !_apVouchers.Any())
-            {
-                ClearAPVoucherUI();
-                return;
-            }
+                // If no records exist, clear everything
+                if (_apVouchers == null || !_apVouchers.Any())
+                {
+                    ClearAPVoucherUI();
+                    return;
+                }
 
-            // Return to the previous record index if available
-            if (_previousAVIndex >= 0 && _apVouchers != null && _apVouchers.Count > 0)
-            {
-                _currentAVIndex = _previousAVIndex;
-                await LoadAPVouchers();
+                // Return to the previous record index if available
+                if (_previousAVIndex >= 0 && _apVouchers != null && _apVouchers.Count > 0)
+                {
+                    _currentAVIndex = _previousAVIndex;
+                    await LoadAPVouchers();
+                }
+                else
+                {
+                    Helpers.ResetControls(pnl_main);
+                    dgv_main.Rows.Clear();
+                }
             }
-            else
+            finally
             {
-                Helpers.ResetControls(pnl_main);
-                dgv_main.Rows.Clear();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -276,7 +284,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.APVoucher
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main);
                 await LoadAPVouchers();
             }
             catch (Exception ex)

@@ -333,23 +333,31 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                SetEditMode(false);
 
-            if (_bulkInvoiceReceipts == null || !_bulkInvoiceReceipts.Any())
-            {
-                ClearBulkInvoiceReceiptUI();
-                return;
-            }
+                if (_bulkInvoiceReceipts == null || !_bulkInvoiceReceipts.Any())
+                {
+                    ClearBulkInvoiceReceiptUI();
+                    return;
+                }
 
-            if (_previousBIRIndex >= 0)
-            {
-                _currentBIRIndex = _previousBIRIndex;
-                await LoadBulkInvoiceReceipts(_currentCursor);
+                if (_previousBIRIndex >= 0)
+                {
+                    _currentBIRIndex = _previousBIRIndex;
+                    await LoadBulkInvoiceReceipts(_currentCursor);
+                }
+                else
+                {
+                    Helpers.ResetControls(pnl_main);
+                    dgv_main.Rows.Clear();
+                }
             }
-            else
+            finally
             {
-                Helpers.ResetControls(pnl_main);
-                dgv_main.Rows.Clear();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -357,7 +365,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.BulkInvoiceRece
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main);
                 await LoadTaxSetup();
                 await LoadBulkInvoiceReceipts();
             }

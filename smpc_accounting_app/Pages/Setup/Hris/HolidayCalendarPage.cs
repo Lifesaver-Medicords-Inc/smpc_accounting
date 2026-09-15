@@ -96,7 +96,7 @@ namespace smpc_accounting_app.Pages.Setup.Hris
             }
             try
             {
-                Helpers.Loading.ShowLoading(dgv_list, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_list);
                 var result = await HrisHolidayService.GetHolidaysAsync(year);
                 if (result.HasErrors)
                 {

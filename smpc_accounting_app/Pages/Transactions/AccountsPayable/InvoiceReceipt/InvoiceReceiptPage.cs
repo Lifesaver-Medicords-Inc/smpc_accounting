@@ -289,20 +289,28 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
-
-            // If no records exist, clear everything
-            if (_invoiceReceipts == null || !_invoiceReceipts.Any())
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                ClearInvoiceReceiptUI();
-                return;
+                SetEditMode(false);
+
+                // If no records exist, clear everything
+                if (_invoiceReceipts == null || !_invoiceReceipts.Any())
+                {
+                    ClearInvoiceReceiptUI();
+                    return;
+                }
+
+                // Return to the previous record index if available
+                if (_previousIRIndex >= 0 && _invoiceReceipts != null && _invoiceReceipts.Count > 0)
+                {
+                    _currentIRIndex = _previousIRIndex;
+                    await LoadInvoiceReceipts();
+                }
             }
-
-            // Return to the previous record index if available
-            if (_previousIRIndex >= 0 && _invoiceReceipts != null && _invoiceReceipts.Count > 0)
+            finally
             {
-                _currentIRIndex = _previousIRIndex;
-                await LoadInvoiceReceipts();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -320,7 +328,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.InvoiceReceipt
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main);
                 await LoadTaxSetup();
                 await LoadInvoiceReceipts();
             }

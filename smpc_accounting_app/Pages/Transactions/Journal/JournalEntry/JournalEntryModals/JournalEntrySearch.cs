@@ -59,7 +59,7 @@ namespace smpc_accounting_app.Pages.Transactions.Journal.JournalEntry.JournalEnt
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_je_search, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_je_search);
                 await JournalEntries();
             }
             catch (Exception ex)

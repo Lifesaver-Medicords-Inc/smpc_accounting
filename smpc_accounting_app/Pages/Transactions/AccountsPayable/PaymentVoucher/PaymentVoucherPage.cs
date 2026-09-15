@@ -128,20 +128,28 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
-
-            // If no records exist, clear everything
-            if (_paymentVouchers == null || !_paymentVouchers.Any())
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                ClearPaymentVoucherUI();
-                return;
+                SetEditMode(false);
+
+                // If no records exist, clear everything
+                if (_paymentVouchers == null || !_paymentVouchers.Any())
+                {
+                    ClearPaymentVoucherUI();
+                    return;
+                }
+
+                // Return to the previous record index if available
+                if (_previousPVIndex >= 0 && _paymentVouchers != null && _paymentVouchers.Count > 0)
+                {
+                    _currentPVIndex = _previousPVIndex;
+                    await LoadPaymentVouchers();
+                }
             }
-
-            // Return to the previous record index if available
-            if (_previousPVIndex >= 0 && _paymentVouchers != null && _paymentVouchers.Count > 0)
+            finally
             {
-                _currentPVIndex = _previousPVIndex;
-                await LoadPaymentVouchers();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -314,7 +322,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsPayable.PaymentVoucher
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main);
                 await LoadPaymentVouchers();
             }
             catch (Exception ex)

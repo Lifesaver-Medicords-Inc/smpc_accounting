@@ -70,6 +70,8 @@ namespace smpc_accounting_app.Services
             // against the same complete API - confirmed with the user rather than
             // building a second copy of the same feature.
             {"Journal Entry", new JournalEntryPage() },
+            {"AR Record of Transactions", new Pages.Transactions.AccountsReceivables.ARRecords.ARRecordOfTransactionsPage() },
+            {"Billing", new Pages.Transactions.AccountsReceivables.Billing.BillingListPage() },
 
             //========================================================================
             // ACCOUNTS PAYABLES
@@ -81,6 +83,11 @@ namespace smpc_accounting_app.Services
             // never a choice made inside the form itself (Sec14.98).
             { "Credit Memo", new CreditMemo("Supplier") },
             { "Debit Memo", new DebitMemo() },
+            // Petty Cash Replenishment (spec 5.26) - kept by the A/P accountant,
+            // so it hangs with the rest of A/P.
+            { "Petty Cash", new Pages.Transactions.AccountsPayable.PettyCash.PettyCashPage() },
+            // The A/P mirror of the A/R screen in 12.3 (3.2's A/P module list).
+            { "AP Record of Transactions", new Pages.Transactions.AccountsPayable.APRecords.APRecordOfTransactionsPage() },
 
             //========================================================================
             // ACCOUNTS RECEIVABLES

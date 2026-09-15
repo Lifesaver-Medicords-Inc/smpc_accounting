@@ -196,21 +196,29 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
 
         private async void btn_cancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false);
-
-            // If no records exist, clear everything
-            if (_salesInvoice == null || !_salesInvoice.Any())
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                ClearSalesInvoiceUI();
-                return;
+                SetEditMode(false);
+
+                // If no records exist, clear everything
+                if (_salesInvoice == null || !_salesInvoice.Any())
+                {
+                    ClearSalesInvoiceUI();
+                    return;
+                }
+
+                // Return to the previous record index if available
+                if (_previousSIIndex >= 0 && _salesInvoice != null && _salesInvoice.Count > 0)
+                {
+                    _currentSIIndex = _previousSIIndex;
+                    await LoadCurrencyChoices();
+                    await LoadSalesInvoices();
+                }
             }
-
-            // Return to the previous record index if available
-            if (_previousSIIndex >= 0 && _salesInvoice != null && _salesInvoice.Count > 0)
+            finally
             {
-                _currentSIIndex = _previousSIIndex;
-                await LoadCurrencyChoices();
-                await LoadSalesInvoices();
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -354,7 +362,7 @@ namespace smpc_accounting_app.Pages.Transactions.AccountsReceivables.SalesInvoic
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_main, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_main);
                 await LoadCurrencyChoices();
                 await LoadSalesInvoices();
             }
